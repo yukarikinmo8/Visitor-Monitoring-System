@@ -15,30 +15,36 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QLabel, QMainWindow, QMenuBar,
-    QSizePolicy, QStatusBar, QWidget)
+from PySide6.QtWidgets import (QApplication, QLabel, QMainWindow, QPushButton,
+    QSizePolicy, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1066, 664)
+        MainWindow.resize(1500, 800)
+        MainWindow.setMinimumSize(QSize(1500, 800))
+        MainWindow.setMaximumSize(QSize(1500, 800))
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.label = QLabel(self.centralwidget)
         self.label.setObjectName(u"label")
-        self.label.setGeometry(QRect(290, 40, 631, 351))
+        self.label.setGeometry(QRect(410, 30, 1031, 571))
         font = QFont()
         font.setPointSize(12)
         self.label.setFont(font)
+        self.start_btn = QPushButton(self.centralwidget)
+        self.start_btn.setObjectName(u"start_btn")
+        self.start_btn.setGeometry(QRect(630, 630, 261, 51))
+        font1 = QFont()
+        font1.setPointSize(12)
+        font1.setBold(True)
+        self.start_btn.setFont(font1)
+        self.stop_btn = QPushButton(self.centralwidget)
+        self.stop_btn.setObjectName(u"stop_btn")
+        self.stop_btn.setGeometry(QRect(950, 630, 261, 51))
+        self.stop_btn.setFont(font1)
         MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QMenuBar(MainWindow)
-        self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1066, 26))
-        MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QStatusBar(MainWindow)
-        self.statusbar.setObjectName(u"statusbar")
-        MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
 
@@ -48,5 +54,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.label.setText("")
+        self.start_btn.setText(QCoreApplication.translate("MainWindow", u"Start", None))
+        self.stop_btn.setText(QCoreApplication.translate("MainWindow", u"Stop", None))
     # retranslateUi
 
