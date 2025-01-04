@@ -48,7 +48,7 @@ class CameraFeedWindow(QMainWindow):
         self.ui.stop_btn.setEnabled(False)
 
     def update_frame(self):
-        
+        #ee
         ret, frame = self.capture.read()
         
         if ret:
