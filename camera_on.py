@@ -1,7 +1,5 @@
 import sys
 import cv2
-# import cvzone_module
-
 from PySide6.QtCore import QTimer, Qt
 from PySide6.QtGui import QImage, QPixmap
 from PySide6.QtWidgets import QApplication, QMainWindow
@@ -13,41 +11,50 @@ class CameraFeedWindow(QMainWindow):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.ui.stop_btn.setEnabled(False)
 
-        self.file_path = 'Sample Test File\\test_video.mp4'
-        self.area1 = [(150, 120), (400, 559), (667, 675), (632, 681)]
+        self.file_path = 0# 'Sample Test File\\test_video.mp4'
+        self.area1 = [(150, 120), (155, 559), (170, 675), (175, 681)]
         self.area2 = [(346, 563), (313, 566), (579, 703), (624, 694)]
 
-        # Initialize the camera (use 0 for default camera, or replace with other index if you have multiple cameras)
+        # Initialize the video capture and algorithm
         self.capture = cv2.VideoCapture(self.file_path)
+        self.algo = Algorithm_Count(self.file_path, self.area1, self.area2, (self.ui.label.width(), self.ui.label.height()))
 
-        # Timer to update the QLabel with frames from the camera feed
+        # Timer for updating frames
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_frame)
-        self.timer.start(30)  # Update every 30ms
 
+        # Connect the "On" button to start the feed
+        self.ui.start_btn.clicked.connect(self.start_feed)
+        self.ui.stop_btn.clicked.connect(self.stop_feed)
+
+    def start_feed(self):
         
+        self.timer.start(30)  # Start the timer to update frames every 30ms
+        self.ui.start_btn.setEnabled(False)  # Disable the "On" button while the feed is running
+        self.ui.stop_btn.setEnabled(True)
+
+    def stop_feed(self):
+        self.capture.release()
+        self.ui.label.setPixmap(QPixmap())
+        self.ui.start_btn.setEnabled(True)
+
     def update_frame(self):
-        # Read a frame from the camera
+        
         ret, frame = self.capture.read()
-        # self.frame_width = 631
-        # self.frame_height = 351
-        # self.algo = Algorithm_Count(self.file_path,self.area1, self.area2, (self.frame_width, self.frame_height))
-        self.algo = Algorithm_Count(self.file_path, self.area1, self.area2, (self.ui.label.width(), self.ui.label.height()))
         
         if ret:
-            # Convert the frame from BGR to RGB
-            
-            frame = cv2.resize(frame, (self.ui.label.width(), self.ui.label.height())) # Resize the frame to match the dimensions of the QLabel
-            print(self.ui.label.width(), self.ui.label.height())
-            
-            
+            # Resize the frame to match the QLabel size
+            frame = cv2.resize(frame, (self.ui.label.width(), self.ui.label.height()))
+
+            # Perform detection with the algorithm
             detections_person, detections_face = self.algo.detect_BboxOnly(frame)
             self.algo.counter(frame, detections_person, detections_face)
 
+            # Convert the frame from BGR to RGB
             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-            
             # Convert the frame to QImage
             height, width, channels = frame_rgb.shape
             bytes_per_line = channels * width
@@ -58,7 +65,7 @@ class CameraFeedWindow(QMainWindow):
             self.ui.label.setPixmap(pixmap)
 
     def closeEvent(self, event):
-        # Release the camera when the window is closed
+        """Release the video capture when the window is closed."""
         self.capture.release()
         event.accept()
 
