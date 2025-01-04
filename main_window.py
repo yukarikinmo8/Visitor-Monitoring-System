@@ -24,6 +24,7 @@ class MainWindow(QMainWindow):
 
 # Run the application
 if __name__ == "__main__":
+      
     app = QApplication([])  # Create a QApplication instance
     window = MainWindow()  # Create the main window instance
     window.show()  # Show the main window
