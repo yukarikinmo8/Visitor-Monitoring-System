@@ -1,5 +1,7 @@
 import sys
 import cv2
+import cvzone_module
+
 from PySide6.QtCore import QTimer, Qt
 from PySide6.QtGui import QImage, QPixmap
 from PySide6.QtWidgets import QApplication, QMainWindow
@@ -13,8 +15,8 @@ class CameraFeedWindow(QMainWindow):
         self.ui.setupUi(self)
         self.ui.stop_btn.setEnabled(False)
 
-        self.file_path = 0# 'Sample Test File\\test_video.mp4'
-        self.area1 = [(150, 120), (155, 559), (170, 675), (175, 681)]
+        self.file_path = 'Sample Test File\\test_video.mp4'
+        self.area1 = [(359, 559), (400, 559), (667, 675), (632, 681)]
         self.area2 = [(346, 563), (313, 566), (579, 703), (624, 694)]
 
         # Initialize the video capture and algorithm
@@ -43,6 +45,10 @@ class CameraFeedWindow(QMainWindow):
     def update_frame(self):
         
         ret, frame = self.capture.read()
+        self.frame_width = 1280
+        self.frame_height = int(self.frame_width / 16 * 9)   
+        self.algo = Algorithm_Count(self.file_path,self.area1, self.area2, (self.frame_width, self.frame_height))
+
         
         if ret:
             # Resize the frame to match the QLabel size
@@ -53,8 +59,13 @@ class CameraFeedWindow(QMainWindow):
             self.algo.counter(frame, detections_person, detections_face)
 
             # Convert the frame from BGR to RGB
-            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            
+            frame_resized = cv2.resize(frame, (self.ui.label.width(), self.ui.label.height()))
+            frame_rgb = cv2.cvtColor(frame_resized, cv2.COLOR_BGR2RGB)
 
+            detections_person, detections_face = self.algo.detect_BboxOnly(frame_resized)
+            self.algo.counter(frame_resized, detections_person, detections_face)
+            
             # Convert the frame to QImage
             height, width, channels = frame_rgb.shape
             bytes_per_line = channels * width
