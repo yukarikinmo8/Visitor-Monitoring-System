@@ -45,19 +45,20 @@ class CameraFeedWindow(QMainWindow):
     def update_frame(self):
         
         ret, frame = self.capture.read()
-        self.frame_width = 1280
-        self.frame_height = int(self.frame_width / 16 * 9)   
-        # self.algo = Algorithm_Count(self.file_path,self.area1, self.area2, (self.frame_width, self.frame_height))
+        # self.frame_width = 1280
+        # self.frame_height = int(self.frame_width / 16 * 9)   
+        # self.algo = Algorithm_Count(self.file_path, self.area1, self.area2, (self.ui.label.width(), self.ui.label.height()))
 
         
         if ret:
             # Resize the frame to match the QLabel size
-            frame_resized = cv2.resize(frame, (self.ui.label.width(), self.ui.label.height()))
-            frame_rgb = cv2.cvtColor(frame_resized, cv2.COLOR_BGR2RGB)
+            frame = cv2.resize(frame, (self.ui.label.width(), self.ui.label.height()))
 
             # Perform detection with the algorithm
             # detections_person, detections_face = self.algo.detect_BboxOnly(frame)
             # self.algo.counter(frame, detections_person, detections_face)
+
+            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
             # Convert the frame to QImage
             height, width, channels = frame_rgb.shape
