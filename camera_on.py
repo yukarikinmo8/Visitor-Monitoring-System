@@ -13,13 +13,13 @@ class CameraFeedWindow(QMainWindow):
         self.ui.setupUi(self)
         self.ui.stop_btn.setEnabled(False)
 
-        self.file_path = 0# 'Sample Test File\\test_video.mp4'
+        self.file_path = 'Sample Test File\\test_video.mp4'
         self.area1 = [(150, 120), (155, 559), (170, 675), (175, 681)]
         self.area2 = [(346, 563), (313, 566), (579, 703), (624, 694)]
 
         # Initialize the video capture and algorithm
-        self.capture = cv2.VideoCapture(self.file_path)
-        self.algo = Algorithm_Count(self.file_path, self.area1, self.area2, (self.ui.label.width(), self.ui.label.height()))
+        
+        
 
         # Timer for updating frames
         self.timer = QTimer(self)
@@ -30,14 +30,16 @@ class CameraFeedWindow(QMainWindow):
         self.ui.stop_btn.clicked.connect(self.stop_feed)
 
     def start_feed(self):
-        
-        self.timer.start(30)  # Start the timer to update frames every 30ms
+        self.capture = cv2.VideoCapture(self.file_path)
+        self.algo = Algorithm_Count(self.file_path, self.area1, self.area2, (self.ui.label.width(), self.ui.label.height()))
+        self.timer.start(10)  # Start the timer to update frames every 30ms
         self.ui.start_btn.setEnabled(False)  # Disable the "On" button while the feed is running
         self.ui.stop_btn.setEnabled(True)
 
     def stop_feed(self):
         self.capture.release()
         self.ui.label.setPixmap(QPixmap())
+        self.timer.stop()
         self.ui.start_btn.setEnabled(True)
 
     def update_frame(self):
