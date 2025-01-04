@@ -47,7 +47,7 @@ class CameraFeedWindow(QMainWindow):
         ret, frame = self.capture.read()
         # self.frame_width = 1280
         # self.frame_height = int(self.frame_width / 16 * 9)   
-        # self.algo = Algorithm_Count(self.file_path, self.area1, self.area2, (self.ui.label.width(), self.ui.label.height()))
+        self.algo = Algorithm_Count(self.file_path, self.area1, self.area2, (self.ui.label.width(), self.ui.label.height()))
 
         
         if ret:
