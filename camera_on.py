@@ -45,22 +45,19 @@ class CameraFeedWindow(QMainWindow):
         self.ui.label.setPixmap(QPixmap())
         self.timer.stop()
         self.ui.start_btn.setEnabled(True)
+        self.ui.stop_btn.setEnabled(False)
 
     def update_frame(self):
         
         ret, frame = self.capture.read()
-        # self.frame_width = 1280
-        # self.frame_height = int(self.frame_width / 16 * 9)   
-        self.algo = Algorithm_Count(self.file_path, self.area1, self.area2, (self.ui.label.width(), self.ui.label.height()))
-
         
         if ret:
             # Resize the frame to match the QLabel size
             frame = cv2.resize(frame, (self.ui.label.width(), self.ui.label.height()))
 
             # Perform detection with the algorithm
-            # detections_person, detections_face = self.algo.detect_BboxOnly(frame)
-            # self.algo.counter(frame, detections_person, detections_face)
+            detections_person, detections_face = self.algo.detect_BboxOnly(frame)
+            self.algo.counter(frame, detections_person, detections_face)
 
             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
