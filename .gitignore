@@ -1,1 +1,5 @@
 .venv/
+__pycache__/
+Sample Test File/
+yolo-Weights/
+requirements.txt

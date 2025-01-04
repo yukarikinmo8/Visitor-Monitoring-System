@@ -1,6 +1,6 @@
 import sys
 import cv2
-import cvzone_module
+import cvzone
 
 from PySide6.QtCore import QTimer, Qt
 from PySide6.QtGui import QImage, QPixmap
@@ -47,25 +47,18 @@ class CameraFeedWindow(QMainWindow):
         ret, frame = self.capture.read()
         self.frame_width = 1280
         self.frame_height = int(self.frame_width / 16 * 9)   
-        self.algo = Algorithm_Count(self.file_path,self.area1, self.area2, (self.frame_width, self.frame_height))
+        # self.algo = Algorithm_Count(self.file_path,self.area1, self.area2, (self.frame_width, self.frame_height))
 
         
         if ret:
             # Resize the frame to match the QLabel size
-            frame = cv2.resize(frame, (self.ui.label.width(), self.ui.label.height()))
-
-            # Perform detection with the algorithm
-            detections_person, detections_face = self.algo.detect_BboxOnly(frame)
-            self.algo.counter(frame, detections_person, detections_face)
-
-            # Convert the frame from BGR to RGB
-            
             frame_resized = cv2.resize(frame, (self.ui.label.width(), self.ui.label.height()))
             frame_rgb = cv2.cvtColor(frame_resized, cv2.COLOR_BGR2RGB)
 
-            detections_person, detections_face = self.algo.detect_BboxOnly(frame_resized)
-            self.algo.counter(frame_resized, detections_person, detections_face)
-            
+            # Perform detection with the algorithm
+            # detections_person, detections_face = self.algo.detect_BboxOnly(frame)
+            # self.algo.counter(frame, detections_person, detections_face)
+
             # Convert the frame to QImage
             height, width, channels = frame_rgb.shape
             bytes_per_line = channels * width
