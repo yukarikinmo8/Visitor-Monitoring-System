@@ -44,6 +44,15 @@ class Ui_MainWindow(object):
         self.stop_btn.setObjectName(u"stop_btn")
         self.stop_btn.setGeometry(QRect(950, 630, 261, 51))
         self.stop_btn.setFont(font1)
+        self.cap_1 = QLabel(self.centralwidget)
+        self.cap_1.setObjectName(u"cap_1")
+        self.cap_1.setGeometry(QRect(50, 70, 221, 191))
+        self.cap_2 = QLabel(self.centralwidget)
+        self.cap_2.setObjectName(u"cap_2")
+        self.cap_2.setGeometry(QRect(50, 300, 221, 191))
+        self.cap_3 = QLabel(self.centralwidget)
+        self.cap_3.setObjectName(u"cap_3")
+        self.cap_3.setGeometry(QRect(50, 530, 221, 191))
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -56,5 +65,8 @@ class Ui_MainWindow(object):
         self.label.setText("")
         self.start_btn.setText(QCoreApplication.translate("MainWindow", u"Start", None))
         self.stop_btn.setText(QCoreApplication.translate("MainWindow", u"Stop", None))
+        self.cap_1.setText("")
+        self.cap_2.setText("")
+        self.cap_3.setText("")
     # retranslateUi
 
