@@ -39,8 +39,7 @@ model_face = YOLO('yolo-Weights/yolov10n-face.pt').to(device)   # Model for face
 
 # Define a class to handle the counting algorithm
 class Algorithm_Count:
-    def __init__(self, a1, a2, frame_size):
-        super().__init__
+    def __init__(self, file_path, a1, a2, frame_size):
         """
         Initializes the counter object with the given parameters.
         Args:
@@ -66,6 +65,7 @@ class Algorithm_Count:
         self.entering = set()
         self.peopleExiting = {}
         self.exiting = set()
+        self.file_path = file_path
         self.area1 = a1
         self.area2 = a2
         self.frame_size = frame_size
@@ -75,7 +75,7 @@ class Algorithm_Count:
         self.start_time = time.time()
 
         # Create a named window for displaying frames
-        cv2.namedWindow(self.name_frame)
+        # cv2.namedWindow(self.name_frame)
 
     # Method to detect objects in a frame
     def detect_BboxOnly(self, frame):
@@ -338,62 +338,59 @@ class Algorithm_Count:
         exit = len(self.exiting)
         cvzone.putTextRect(frame, str(f"Enter: {enter}"), (20, 30), 1, 1, color.text1(), color.text2())
         cvzone.putTextRect(frame, str(f"Exit: {exit}"), (20, 60), 1, 1, color.text1(), color.text2())
+    
+    # Main method to process the video
+    def main(self):
+        cap = cv2.VideoCapture(self.file_path)
 
-# Main method to process the video
-def main():
-        area1 = [(359, 559), (400, 559), (667, 675), (632, 681)]
-        area2 = [(346, 563), (313, 566), (579, 703), (624, 694)]
-        sample_video_path = 'Sample Test File\\test_video.mp4'
-        frame_width = 1280
-        frame_height = int(frame_width / 16 * 9)   
-        algo = Algorithm_Count(area1, area2, (frame_width, frame_height))
-        cap = cv2.VideoCapture(sample_video_path)
-        
-
-        #this line of code exports the video
-        downloads_path = os.path.join(os.path.expanduser('~'), 'Downloads')
-        output_file_path = os.path.join(downloads_path, 'output_video.avi')
-        out = cv2.VideoWriter(output_file_path, cv2.VideoWriter_fourcc(*'XVID'), 24.0, algo.frame_size)
+        # downloads_path = os.path.join(os.path.expanduser('~'), 'Downloads')
+        # output_file_path = os.path.join(downloads_path, 'output_video.avi')
+        # out = cv2.VideoWriter(output_file_path, cv2.VideoWriter_fourcc(*'XVID'), 24.0, self.frame_size)
 
         while True:
-            if not algo.paused:
+            if not self.paused:
                 ret, frame = cap.read()
-                if not ret: break
+                if not ret:
+                    break
+                frame = cv2.resize(frame, self.frame_size)
 
-                frame = cv2.resize(frame, algo.frame_size)
+                detections_person, detections_face = self.detect_BboxOnly(frame)
+                self.counter(frame, detections_person, detections_face)
 
-                # detections = self.detect_object(frame)
-                detections_person, detections_face = algo.detect_BboxOnly(frame)
-                algo.counter(frame, detections_person, detections_face)
+                # Return count of people entering and exiting
+                result = {
+                    'total_people_entering': len(self.entering),
+                    'total_people_exiting': len(self.exiting),
+                    'entering_details': sorted([{'person_id': person[0], 'time': person[1].strftime('%Y-%m-%d %H:%M:%S')} for person in self.entering], key=lambda x: x['time']),
+                    'exiting_details': sorted([{'person_id': person[0], 'time': person[1].strftime('%Y-%m-%d %H:%M:%S')} for person in self.exiting], key=lambda x: x['time'])
+                }
 
-                out.write(frame)
-                # self.show_time(frame)
-                cv2.imshow(algo.name_frame, frame)
-                
-            key = cv2.waitKey(1) & 0xFF
-            if cv2.getWindowProperty(algo.name_frame, cv2.WND_PROP_VISIBLE) < 1: 
-                break
-            elif key == ord('p'):
-                algo.paused = not algo.paused
+                # Instead of showing the frame, process it and return
+                yield frame, result  # Use a generator to return frames
 
         
             #if cv2.waitKey()&0xFF == ord('q'): break
             #if cv2.waitKey(0)&0xFF == 27: continue
 
         cap.release()
-        out.release()
-        cv2.destroyAllWindows()
+        # out.release()
+        # cv2.destroyAllWindows()
 
-        # Return count of people entering and exiting
-        result = {
-            'total_people_entering': len(algo.entering),
-            'total_people_exiting': len(algo.exiting),
-            'entering_details': sorted([{'person_id': person[0], 'time': person[1].strftime('%Y-%m-%d %H:%M:%S')} for person in algo.entering], key=lambda x: x['time']),
-            'exiting_details': sorted([{'person_id': person[0], 'time': person[1].strftime('%Y-%m-%d %H:%M:%S')} for person in algo.exiting], key=lambda x: x['time'])
-        }
-        return  result  
+        # # Return count of people entering and exiting
+        # result = {
+        #     'total_people_entering': len(self.entering),
+        #     'total_people_exiting': len(self.exiting),
+        #     'entering_details': sorted([{'person_id': person[0], 'time': person[1].strftime('%Y-%m-%d %H:%M:%S')} for person in self.entering], key=lambda x: x['time']),
+        #     'exiting_details': sorted([{'person_id': person[0], 'time': person[1].strftime('%Y-%m-%d %H:%M:%S')} for person in self.exiting], key=lambda x: x['time'])
+        # }
+        # return  result
 
 if __name__ == '__main__':
-    
-    main()
-    
+    area1 = [(359, 559), (400, 559), (667, 675), (632, 681)]
+    area2 = [(346, 563), (313, 566), (579, 703), (624, 694)]
+    sample_video_path = 'Sample Test File\\test_video.mp4'
+    frame_width = 1280
+    frame_height = int(frame_width / 16 * 9)   
+    algo = Algorithm_Count(sample_video_path, area1, area2, (frame_width, frame_height))
+    r = algo.main()
+    print(r)
