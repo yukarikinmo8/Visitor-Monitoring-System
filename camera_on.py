@@ -1,6 +1,10 @@
 import sys
 import cv2
 import cvzone
+import datetime
+import os
+import pickle
+import zlib
 
 from PySide6.QtCore import QTimer, Qt
 from PySide6.QtGui import QImage, QPixmap
@@ -19,11 +23,7 @@ class CameraFeedWindow(QMainWindow):
         self.file_path = 'Sample Test File\\test_video.mp4'
 
         self.area1 = [(300, 300), (400, 559), (667, 675), (632, 681)]
-        self.area2 = [(220, 200), (313, 566), (579, 703), (624, 694)]
-
-        # Initialize the video capture and algorithm
-        
-        
+        self.area2 = [(110, 400), (313, 566), (579, 703), (624, 694)]
 
         # Timer for updating frames
         self.timer = QTimer(self)
@@ -35,6 +35,7 @@ class CameraFeedWindow(QMainWindow):
 
     def start_feed(self):
         self.capture = cv2.VideoCapture(self.file_path)
+        # Initialize the video capture and algorithm
         self.algo = Algorithm_Count(self.file_path, self.area1, self.area2, (self.ui.label.width(), self.ui.label.height()))
         self.frame_generator = self.algo.main()  # Initialize the generator
         self.timer.start(10)  # Start the timer to update frames every 30ms
@@ -46,84 +47,122 @@ class CameraFeedWindow(QMainWindow):
         if hasattr(self, 'capture') and self.capture.isOpened():
             self.capture.release()
         self.ui.label.setPixmap(QPixmap())
+        self.ui.cap_1.setPixmap(QPixmap())
+        self.ui.cap_2.setPixmap(QPixmap())
+        self.ui.cap_3.setPixmap(QPixmap())
         self.timer.stop()
         self.ui.start_btn.setEnabled(True)
         self.ui.stop_btn.setEnabled(False)
-        # self.capture.release()
-        # self.ui.label.setPixmap(QPixmap())
-        # self.timer.stop()
-        # self.ui.start_btn.setEnabled(True)
-        # self.ui.stop_btn.setEnabled(False)
 
     def update_frame(self):
         try:
             frame, result = next(self.frame_generator)  # Get the next frame from the generator
-            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            height, width, channels = frame_rgb.shape
-            bytes_per_line = channels * width
-            qimg = QImage(frame_rgb.data, width, height, bytes_per_line, QImage.Format_RGB888)
-            pixmap = QPixmap.fromImage(qimg)
-            self.ui.label.setPixmap(pixmap)
+            self.show_face_crops(frame, self.ui.label)
             self.update_cap()
-            print(result)
 
+            self.save_crop_faces()
+
+            
 
         except StopIteration:
             self.timer.stop()  # Stop the timer when frames are done
             self.ui.start_btn.setEnabled(True)
             self.ui.stop_btn.setEnabled(False)
 
+    def save_crop_faces(self):
+        processed_person_ids = set()  # To track already saved person IDs
+
+        try:
+            frame, result = next(self.frame_generator)  # Get the next frame from the generator
+            
+            downloads_path = os.path.join(os.path.expanduser('~'), 'Downloads')
+            directory_name = os.path.join(downloads_path, datetime.datetime.now().strftime('%Y-%m-%d'))
+            
+            # Ensure the directory exists
+            if not os.path.exists(directory_name):
+                try:
+                    os.makedirs(directory_name)
+                    print(f"Directory '{directory_name}' created.")
+                except PermissionError:
+                    print(f"Permission denied: Unable to create '{directory_name}'.")
+                    return
+                except Exception as e:
+                    print(f"An unexpected error occurred while creating directory '{directory_name}': {e}")
+                    return
+            
+            for person_id, details in result['entering_details'].items():
+                # Check if the face crop for this person has already been saved
+                if person_id in processed_person_ids:
+                    print(f"Skipping already processed Person ID: {person_id}")
+                    continue
+                
+                print(f"Processing Person ID: {person_id}, entered at {details['time']}")
+                try:
+                    face_crop = pickle.loads(zlib.decompress(details['face_crops']))
+                    
+                    # Save the face crop to the directory
+                    filename = os.path.join(directory_name, f"face_{details['time'].strftime('%H-%M-%S')}.jpg")
+                    cv2.imwrite(filename, face_crop)
+                    print(f"Saved face crop to {filename}")
+                    
+                    # Mark this person_id as processed
+                    processed_person_ids.add(person_id)
+                except Exception as e:
+                    print(f"An error occurred while processing Person ID {person_id}: {e}")
+        
+        except StopIteration:
+            print("No more frames to process.")
+
+
+    def show_face_crops(self, face_crops, name_label):
+        face_resized = cv2.resize(face_crops, (name_label.width(), name_label.height()), interpolation=cv2.INTER_LINEAR)
+        face_rgb = cv2.cvtColor(face_resized, cv2.COLOR_BGR2RGB)
+        face_height, face_width, face_channels = face_rgb.shape
+        face_bytes_per_line = face_channels * face_width
+        face_qimg = QImage(face_rgb.data, face_width, face_height, face_bytes_per_line, QImage.Format_RGB888)
+        face_pixmap = QPixmap.fromImage(face_qimg)
+        name_label.setPixmap(face_pixmap)
+
     def update_cap(self):
-        # Initialize the video capture only once
-        if not hasattr(self, 'capture') or not self.capture.isOpened():
-            self.capture = cv2.VideoCapture(self.file_path)
+        """
+        Update the camera feed with the latest frame and display face crops.
+        This method retrieves the next frame from the frame generator and processes
+        the face crops detected in the frame. It displays up to three face crops in
+        the UI.
+        Raises:
+            StopIteration: If the frame generator has no more frames to provide.
+        How it works:
+        1. Retrieves the next frame and result from the frame generator.
+        2. Initializes an empty list to store face crops.
+        3. Iterates over the detected persons and their details, printing the person ID and entry time.
+        4. Inserts the face crops into the list.
+        5. If there are face crops, decompresses and displays up to three face crops in the UI.
+        """
+        try:
+            frame, result = next(self.frame_generator)  # Get the next frame from the generator
 
-        # Read the first frame (or capture the frame at a specific moment)
-        ret, frame = self.capture.read()
+            # print(result)
+            temp = []
+        
+            # Access face crops from the result
+            for person_id, details in result['entering_details'].items():
+                print(f"Person ID: {person_id}, entered at {details['time']}")
+                temp.insert(0, details['face_crops'])
 
-        if ret:
-            # Resize the frame for each QLabel
-            label_width1 = self.ui.cap_1.width()
-            label_height1 = self.ui.cap_1.height()
-
-            label_width2 = self.ui.cap_2.width()
-            label_height2 = self.ui.cap_2.height()
-
-            label_width3 = self.ui.cap_3.width()
-            label_height3 = self.ui.cap_3.height()
-
-            # Resize the frame to fit each label
-            frame_resized1 = cv2.resize(frame, (label_width1, label_height1), interpolation=cv2.INTER_LINEAR)
-            frame_resized2 = cv2.resize(frame, (label_width2, label_height2), interpolation=cv2.INTER_LINEAR)
-            frame_resized3 = cv2.resize(frame, (label_width3, label_height3), interpolation=cv2.INTER_LINEAR)
-
-            # Convert the frame from BGR (OpenCV default) to RGB (for QImage compatibility)
-            frame_rgb1 = cv2.cvtColor(frame_resized1, cv2.COLOR_BGR2RGB)
-            frame_rgb2 = cv2.cvtColor(frame_resized2, cv2.COLOR_BGR2RGB)
-            frame_rgb3 = cv2.cvtColor(frame_resized3, cv2.COLOR_BGR2RGB)
-
-            # Get the dimensions of the resized frame and create QImage for each resized frame
-            height1, width1, channels1 = frame_rgb1.shape
-            bytes_per_line1 = channels1 * width1
-            qimg1 = QImage(frame_rgb1.data, width1, height1, bytes_per_line1, QImage.Format_RGB888)
-
-            height2, width2, channels2 = frame_rgb2.shape
-            bytes_per_line2 = channels2 * width2
-            qimg2 = QImage(frame_rgb2.data, width2, height2, bytes_per_line2, QImage.Format_RGB888)
-
-            height3, width3, channels3 = frame_rgb3.shape
-            bytes_per_line3 = channels3 * width3
-            qimg3 = QImage(frame_rgb3.data, width3, height3, bytes_per_line3, QImage.Format_RGB888)
-
-            # Convert the QImage to QPixmap and update the QLabel widgets
-            pixmap1 = QPixmap.fromImage(qimg1)
-            pixmap2 = QPixmap.fromImage(qimg2)
-            pixmap3 = QPixmap.fromImage(qimg3)
-
-            # Set pixmap for each QLabel
-            self.ui.cap_1.setPixmap(pixmap1)
-            self.ui.cap_2.setPixmap(pixmap2)
-            self.ui.cap_3.setPixmap(pixmap3)
+            if temp:
+                x = temp[0] # Get the face crop
+                x1 = pickle.loads(zlib.decompress(x)) # Decompress the face crop
+                self.show_face_crops(x1, self.ui.cap_1) # Display the face crop in the QLabel
+                if len(temp) > 1:
+                    y = temp[1]
+                    y1 = pickle.loads(zlib.decompress(y))
+                    self.show_face_crops(y1, self.ui.cap_2)
+                if len(temp) > 2:
+                    z = temp[2]
+                    z1 = pickle.loads(zlib.decompress(z))
+                    self.show_face_crops(z1, self.ui.cap_3)
+        except StopIteration:
+            pass
 
     def closeEvent(self, event):
         """Release the video capture when the window is closed."""

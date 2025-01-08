@@ -6,6 +6,8 @@ import numpy as np
 from ultralytics import YOLO
 import torch
 import datetime  # Import for timestamp
+import pickle
+import zlib
 
 # Define a class to manage colors used in the application
 class Color:
@@ -61,10 +63,10 @@ class Algorithm_Count:
             name_frame (str): Name of the window displaying frames.
             start_time (float): Start time of the system.
         """
-        self.peopleEntering = {}    
-        self.entering = set()
-        self.peopleExiting = {}
-        self.exiting = set()
+        self.peopleEntering = dict()  
+        self.entering = dict()
+        self.peopleExiting = dict()
+        self.exiting = dict()
         self.file_path = file_path
         self.area1 = a1
         self.area2 = a2
@@ -197,7 +199,7 @@ class Algorithm_Count:
             x1, y1, x2, y2, box_id, class_id, score, mask = detect
             label = f"{box_id} Person: {score:.2f}"
             
-            self.person_bounding_boxes(frame, x1, y1, x2, y2, box_id, class_id, score, mask)
+            # self.person_bounding_boxes(frame, x1, y1, x2, y2, box_id, class_id, score, mask)
             self.face_bounding_boxes(frame, detections_face)
             self.track_people_entering(frame, x1, y1, x2, y2, box_id, label)
             self.track_people_exiting(frame, x1, y1, x2, y2, box_id, label)
@@ -273,16 +275,34 @@ class Algorithm_Count:
         cx, cy = self.change_coord_point(x1, x2, y1, y2)
         result_p1 = cv2.pointPolygonTest(np.array(self.area2, np.int32), ((cx, cy)), False)
         if result_p1 >= 0:
-            self.peopleEntering[id] = {'coords': (cx, cy), 'time': datetime.datetime.now()}  # Add timestamp
-            cv2.rectangle(frame, (x1, y1), (x2, y2), color.boundingBox2(), 2)
-            cvzone.putTextRect(frame, label, (x1 + 10, y1 - 10), 1, 1, color.text1(), color.text2()) 
+            # Initialize the entry for this person if not already present
+            if id not in self.peopleEntering:
+                self.peopleEntering[id] = {
+                    'coords': (cx, cy)
+                }
+            # cv2.rectangle(frame, (x1, y1), (x2, y2), color.boundingBox2(), 2)
+            # cvzone.putTextRect(frame, label, (x1 + 10, y1 - 10), 1, 1, color.text1(), color.text2()) 
         if id in self.peopleEntering:
             result_p2 = cv2.pointPolygonTest(np.array(self.area1, np.int32), ((cx, cy)), False)
             if result_p2 >= 0:
-                cv2.rectangle(frame, (x1, y1), (x2, y2), color.boundingBox1(), 2)
+                # cv2.rectangle(frame, (x1, y1), (x2, y2), color.boundingBox1(), 2)
                 cv2.circle(frame, (cx, cy), 4, color.point(), -1)  
-                cvzone.putTextRect(frame, label, (x1 + 10, y1 - 10), 1, 1, color.text1(), color.text2())
-                self.entering.add((id, self.peopleEntering[id]['time']))
+                # cvzone.putTextRect(frame, label, (x1 + 10, y1 - 10), 1, 1, color.text1(), color.text2())
+                # self.entering.add(id)
+                if id not in self.entering:
+                    self.entering[id] = {
+                        'time': datetime.datetime.now(),
+                        'face_crops': None  # Initialize face_crops as None
+                    }
+
+                # Ensure the cropped face is valid before adding to the set
+                if 0 <= y1 < frame.shape[0] and 0 <= y2 < frame.shape[0] and 0 <= x1 < frame.shape[1] and 0 <= x2 < frame.shape[1]:
+                    if self.entering[id]['face_crops'] is None:  # Only set if not already assigned
+                        face_crop = frame[y1:y2, x1:x2] # crop the face
+                        serialized_frame = pickle.dumps(face_crop)  # Serialize the frame
+                        compressed_frame = zlib.compress(serialized_frame)  # Compress the serialized frame
+                        self.entering[id]['face_crops'] = compressed_frame  # Store the compressed crop
+                # print(self.entering)
 
     # Method to track people exiting a specified area
     def track_people_exiting(self, frame, x1, y1, x2, y2, id, label):
@@ -308,16 +328,33 @@ class Algorithm_Count:
         cx, cy = self.change_coord_point(x1, x2, y1, y2)
         result_p3 = cv2.pointPolygonTest(np.array(self.area1, np.int32), ((cx, cy)), False)
         if result_p3 >= 0:
-            self.peopleExiting[id] = {'coords': (cx, cy), 'time': datetime.datetime.now()}  # Add timestamp
-            cv2.rectangle(frame, (x1, y1), (x2, y2), color.boundingBox1(), 2)
-            cvzone.putTextRect(frame, label, (x1 + 10, y1 - 10), 1, 1, color.text1(), color.text2()) 
+            # Initialize the entry for this person if not already present
+            if id not in self.peopleExiting:
+                self.peopleExiting[id] = {
+                    'coords': (cx, cy)
+                }
+            # cv2.rectangle(frame, (x1, y1), (x2, y2), color.boundingBox1(), 2)
+            # cvzone.putTextRect(frame, label, (x1 + 10, y1 - 10), 1, 1, color.text1(), color.text2()) 
         if id in self.peopleExiting:
             result_p4 = cv2.pointPolygonTest(np.array(self.area2, np.int32), ((cx, cy)), False)
             if result_p4 >= 0:
-                cv2.rectangle(frame, (x1, y1), (x2, y2), color.boundingBox2(), 2)
+                # cv2.rectangle(frame, (x1, y1), (x2, y2), color.boundingBox2(), 2)
                 cv2.circle(frame, (cx, cy), 4, color.point(), -1)  
-                cvzone.putTextRect(frame, label, (x1 + 10, y1 - 10), 1, 1, color.text1(), color.text2())
-                self.exiting.add((id, self.peopleExiting[id]['time']))
+                # cvzone.putTextRect(frame, label, (x1 + 10, y1 - 10), 1, 1, color.text1(), color.text2())
+                # self.exiting.add(id)
+                if id not in self.exiting:
+                    self.exiting[id] = {
+                        'time': datetime.datetime.now(),
+                        'face_crops': None  # Initialize face_crops as None
+                    }
+
+                # Ensure the cropped face is valid before adding to the set
+                if 0 <= y1 < frame.shape[0] and 0 <= y2 < frame.shape[0] and 0 <= x1 < frame.shape[1] and 0 <= x2 < frame.shape[1]:
+                    if self.exiting[id]['face_crops'] is None:  # Only set if not already assigned
+                        face_crop = frame[y1:y2, x1:x2] # crop the face
+                        serialized_frame = pickle.dumps(face_crop)  # Serialize the frame
+                        compressed_frame = zlib.compress(serialized_frame)  # Compress the serialized frame
+                        self.exiting[id]['face_crops'] = compressed_frame  # Store the compressed crop
 
     # Method to draw polylines for specified areas and display counts
     def draw_polylines(self, frame):
@@ -361,29 +398,29 @@ class Algorithm_Count:
                 result = {
                     'total_people_entering': len(self.entering),
                     'total_people_exiting': len(self.exiting),
-                    'entering_details': sorted([{'person_id': person[0], 'time': person[1].strftime('%Y-%m-%d %H:%M:%S')} for person in self.entering], key=lambda x: x['time']),
-                    'exiting_details': sorted([{'person_id': person[0], 'time': person[1].strftime('%Y-%m-%d %H:%M:%S')} for person in self.exiting], key=lambda x: x['time'])
+                    'entering_details': {
+                        person_id: {
+                            'time': details['time'],
+                            'face_crops': details['face_crops']
+                        }
+                        for person_id, details in self.entering.items()
+                    },
+                    'exiting_details': {
+                        person_id: {
+                            'time': details['time'],
+                            'face_crops': details['face_crops']
+                        }
+                        for person_id, details in self.exiting.items()
+                    }
                 }
 
                 # Instead of showing the frame, process it and return
                 yield frame, result  # Use a generator to return frames
 
-        
-            #if cv2.waitKey()&0xFF == ord('q'): break
-            #if cv2.waitKey(0)&0xFF == 27: continue
 
         cap.release()
         # out.release()
         # cv2.destroyAllWindows()
-
-        # # Return count of people entering and exiting
-        # result = {
-        #     'total_people_entering': len(self.entering),
-        #     'total_people_exiting': len(self.exiting),
-        #     'entering_details': sorted([{'person_id': person[0], 'time': person[1].strftime('%Y-%m-%d %H:%M:%S')} for person in self.entering], key=lambda x: x['time']),
-        #     'exiting_details': sorted([{'person_id': person[0], 'time': person[1].strftime('%Y-%m-%d %H:%M:%S')} for person in self.exiting], key=lambda x: x['time'])
-        # }
-        # return  result
 
 if __name__ == '__main__':
     area1 = [(359, 559), (400, 559), (667, 675), (632, 681)]
