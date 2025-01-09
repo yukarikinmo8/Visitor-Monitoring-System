@@ -41,7 +41,7 @@ model_face = YOLO('yolo-Weights/yolov10n-face.pt').to(device)   # Model for face
 
 # Define a class to handle the counting algorithm
 class Algorithm_Count:
-    def __init__(self, file_path, a1, a2, frame_size):
+    def __init__(self, file_path, a1, a2, coords, frame_size):
         """
         Initializes the counter object with the given parameters.
         Args:
@@ -75,6 +75,7 @@ class Algorithm_Count:
         self.coordinates = []
         self.name_frame = 'People Counting System'
         self.start_time = time.time()
+        self.coordinates = coords
 
         # Create a named window for displaying frames
         cv2.namedWindow(self.name_frame)
@@ -172,8 +173,9 @@ class Algorithm_Count:
         Returns:
             tuple: A tuple containing the new x and y coordinates (new_x, new_y).
         """
-        new_x = int(x1 + (x2 - x1) * 0.5)  # 50% from the left edge
-        new_y = int(y2 - (y2 - y1) * 0.04)  # 4% from the bottom edge
+        x, y = (0.5, 0.04) if self.coordinates is None else self.coordinates
+        new_x = int(x1 + (x2 - x1) * x)  # 50% from the left edge
+        new_y = int(y2 - (y2 - y1) * y)  # 4% from the bottom edge
         return new_x, new_y
 
     # Method to count people entering and exiting
@@ -446,5 +448,6 @@ if __name__ == '__main__':
     sample_video_path = 'Sample Test File\\test_video.mp4'
     frame_width = 1280
     frame_height = int(frame_width / 16 * 9)   
-    algo = Algorithm_Count(sample_video_path, area1, area2, (frame_width, frame_height))
+    coords = [0.5, 0.3]
+    algo = Algorithm_Count(sample_video_path, area1, area2, coords, (frame_width, frame_height))
     result = algo.main()
