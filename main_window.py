@@ -4,7 +4,7 @@ import numpy as np
 
 from PySide6.QtWidgets import QApplication, QMainWindow
 from main_ui import Ui_MainWindow  # Import the generated UI class from main_ui.py
-from video_processor import VideoProcessor
+from set_entry import VideoProcessor
 
 class MainWindow(QMainWindow):
     def __init__(self):
