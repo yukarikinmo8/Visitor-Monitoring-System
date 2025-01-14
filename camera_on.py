@@ -11,7 +11,7 @@ from PySide6.QtGui import QImage, QPixmap
 from PySide6.QtWidgets import QApplication, QMainWindow
 from main_ui import Ui_MainWindow  # Import the generated UI file
 from counter_mod import Algorithm_Count
-from set_entry import VideoProcessor
+from set_entry import Get_Coordinates
 
 
 class CameraFeedWindow(QMainWindow):
@@ -23,8 +23,8 @@ class CameraFeedWindow(QMainWindow):
 
         self.file_path = 'Sample Test File\\test_video.mp4'
 
-        self.area1 = [(300, 300), (400, 559), (667, 675), (632, 681)]
-        self.area2 = [(110, 400), (313, 566), (579, 703), (624, 694)]
+        # self.area1 = [(300, 300), (400, 559), (667, 675), (632, 681)]
+        # self.area2 = [(110, 400), (313, 566), (579, 703), (624, 694)]
 
         # Timer for updating frames
         self.timer = QTimer(self)
@@ -35,23 +35,23 @@ class CameraFeedWindow(QMainWindow):
         self.ui.stop_btn.clicked.connect(self.stop_feed)
 
     def start_feed(self):
-        self.a1 = []
-        self.a2 = []
-        self.s1 = []
-        self.s2 = []
         self.capture = cv2.VideoCapture(self.file_path)
-        self.a1, self.a2 = VideoProcessor(self.file_path,(self.ui.label.width(), self.ui.label.height()),self.a1,self.a2).process_video()
+        self.a1 =  None
+        self.a2 =  None
+        area = Get_Coordinates(self.file_path, (self.ui.label.width(), self.ui.label.height()))
+        self.a1 = area.get_coordinates(self.a1, self.a2, 1)
+        self.a2 = area.get_coordinates(self.a2, self.a1, 2)
         
-        if self.s1 is None and self.s2 is None:
+        if self.a1 and self.a2:
             # Initialize the video capture and algorithm
             self.algo = Algorithm_Count(self.file_path, self.a1, self.a2, (self.ui.label.width(), self.ui.label.height()))
             self.frame_generator = self.algo.main()  # Initialize the generator
             self.timer.start(10)  # Start the timer to update frames every 30ms        
             self.ui.start_btn.setEnabled(False)  # Disable the "On" button while the feed is running
             self.ui.stop_btn.setEnabled(True)
-
         else:
             print("walang laman ang coordinates")
+            return
 
 
     def stop_feed(self):
