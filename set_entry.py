@@ -1,7 +1,6 @@
-from counter import Algorithm_Count
 from set_coordinates import ClickPoints 
 
-class VideoProcessor:
+class Get_Coordinates:
     def __init__(self, in_video_path, frame_size, area1_coordinates=None, area2_coordinates=None):
         self.in_video_path = in_video_path
         self.area1_coordinates = area1_coordinates
@@ -15,35 +14,11 @@ class VideoProcessor:
 
         if not current_coordinates:
             print(f"Area {area} No coordinates")
-            exit()
+            return None
 
         if len(current_coordinates) < 4:
             print(f"Area {area} Incomplete")
-            exit()
+            return None
 
         return current_coordinates
-
-    def process_video(self):
-        self.area1_coordinates = self.get_coordinates(self.area1_coordinates, self.area2_coordinates, 1)
-        self.area2_coordinates = self.get_coordinates(self.area2_coordinates, self.area1_coordinates, 2)
-
-        print("Coordinates from ClickPoints (Area 1):", self.area1_coordinates)
-        print("Coordinates from ClickPoints (Area 2):", self.area2_coordinates)
-
-        return self.area1_coordinates, self.area2_coordinates
     
-        
-
-if __name__ == "__main__":
-    a1 = [] #[(312,388),(289,390),(474,469),(497,462)]
-    a2 = []
-    in_video_path = "Sample Test File\\test_video.mp4"    
-
-    video_processor = VideoProcessor(in_video_path, 1280, a1, a2)
-    video_processor.process_video()
-
-    # Uncomment the following block if you want to use the webcam
-    '''
-    webcam_processor = Algorithm_Detection()
-    webcam_processor.detectPeople()
-    '''
