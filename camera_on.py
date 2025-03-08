@@ -25,6 +25,7 @@ class CameraFeedWindow(QMainWindow):
 
         # self.area1 = [(300, 300), (400, 559), (667, 675), (632, 681)]
         # self.area2 = [(110, 400), (313, 566), (579, 703), (624, 694)]
+        # try
 
         # Timer for updating frames
         self.timer = QTimer(self)
