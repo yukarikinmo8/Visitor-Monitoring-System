@@ -21,7 +21,7 @@ class CameraFeedWindow(QMainWindow):
         self.ui.setupUi(self)
         self.ui.stop_btn.setEnabled(False)
 
-        self.file_path = 0#'Sample Test File\\test_video.mp4'
+        self.file_path = 'Sample Test File\\test_video.mp4'
 
         # self.area1 = [(300, 300), (400, 559), (667, 675), (632, 681)]
         # self.area2 = [(110, 400), (313, 566), (579, 703), (624, 694)]
