@@ -95,11 +95,11 @@ class Ui_MainWindow(object):
         self.cap_2.setStyleSheet(u"background-color:#EAEAEA;")
         self.label_3 = QLabel(self.frame)
         self.label_3.setObjectName(u"label_3")
-        self.label_3.setGeometry(QRect(70, 50, 291, 31))
+        self.label_3.setGeometry(QRect(20, 40, 291, 31))
         self.label_3.setStyleSheet(u"QLabel {\n"
 "    font-family: \"Inter\"i;\n"
-"    font-size: 30px; /* Adjust based on your UI scale */\n"
-"    font-weight: bold;\n"
+"    font-size: 20px; /* Adjust based on your UI scale */\n"
+"    font-weight:bold;\n"
 "    color: white;\n"
 "    letter-spacing: 1px; /* Adjust for spacing */\n"
 "    text-transform: uppercase; /* Makes text all caps */\n"
@@ -365,7 +365,7 @@ class Ui_MainWindow(object):
         self.cap_1.setText("")
         self.cap_3.setText("")
         self.cap_2.setText("")
-        self.label_3.setText(QCoreApplication.translate("MainWindow", u"sherwin", None))
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Face Capture", None))
         self.menu_btn.setText("")
         self.dash_btn.setText("")
         self.cam_btn.setText("")
