@@ -12,7 +12,8 @@ from PySide6.QtWidgets import QApplication, QMainWindow
 from main_ui import Ui_MainWindow  # Import the generated UI file
 from counter_mod import Algorithm_Count
 from set_entry import Get_Coordinates
-
+from PySide6.QtCore import QPropertyAnimation
+from PySide6.QtCore import QPropertyAnimation, QEasingCurve
 
 class CameraFeedWindow(QMainWindow):
     def __init__(self):
@@ -20,7 +21,11 @@ class CameraFeedWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.ui.stop_btn.setEnabled(False)
-
+        self.ui.dash_lbl.setVisible(False)
+        self.ui.logo_lbl.setVisible(False)
+        self.ui.setts_lbl.setVisible(False)
+        self.ui.logs_lbl.setVisible(False)
+        self.ui.lvf_lbl.setVisible(False)
         self.file_path = 'Sample Test File\\test_video.mp4'
 
         # self.area1 = [(300, 300), (400, 559), (667, 675), (632, 681)]
@@ -34,6 +39,7 @@ class CameraFeedWindow(QMainWindow):
         # Connect the "On" button to start the feed
         self.ui.start_btn.clicked.connect(self.start_feed)
         self.ui.stop_btn.clicked.connect(self.stop_feed)
+        self.ui.menu_btn.clicked.connect(self.navbar_toggle)
 
     def start_feed(self):
         self.capture = cv2.VideoCapture(self.file_path)
@@ -180,6 +186,57 @@ class CameraFeedWindow(QMainWindow):
         """Release the video capture when the window is closed."""
         self.capture.release()
         event.accept()
+    
+    
+    
+    def navbar_toggle(self):
+  
+        if self.ui.nav_bar.width() == 111:
+            self.animation = QPropertyAnimation(self.ui.nav_bar, b"minimumWidth")
+            self.animation.setDuration(200)  # Animation duration (300ms)
+            self.animation.setStartValue(self.ui.nav_bar.width())  # Start from current width
+            self.animation.setEndValue(401)  # Expand or Collapse
+            self.animation.start()
+
+            self.animation.finished.connect(lambda: self.ui.nav_bar.setFixedWidth(401))
+
+            self.ui.menu_btn.setGeometry(340, 20, 50, 50)
+            self.ui.dash_lbl.setVisible(True)
+            self.ui.logo_lbl.setVisible(True)
+            self.ui.setts_lbl.setVisible(True)
+            self.ui.logs_lbl.setVisible(True)
+            self.ui.lvf_lbl.setVisible(True)
+
+        else: 
+
+            self.clearUiMem()
+
+            self.ui.nav_bar.setMinimumWidth(111)
+            self.animation = QPropertyAnimation(self.ui.nav_bar, b"maximumWidth")
+            self.animation.setDuration(200)  # Animation duration (300ms)
+            self.animation.setStartValue(self.ui.nav_bar.width())  # Start from current width
+            self.animation.setEndValue(111)  # Expand or Collapse
+            self.animation.start()
+            self.ui.nav_bar.update()
+            self.ui.nav_bar.repaint()
+            self.animation.finished.connect(lambda: self.ui.nav_bar.setFixedWidth(111))      
+            self.animation.finished.connect(lambda: self.update_ui()) 
+        
+    def update_ui(self):
+        self.ui.menu_btn.setGeometry(30, 20, 50, 50)
+        self.ui.dash_lbl.setVisible(False)
+        self.ui.logo_lbl.setVisible(False)
+        self.ui.setts_lbl.setVisible(False)
+        self.ui.logs_lbl.setVisible(False)
+        self.ui.lvf_lbl.setVisible(False)
+    
+    def clearUiMem(self):
+        if hasattr(self, "animation"):
+                if self.animation.state() == QPropertyAnimation.Running:
+                    self.animation.stop()
+                self.animation.deleteLater()  # Mark for memory cleanup
+                self.animation = None
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

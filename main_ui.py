@@ -93,6 +93,17 @@ class Ui_MainWindow(object):
         self.cap_2.setObjectName(u"cap_2")
         self.cap_2.setGeometry(QRect(20, 340, 251, 231))
         self.cap_2.setStyleSheet(u"background-color:#EAEAEA;")
+        self.label_3 = QLabel(self.frame)
+        self.label_3.setObjectName(u"label_3")
+        self.label_3.setGeometry(QRect(20, 40, 291, 31))
+        self.label_3.setStyleSheet(u"QLabel {\n"
+"    font-family: \"Inter\"i;\n"
+"    font-size: 20px; /* Adjust based on your UI scale */\n"
+"    font-weight:bold;\n"
+"    color: white;\n"
+"    letter-spacing: 1px; /* Adjust for spacing */\n"
+"    text-transform: uppercase; /* Makes text all caps */\n"
+"}")
         self.nav_bar = QFrame(self.centralwidget)
         self.nav_bar.setObjectName(u"nav_bar")
         self.nav_bar.setGeometry(QRect(0, 0, 111, 831))
@@ -159,20 +170,89 @@ class Ui_MainWindow(object):
         icon5.addFile(u"resources/Icons/Logs.svg", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.logs_btn.setIcon(icon5)
         self.logs_btn.setIconSize(QSize(45, 45))
-        self.setttings_btn = QToolButton(self.nav_bar)
-        self.setttings_btn.setObjectName(u"setttings_btn")
-        self.setttings_btn.setGeometry(QRect(30, 270, 51, 51))
-        self.setttings_btn.setStyleSheet(u"#settings_btn{\n"
+        self.settings_btn = QToolButton(self.nav_bar)
+        self.settings_btn.setObjectName(u"settings_btn")
+        self.settings_btn.setGeometry(QRect(30, 270, 51, 51))
+        self.settings_btn.setStyleSheet(u"#settings_btn{\n"
 "background-color:transparent;\n"
 "}\n"
 "\n"
 "#settings_btn:hover{\n"
 "background-color:#5897FB;\n"
-"}")
+"}\n"
+"\n"
+"")
         icon6 = QIcon()
         icon6.addFile(u"resources/Icons/Settings.svg", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
-        self.setttings_btn.setIcon(icon6)
-        self.setttings_btn.setIconSize(QSize(45, 45))
+        self.settings_btn.setIcon(icon6)
+        self.settings_btn.setIconSize(QSize(45, 45))
+        self.dash_lbl = QLabel(self.nav_bar)
+        self.dash_lbl.setObjectName(u"dash_lbl")
+        self.dash_lbl.setGeometry(QRect(100, 90, 261, 51))
+        font2 = QFont()
+        font2.setFamilies([u"Inter i"])
+        self.dash_lbl.setFont(font2)
+        self.dash_lbl.setStyleSheet(u"QLabel {\n"
+"    font-family: \"Inter\"i;\n"
+"    font-size: 25px; /* Adjust based on your UI scale */\n"
+"    color: #EAEAEA;\n"
+"    letter-spacing: 1px; /* Adjust for spacing */\n"
+" }")
+        self.lvf_lbl = QLabel(self.nav_bar)
+        self.lvf_lbl.setObjectName(u"lvf_lbl")
+        self.lvf_lbl.setGeometry(QRect(100, 150, 271, 51))
+        self.lvf_lbl.setFont(font2)
+        self.lvf_lbl.setStyleSheet(u"QLabel {\n"
+"    font-family: \"Inter\"i;\n"
+"    font-size: 25px; /* Adjust based on your UI scale */\n"
+"    color: #EAEAEA;\n"
+"    letter-spacing:1px; /* Adjust for spacing */\n"
+" }")
+        self.logs_lbl = QLabel(self.nav_bar)
+        self.logs_lbl.setObjectName(u"logs_lbl")
+        self.logs_lbl.setGeometry(QRect(100, 210, 181, 51))
+        self.logs_lbl.setFont(font2)
+        self.logs_lbl.setStyleSheet(u"QLabel {\n"
+"    font-family: \"Inter\"i;\n"
+"    font-size: 25px; /* Adjust based on your UI scale */\n"
+"    color: #EAEAEA;\n"
+"    letter-spacing: 1px; /* Adjust for spacing */\n"
+" }")
+        self.setts_lbl = QLabel(self.nav_bar)
+        self.setts_lbl.setObjectName(u"setts_lbl")
+        self.setts_lbl.setGeometry(QRect(100, 270, 181, 51))
+        self.setts_lbl.setFont(font2)
+        self.setts_lbl.setStyleSheet(u"QLabel {\n"
+"    font-family: \"Inter\"i;\n"
+"    font-size: 25px; /* Adjust based on your UI scale */\n"
+"    color: #EAEAEA;\n"
+"    letter-spacing: 1px; /* Adjust for spacing */\n"
+" }")
+        self.logo_lbl = QLabel(self.nav_bar)
+        self.logo_lbl.setObjectName(u"logo_lbl")
+        self.logo_lbl.setGeometry(QRect(40, 20, 481, 51))
+        font3 = QFont()
+        font3.setFamilies([u"Inter i"])
+        font3.setBold(True)
+        self.logo_lbl.setFont(font3)
+        self.logo_lbl.setStyleSheet(u"QLabel {\n"
+"    font-family: \"Inter\"i;\n"
+"    font-size: 15px; /* Adjust based on your UI scale */\n"
+"    font-weight: bold;\n"
+"    color: white;\n"
+"    letter-spacing: 1px; /* Adjust for spacing */\n"
+"    text-transform: uppercase; /* Makes text all caps */\n"
+" }")
+        self.logo_lbl.raise_()
+        self.menu_btn.raise_()
+        self.dash_btn.raise_()
+        self.cam_btn.raise_()
+        self.logs_btn.raise_()
+        self.settings_btn.raise_()
+        self.dash_lbl.raise_()
+        self.lvf_lbl.raise_()
+        self.logs_lbl.raise_()
+        self.setts_lbl.raise_()
         self.label_2 = QLabel(self.centralwidget)
         self.label_2.setObjectName(u"label_2")
         self.label_2.setGeometry(QRect(130, 30, 291, 31))
@@ -205,7 +285,7 @@ class Ui_MainWindow(object):
         self.pause_btn.setIconSize(QSize(45, 45))
         self.refresh_btn = QPushButton(self.centralwidget)
         self.refresh_btn.setObjectName(u"refresh_btn")
-        self.refresh_btn.setGeometry(QRect(780, 670, 51, 51))
+        self.refresh_btn.setGeometry(QRect(760, 670, 51, 51))
         self.refresh_btn.setMinimumSize(QSize(5, 5))
         self.refresh_btn.setFont(font1)
         self.refresh_btn.setAutoFillBackground(False)
@@ -224,7 +304,7 @@ class Ui_MainWindow(object):
         self.refresh_btn.setIconSize(QSize(45, 45))
         self.upload_btn = QPushButton(self.centralwidget)
         self.upload_btn.setObjectName(u"upload_btn")
-        self.upload_btn.setGeometry(QRect(840, 670, 51, 51))
+        self.upload_btn.setGeometry(QRect(820, 670, 51, 51))
         self.upload_btn.setMinimumSize(QSize(5, 5))
         self.upload_btn.setFont(font1)
         self.upload_btn.setAutoFillBackground(False)
@@ -261,6 +341,16 @@ class Ui_MainWindow(object):
         self.prec_btn.setIcon(icon10)
         self.prec_btn.setIconSize(QSize(45, 45))
         MainWindow.setCentralWidget(self.centralwidget)
+        self.label_2.raise_()
+        self.label.raise_()
+        self.start_btn.raise_()
+        self.stop_btn.raise_()
+        self.frame.raise_()
+        self.nav_bar.raise_()
+        self.pause_btn.raise_()
+        self.refresh_btn.raise_()
+        self.upload_btn.raise_()
+        self.prec_btn.raise_()
 
         self.retranslateUi(MainWindow)
 
@@ -275,11 +365,17 @@ class Ui_MainWindow(object):
         self.cap_1.setText("")
         self.cap_3.setText("")
         self.cap_2.setText("")
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Face Capture", None))
         self.menu_btn.setText("")
         self.dash_btn.setText("")
         self.cam_btn.setText("")
         self.logs_btn.setText("")
-        self.setttings_btn.setText("")
+        self.settings_btn.setText("")
+        self.dash_lbl.setText(QCoreApplication.translate("MainWindow", u"Dashboard", None))
+        self.lvf_lbl.setText(QCoreApplication.translate("MainWindow", u"Live Video Feed", None))
+        self.logs_lbl.setText(QCoreApplication.translate("MainWindow", u"Logs", None))
+        self.setts_lbl.setText(QCoreApplication.translate("MainWindow", u"Settings", None))
+        self.logo_lbl.setText(QCoreApplication.translate("MainWindow", u"Visitor Monitoring System", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Live Video Feed", None))
         self.pause_btn.setText("")
         self.refresh_btn.setText("")
