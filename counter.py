@@ -220,8 +220,8 @@ class Algorithm_Count:
             label = f"{box_id} Person: {score:.2f}"
             
             self.person_bounding_boxes(frame, x1, y1, x2, y2, box_id, class_id, score, mask)
-            detections_face = self.detect_face_person(frame)
-            self.face_bounding_boxes(frame, detections_face)
+            # detections_face = self.detect_face_person(frame)
+            # self.face_bounding_boxes(frame, detections_face)
             self.track_people_entering(frame, x1, y1, x2, y2, box_id, label)
             self.track_people_exiting(frame, x1, y1, x2, y2, box_id, label)
             
