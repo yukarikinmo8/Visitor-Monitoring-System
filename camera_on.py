@@ -67,16 +67,13 @@ class CameraFeedWindow(QMainWindow):
 
     def update_frame(self):
         try:
-            frame, result = next(self.frame_generator)  # Get the next frame from the generator
+            self.last_frame_result = next(self.frame_generator)  # Only once per tick
+            frame, result = self.last_frame_result
             self.show_face_crops(frame, self.ui.label)
             self.update_cap()
-
             self.save_crop_faces()
-
-            
-
         except StopIteration:
-            self.timer.stop()  # Stop the timer when frames are done
+            self.timer.stop()
             self.ui.start_btn.setEnabled(True)
             self.ui.stop_btn.setEnabled(False)
 
