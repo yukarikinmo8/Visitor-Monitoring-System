@@ -70,18 +70,18 @@ class CameraFeedWindow(QMainWindow):
             self.last_frame_result = next(self.frame_generator)  # Only once per tick
             frame, result = self.last_frame_result
             self.show_face_crops(frame, self.ui.label)
-            self.update_cap()
-            self.save_crop_faces()
+            self.update_cap(result)
+            self.save_crop_faces(result)
         except StopIteration:
             self.timer.stop()
             self.ui.start_btn.setEnabled(True)
             self.ui.stop_btn.setEnabled(False)
 
-    def save_crop_faces(self):
+    def save_crop_faces(self, result):
         processed_person_ids = set()  # To track already saved person IDs
 
         try:
-            frame, result = next(self.frame_generator)  # Get the next frame from the generator
+            # frame, result = next(self.frame_generator)  # Get the next frame from the generator
             
             downloads_path = os.path.join(os.path.expanduser('~'), 'Downloads')
             directory_name = os.path.join(downloads_path, datetime.datetime.now().strftime('%Y-%m-%d'))
@@ -131,7 +131,7 @@ class CameraFeedWindow(QMainWindow):
         face_pixmap = QPixmap.fromImage(face_qimg)
         name_label.setPixmap(face_pixmap)
 
-    def update_cap(self):
+    def update_cap(self, result):
         """
         Update the camera feed with the latest frame and display face crops.
         This method retrieves the next frame from the frame generator and processes
@@ -147,7 +147,7 @@ class CameraFeedWindow(QMainWindow):
         5. If there are face crops, decompresses and displays up to three face crops in the UI.
         """
         try:
-            frame, result = next(self.frame_generator)  # Get the next frame from the generator
+            # frame, result = next(self.frame_generator)  # Get the next frame from the generator
 
             # print(result)
             temp = []
