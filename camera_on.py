@@ -5,20 +5,25 @@ import datetime
 import os
 import pickle
 import zlib
+import torch
 
 from PySide6.QtCore import QTimer, Qt
 from PySide6.QtGui import QImage, QPixmap
-from PySide6.QtWidgets import QApplication, QMainWindow
+from PySide6.QtWidgets import QApplication, QMainWindow, QTableWidgetItem
 from main_ui import Ui_MainWindow  # Import the generated UI file
 from counter_mod import Algorithm_Count
 from set_entry import Get_Coordinates
 from PySide6.QtCore import QPropertyAnimation
 from PySide6.QtCore import QPropertyAnimation, QEasingCurve
+from database_module import MySqlManager 
+
+from PySide6.QtGui import QStandardItemModel, QStandardItem
 
 class CameraFeedWindow(QMainWindow):
     def __init__(self):
+        msm = MySqlManager()
         super().__init__()
-        self.ui = Ui_MainWindow()
+        self.ui = Ui_MainWindow() 
         self.ui.setupUi(self)
         self.ui.stop_btn.setEnabled(False)
         self.ui.dash_lbl.setVisible(False)
@@ -27,18 +32,27 @@ class CameraFeedWindow(QMainWindow):
         self.ui.logs_lbl.setVisible(False)
         self.ui.lvf_lbl.setVisible(False)
         self.file_path = 'Sample Test File\\test_video.mp4'
-
+        self.ui.stackedWidget.setCurrentIndex(0)
         # self.area1 = [(300, 300), (400, 559), (667, 675), (632, 681)]
         # self.area2 = [(110, 400), (313, 566), (579, 703), (624, 694)]
 
         # Timer for updating frames
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_frame)
-
+ 
         # Connect the "On" button to start the feed
         self.ui.start_btn.clicked.connect(self.start_feed)
         self.ui.stop_btn.clicked.connect(self.stop_feed)
         self.ui.menu_btn.clicked.connect(self.navbar_toggle)
+        self.ui.dash_btn.clicked.connect(lambda:self.ui.stackedWidget.setCurrentIndex(0))
+        self.ui.cam_btn.clicked.connect(lambda:self.ui.stackedWidget.setCurrentIndex(1))
+        self.ui.logs_btn.clicked.connect(lambda:self.ui.stackedWidget.setCurrentIndex(2))
+        self.ui.settings_btn.clicked.connect(lambda:self.ui.stackedWidget.setCurrentIndex(3))
+
+       
+        self.ui.logs_tbl.setAlternatingRowColors(True)
+        msm.fillLogsTable(self.ui.logs_tbl);      
+      
 
     def start_feed(self):
         self.capture = cv2.VideoCapture(self.file_path)
@@ -64,9 +78,9 @@ class CameraFeedWindow(QMainWindow):
         if hasattr(self, 'capture') and self.capture.isOpened():
             self.capture.release()
         self.ui.label.setPixmap(QPixmap())
-        self.ui.cap_1.setPixmap(QPixmap())
-        self.ui.cap_2.setPixmap(QPixmap())
-        self.ui.cap_3.setPixmap(QPixmap())
+        self.ui.cap_4.setPixmap(QPixmap())
+        self.ui.cap_5.setPixmap(QPixmap())
+        self.ui.cap_6.setPixmap(QPixmap())
         self.timer.stop()
         self.ui.start_btn.setEnabled(True)
         self.ui.stop_btn.setEnabled(False)
@@ -77,9 +91,7 @@ class CameraFeedWindow(QMainWindow):
             self.show_face_crops(frame, self.ui.label)
             self.update_cap()
 
-            self.save_crop_faces()
-
-            
+            self.save_crop_faces()      
 
         except StopIteration:
             self.timer.stop()  # Stop the timer when frames are done
@@ -169,15 +181,15 @@ class CameraFeedWindow(QMainWindow):
             if temp:
                 x = temp[0] # Get the face crop
                 x1 = pickle.loads(zlib.decompress(x)) # Decompress the face crop
-                self.show_face_crops(x1, self.ui.cap_1) # Display the face crop in the QLabel
+                self.show_face_crops(x1, self.ui.cap_4) # Display the face crop in the QLabel
                 if len(temp) > 1:
                     y = temp[1]
                     y1 = pickle.loads(zlib.decompress(y))
-                    self.show_face_crops(y1, self.ui.cap_2)
+                    self.show_face_crops(y1, self.ui.cap_6)
                 if len(temp) > 2:
                     z = temp[2]
                     z1 = pickle.loads(zlib.decompress(z))
-                    self.show_face_crops(z1, self.ui.cap_3)
+                    self.show_face_crops(z1, self.ui.cap_5)
         except StopIteration:
             pass
 
@@ -241,4 +253,5 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = CameraFeedWindow()
     window.show()
+    
     sys.exit(app.exec())
