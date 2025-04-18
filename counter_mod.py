@@ -36,7 +36,7 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print(f'Using device: {device}')
 # Load YOLO model and move it to the appropriate device
 model_person = YOLO('yolo-Weights/yolo11n.pt').to(device)  # Model for person segmentation
-model_face = YOLO('yolo-Weights/yolov10n-face.pt').to(device)   # Model for face detection
+# model_face = YOLO('yolo-Weights/yolov10n-face.pt').to(device)   # Model for face detection
 
 
 # Define a class to handle the counting algorithm
@@ -93,8 +93,8 @@ class Algorithm_Count:
         # It processes the detection results and returns the bounding boxes for both persons and faces.
         """
         # Detect persons and faces using different models
-        results_person = model_person.track(frame, conf=0.6, classes=[0], persist=True, tracker="bytetrack.yaml")  # Detect persons only (class 0)
-        results_face = model_face.track(frame, conf=0.6, classes=[0], persist=True, tracker="bytetrack.yaml")  # Detect faces
+        results_person = model_person.track(frame, conf=0.4, classes=[0], persist=True, tracker="bytetrack.yaml")  # Detect persons only (class 0)
+        # results_face = model_face.track(frame, conf=0.6, classes=[0], persist=True, tracker="bytetrack.yaml")  # Detect faces
 
         # Process results
         person_detections = self.process_results(results_person)
