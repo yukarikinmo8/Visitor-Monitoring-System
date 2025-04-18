@@ -98,9 +98,9 @@ class Algorithm_Count:
 
         # Process results
         person_detections = self.process_results(results_person)
-        face_detections = self.process_results(results_face)
+        # face_detections = self.process_results(results_face)
 
-        return person_detections, face_detections
+        return person_detections
 
     # Method to process the detection results
     def process_results(self, results):
@@ -177,7 +177,7 @@ class Algorithm_Count:
         return new_x, new_y
 
     # Method to count people entering and exiting
-    def counter(self, frame, detections_person, detections_face):
+    def counter(self, frame, detections_person):
         """
         Processes the given frame to count and track people entering and exiting.
         Args:
@@ -391,8 +391,8 @@ class Algorithm_Count:
                     break
                 frame = cv2.resize(frame, self.frame_size)
 
-                detections_person, detections_face = self.detect_BboxOnly(frame)
-                self.counter(frame, detections_person, detections_face)
+                detections_person = self.detect_BboxOnly(frame)
+                self.counter(frame, detections_person)
 
                 # Return count of people entering and exiting
                 result = {
