@@ -374,7 +374,7 @@ class Algorithm_Count:
         enter = len(self.entering)
         exit = len(self.exiting)
         cvzone.putTextRect(frame, str(f"Enter: {enter}"), (20, 30), 1, 1, color.text1(), color.text2())
-        cvzone.putTextRect(frame, str(f"Exit: {exit}"), (20, 60), 1, 1, color.text1(), color.text2())
+        # cvzone.putTextRect(frame, str(f"Exit: {exit}"), (20, 60), 1, 1, color.text1(), color.text2())
     
     # Main method to process the video
     def main(self):
