@@ -123,14 +123,18 @@ class Algorithm_Count:
         self._last_time = time.time()
 
     def _calculate_fps(self):
-        """Calculate and display FPS without affecting main logic"""
+        """Calculate and return current and average FPS"""
         now = time.time()
-        fps = 1.0 / (now - self._last_time + 1e-6)  # Avoid division by zero
+        current_fps = 1.0 / (now - self._last_time + 1e-6)  # Avoid division by zero
         self._last_time = now
-        self._fps_buffer.append(fps)
-        if len(self._fps_buffer) > 10:
+        
+        # Update FPS buffer
+        self._fps_buffer.append(current_fps)
+        if len(self._fps_buffer) > 30:  # Keep last 30 frames for average
             self._fps_buffer.pop(0)
-        return sum(self._fps_buffer) / len(self._fps_buffer) if self._fps_buffer else 0
+        
+        avg_fps = sum(self._fps_buffer) / len(self._fps_buffer) if self._fps_buffer else 0
+        return current_fps, avg_fps
 
     def change_coord_point(self, x1, x2, y1, y2):
         """Optimized coordinate calculation"""
@@ -184,11 +188,18 @@ class Algorithm_Count:
         cv2.polylines(frame, [self.area1], True, color.area1(), 2)
         cv2.polylines(frame, [self.area2], True, color.area2(), 2)
         
-        # Display counters and FPS
-        fps = self._calculate_fps()
+        # Get FPS metrics
+        current_fps, avg_fps = self._calculate_fps()
+        
+        # Display counters and FPS info
         cvzone.putTextRect(
-            frame, f"Enter: {len(self.entering)} | FPS: {fps:.1f}", 
+            frame, f"Enter: {len(self.entering)}", 
             (20, 30), 1, 1, 
+            color.text1(), color.text2()
+        )
+        cvzone.putTextRect(
+            frame, f"FPS: {current_fps:.1f} | Avg: {avg_fps:.1f}", 
+            (20, 60), 1, 1, 
             color.text1(), color.text2()
         )
 
@@ -243,8 +254,16 @@ class Algorithm_Count:
 
         finally:
             cap.release()
-            logger.info(f"Average FPS: {sum(self._fps_buffer)/len(self._fps_buffer):.1f}" 
-                      if self._fps_buffer else "No FPS data")
+            if self._fps_buffer:
+                avg_fps = sum(self._fps_buffer)/len(self._fps_buffer)
+                min_fps = min(self._fps_buffer)
+                max_fps = max(self._fps_buffer)
+                logger.info(
+                    f"FPS Stats - Avg: {avg_fps:.1f}, Min: {min_fps:.1f}, Max: {max_fps:.1f}, "
+                    f"Frames: {len(self._fps_buffer)}"
+                )
+            else:
+                logger.info("No FPS data collected")
 
 if __name__ == '__main__':
     area1 = [(359, 559), (400, 559), (667, 675), (632, 681)]
