@@ -186,7 +186,7 @@ class Ui_MainWindow(object):
         self.DashBoard.setObjectName(u"DashBoard")
         self.label_5 = QLabel(self.DashBoard)
         self.label_5.setObjectName(u"label_5")
-        self.label_5.setGeometry(QRect(10, 30, 201, 31))
+        self.label_5.setGeometry(QRect(10, 30, 231, 31))
         self.label_5.setStyleSheet(u"QLabel {\n"
 "    font-family: \"Inter\"i;\n"
 "    font-size: 30px; /* Adjust based on your UI scale */\n"
@@ -382,7 +382,7 @@ class Ui_MainWindow(object):
         self.logs_tbl.setStyleSheet(u"#logs_tbl {\n"
 "    background-color: white;\n"
 "    color: black;\n"
-"    font-size: 12px;\n"
+"    font-size: 20px;\n"
 " 	border: 1px solid white;\n"
 "    selection-background-color: #5897FB;\n"
 "    alternate-background-color:#dbe9f4;\n"

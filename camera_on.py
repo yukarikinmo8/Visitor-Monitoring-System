@@ -40,8 +40,8 @@ class CameraFeedWindow(QMainWindow):
 
         # self.area1 = [(300, 300), (400, 559), (667, 675), (632, 681)]
         # self.area2 = [(110, 400), (313, 566), (579, 703), (624, 694)]
-        self.file_path = 'Sample Test File\\test_video.mp4'
-        # self.file_path = 0
+        # self.file_path = 'Sample Test File\\test_video.mp4'
+        self.file_path = 0
         self.frame_queue = Queue(maxsize=1)
 
         self.ui.stackedWidget.setCurrentIndex(0)
