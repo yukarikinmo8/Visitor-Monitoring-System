@@ -5,11 +5,13 @@ import datetime
 import os
 import pickle
 import zlib
+import threading
+from queue import Queue
 
 from PySide6.QtCore import QTimer, Qt
 from PySide6.QtGui import QImage, QPixmap
 from PySide6.QtWidgets import QApplication, QMainWindow
-from main_ui import Ui_MainWindow  # Import the generated UI file
+from main_ui import Ui_MainWindow
 from counter_mod import Algorithm_Count
 from set_entry import Get_Coordinates
 
@@ -22,105 +24,103 @@ class CameraFeedWindow(QMainWindow):
         self.ui.stop_btn.setEnabled(False)
 
         self.file_path = 'Sample Test File\\test_video.mp4'
+        self.frame_queue = Queue(maxsize=1)
 
-        # self.area1 = [(300, 300), (400, 559), (667, 675), (632, 681)]
-        # self.area2 = [(110, 400), (313, 566), (579, 703), (624, 694)]
-
-        # Timer for updating frames
-        self.timer = QTimer(self)
-        self.timer.timeout.connect(self.update_frame)
-
-        # Connect the "On" button to start the feed
         self.ui.start_btn.clicked.connect(self.start_feed)
         self.ui.stop_btn.clicked.connect(self.stop_feed)
 
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.update_frame)
+
     def start_feed(self):
-        self.capture = cv2.VideoCapture(self.file_path)
-        self.a1 =  None
-        self.a2 =  None
+        self.running = False  # stop any previous loop
+        while not self.frame_queue.empty():
+            self.frame_queue.get()
+
+        self.ui.cap_1.clear()
+        self.ui.cap_2.clear()
+        self.ui.cap_3.clear()
+
+        self.a1 = None
+        self.a2 = None
         area = Get_Coordinates(self.file_path, (self.ui.label.width(), self.ui.label.height()))
         self.a1 = area.get_coordinates(self.a1, self.a2, 1)
         self.a2 = area.get_coordinates(self.a2, self.a1, 2)
-        
+
         if self.a1 and self.a2:
-            # Initialize the video capture and algorithm
+            self.running = True
+
+            # 🔁 Re-create algorithm to reset memory
             self.algo = Algorithm_Count(self.file_path, self.a1, self.a2, (self.ui.label.width(), self.ui.label.height()))
-            self.frame_generator = self.algo.main()  # Initialize the generator
-            self.timer.start(10)  # Start the timer to update frames every 30ms        
-            self.ui.start_btn.setEnabled(False)  # Disable the "On" button while the feed is running
+            self.frame_generator = self.algo.main()
+
+            # Start fresh capture thread
+            self.capture_thread = threading.Thread(target=self.capture_frames, daemon=True)
+            self.capture_thread.start()
+
+            self.timer.start(30)
+            self.ui.start_btn.setEnabled(False)
             self.ui.stop_btn.setEnabled(True)
         else:
-            print("walang laman ang coordinates")
-            return
+            print("Coordinates not set.")
+        return
 
+
+    def capture_frames(self):
+        try:
+            while self.running:
+                frame_data = next(self.frame_generator)
+                if self.frame_queue.full():
+                    self.frame_queue.get()
+                self.frame_queue.put(frame_data)
+        except StopIteration:
+            pass
+
+    def update_frame(self):
+        if not self.frame_queue.empty():
+            frame, result = self.frame_queue.get()
+            self.last_result = result  # Save for use in other functions
+            self.show_face_crops(frame, self.ui.label)
+            self.update_cap(result)
+            self.save_crop_faces(result)
 
     def stop_feed(self):
-        if hasattr(self, 'capture') and self.capture.isOpened():
-            self.capture.release()
+        self.running = False
+        self.timer.stop()
+
+        while not self.frame_queue.empty():
+            self.frame_queue.get()
+
         self.ui.label.setPixmap(QPixmap())
         self.ui.cap_1.setPixmap(QPixmap())
         self.ui.cap_2.setPixmap(QPixmap())
         self.ui.cap_3.setPixmap(QPixmap())
-        self.timer.stop()
+
         self.ui.start_btn.setEnabled(True)
         self.ui.stop_btn.setEnabled(False)
 
-    def update_frame(self):
-        try:
-            self.last_frame_result = next(self.frame_generator)  # Only once per tick
-            frame, result = self.last_frame_result
-            self.show_face_crops(frame, self.ui.label)
-            self.update_cap(result)
-            self.save_crop_faces(result)
-        except StopIteration:
-            self.timer.stop()
-            self.ui.start_btn.setEnabled(True)
-            self.ui.stop_btn.setEnabled(False)
-
     def save_crop_faces(self, result):
-        processed_person_ids = set()  # To track already saved person IDs
+        processed_person_ids = set()
+        downloads_path = os.path.join(os.path.expanduser('~'), 'Downloads')
+        directory_name = os.path.join(downloads_path, datetime.datetime.now().strftime('%Y-%m-%d'))
 
-        try:
-            # frame, result = next(self.frame_generator)  # Get the next frame from the generator
-            
-            downloads_path = os.path.join(os.path.expanduser('~'), 'Downloads')
-            directory_name = os.path.join(downloads_path, datetime.datetime.now().strftime('%Y-%m-%d'))
-            
-            # Ensure the directory exists
-            if not os.path.exists(directory_name):
-                try:
-                    os.makedirs(directory_name)
-                    print(f"Directory '{directory_name}' created.")
-                except PermissionError:
-                    print(f"Permission denied: Unable to create '{directory_name}'.")
-                    return
-                except Exception as e:
-                    print(f"An unexpected error occurred while creating directory '{directory_name}': {e}")
-                    return
-            
-            for person_id, details in result['entering_details'].items():
-                # Check if the face crop for this person has already been saved
-                if person_id in processed_person_ids:
-                    print(f"Skipping already processed Person ID: {person_id}")
-                    continue
-                
-                print(f"Processing Person ID: {person_id}, entered at {details['time']}")
-                try:
-                    face_crop = pickle.loads(zlib.decompress(details['face_crops']))
-                    
-                    # Save the face crop to the directory
-                    filename = os.path.join(directory_name, f"face_{details['time'].strftime('%H-%M-%S')}.jpg")
-                    cv2.imwrite(filename, face_crop)
-                    print(f"Saved face crop to {filename}")
-                    
-                    # Mark this person_id as processed
-                    processed_person_ids.add(person_id)
-                except Exception as e:
-                    print(f"An error occurred while processing Person ID {person_id}: {e}")
-        
-        except StopIteration:
-            print("No more frames to process.")
+        if not os.path.exists(directory_name):
+            try:
+                os.makedirs(directory_name)
+            except Exception as e:
+                print(f"Failed to create directory: {e}")
+                return
 
+        for person_id, details in result['entering_details'].items():
+            if person_id in processed_person_ids:
+                continue
+            try:
+                face_crop = pickle.loads(zlib.decompress(details['face_crops']))
+                filename = os.path.join(directory_name, f"face_{details['time'].strftime('%H-%M-%S')}.jpg")
+                cv2.imwrite(filename, face_crop)
+                processed_person_ids.add(person_id)
+            except Exception as e:
+                print(f"Error saving face {person_id}: {e}")
 
     def show_face_crops(self, face_crops, name_label):
         face_resized = cv2.resize(face_crops, (name_label.width(), name_label.height()), interpolation=cv2.INTER_LINEAR)
@@ -132,36 +132,27 @@ class CameraFeedWindow(QMainWindow):
         name_label.setPixmap(face_pixmap)
 
     def update_cap(self, result):
-        try:
-            # frame, result = next(self.frame_generator)  # Get the next frame from the generator
+        temp = []
+        for person_id, details in result['entering_details'].items():
+            temp.insert(0, details['face_crops'])
 
-            # print(result)
-            temp = []
-        
-            # Access face crops from the result
-            for person_id, details in result['entering_details'].items():
-                print(f"Person ID: {person_id}, entered at {details['time']}")
-                temp.insert(0, details['face_crops'])
-
-            if temp:
-                x = temp[0] # Get the face crop
-                x1 = pickle.loads(zlib.decompress(x)) # Decompress the face crop
-                self.show_face_crops(x1, self.ui.cap_1) # Display the face crop in the QLabel
+        if temp:
+            try:
+                x1 = pickle.loads(zlib.decompress(temp[0]))
+                self.show_face_crops(x1, self.ui.cap_1)
                 if len(temp) > 1:
-                    y = temp[1]
-                    y1 = pickle.loads(zlib.decompress(y))
+                    y1 = pickle.loads(zlib.decompress(temp[1]))
                     self.show_face_crops(y1, self.ui.cap_2)
                 if len(temp) > 2:
-                    z = temp[2]
-                    z1 = pickle.loads(zlib.decompress(z))
+                    z1 = pickle.loads(zlib.decompress(temp[2]))
                     self.show_face_crops(z1, self.ui.cap_3)
-        except StopIteration:
-            pass
+            except Exception as e:
+                print(f"Error showing face crops: {e}")
 
     def closeEvent(self, event):
-        """Release the video capture when the window is closed."""
-        self.capture.release()
+        self.timer.stop()
         event.accept()
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

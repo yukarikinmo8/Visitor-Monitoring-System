@@ -49,6 +49,8 @@ class Algorithm_Count:
         self.file_path = file_path
         self.area1 = a1
         self.area2 = a2
+        self.poly_area1 = np.array(self.area1, np.int32)
+        self.poly_area2 = np.array(self.area2, np.int32)
         self.frame_size = frame_size
         self.paused = False
         self.coordinates = []
@@ -152,7 +154,7 @@ class Algorithm_Count:
     # Method to track people entering a specified area
     def track_people_entering(self, frame, x1, y1, x2, y2, id, label):
         cx, cy = self.change_coord_point(x1, x2, y1, y2)
-        result_p1 = cv2.pointPolygonTest(np.array(self.area2, np.int32), ((cx, cy)), False)
+        result_p1 = cv2.pointPolygonTest(self.poly_area2, ((cx, cy)), False)
         if result_p1 >= 0:
             # Initialize the entry for this person if not already present
             if id not in self.peopleEntering:
@@ -162,7 +164,7 @@ class Algorithm_Count:
             # cv2.rectangle(frame, (x1, y1), (x2, y2), color.boundingBox2(), 2)
             # cvzone.putTextRect(frame, label, (x1 + 10, y1 - 10), 1, 1, color.text1(), color.text2()) 
         if id in self.peopleEntering:
-            result_p2 = cv2.pointPolygonTest(np.array(self.area1, np.int32), ((cx, cy)), False)
+            result_p2 = cv2.pointPolygonTest(self.poly_area1, ((cx, cy)), False)
             if result_p2 >= 0:
                 # cv2.rectangle(frame, (x1, y1), (x2, y2), color.boundingBox1(), 2)
                 cv2.circle(frame, (cx, cy), 4, color.point(), -1)  
@@ -186,7 +188,7 @@ class Algorithm_Count:
     # Method to track people exiting a specified area
     def track_people_exiting(self, frame, x1, y1, x2, y2, id, label):
         cx, cy = self.change_coord_point(x1, x2, y1, y2)
-        result_p3 = cv2.pointPolygonTest(np.array(self.area1, np.int32), ((cx, cy)), False)
+        result_p3 = cv2.pointPolygonTest(self.poly_area1, ((cx, cy)), False)
         if result_p3 >= 0:
             # Initialize the entry for this person if not already present
             if id not in self.peopleExiting:
@@ -196,7 +198,7 @@ class Algorithm_Count:
             # cv2.rectangle(frame, (x1, y1), (x2, y2), color.boundingBox1(), 2)
             # cvzone.putTextRect(frame, label, (x1 + 10, y1 - 10), 1, 1, color.text1(), color.text2()) 
         if id in self.peopleExiting:
-            result_p4 = cv2.pointPolygonTest(np.array(self.area2, np.int32), ((cx, cy)), False)
+            result_p4 = cv2.pointPolygonTest(self.poly_area2, ((cx, cy)), False)
             if result_p4 >= 0:
                 # cv2.rectangle(frame, (x1, y1), (x2, y2), color.boundingBox2(), 2)
                 cv2.circle(frame, (cx, cy), 4, color.point(), -1)  
@@ -218,8 +220,8 @@ class Algorithm_Count:
 
     # Method to draw polylines for specified areas and display counts
     def draw_polylines(self, frame):
-        cv2.polylines(frame, [np.array(self.area1, np.int32)], True, color.area1(), 2)
-        cv2.polylines(frame, [np.array(self.area2, np.int32)], True, color.area2(), 2)
+        cv2.polylines(frame, [self.poly_area1], True, color.area1(), 2)
+        cv2.polylines(frame, [self.poly_area2], True, color.area2(), 2)
         enter = len(self.entering)
         exit = len(self.exiting)
         cvzone.putTextRect(frame, str(f"Enter: {enter}"), (20, 30), 1, 1, color.text1(), color.text2())
