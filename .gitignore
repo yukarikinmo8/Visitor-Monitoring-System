@@ -1,4 +1,22 @@
+# Environment and dependency files
+.env
 .venv/
-__pycache__/
-Sample Test File/
+requirements.txt
+
+# Editor and IDE files
 .vscode/
+
+# Python-specific files
+__pycache__/
+
+# Logs
+*.log
+
+# Project-specific files
+Sample Test File/
+SavedFaces/
+yolo-Weights/
+
+# Other file types
+*.ui
+*.pdf
