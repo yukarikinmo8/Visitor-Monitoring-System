@@ -4,6 +4,9 @@ from PySide6.QtWidgets import QStyledItemDelegate, QTableView
 from PySide6.QtCore import Qt, QSize
 import os
 import logging
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class ImageDelegate(QStyledItemDelegate):
     def paint(self, painter, option, index):
@@ -21,7 +24,7 @@ class ImageDelegate(QStyledItemDelegate):
 class MySqlManager:
 
     def __init__(self):
-        self.dbConnStr = pymysql.connect(host="localhost",user = "root", passwd="root", database="nh.vms")
+        self.dbConnStr = pymysql.connect(host = os.getenv("DB_HOST"),user = os.getenv("DB_USER"), passwd=os.getenv("DB_PASSWORD"), database=os.getenv("DB_NAME"))
         self.cursor = self.dbConnStr.cursor()
 
         #connection testing
