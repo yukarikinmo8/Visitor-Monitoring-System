@@ -99,11 +99,12 @@ class Detector:
 
 class Algorithm_Count:
     """Optimized counting algorithm with same interface"""
-    def __init__(self, file_path, a1, a2, frame_size):
+    def __init__(self, file_path, a1, a2, frame_size, coord_point=(0.5, 0.04)):
         self.file_path = file_path
         self.area1 = np.array(a1, np.int32)
         self.area2 = np.array(a2, np.int32)
         self.frame_size = frame_size
+        self.coord_point = coord_point
         
         # Initialize detector once
         self.detector = Detector('yolo-Weights\yolo11n.pt')  # Using newer yolov8n
@@ -138,7 +139,8 @@ class Algorithm_Count:
 
     def change_coord_point(self, x1, x2, y1, y2):
         """Optimized coordinate calculation"""
-        return int(x1 + (x2 - x1) * 0.5), int(y2 - (y2 - y1) * 0.04)
+        x, y = self.coord_point
+        return int(x1 + (x2 - x1) * x), int(y2 - (y2 - y1) * y)
 
     def register_movement(self, area_from, area_to, tracker_dict, action_dict, x1, y1, x2, y2, id, frame):
         """Optimized movement tracking with bounds checking"""
