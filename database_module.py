@@ -1,7 +1,7 @@
 import pymysql
 from PySide6.QtGui import QStandardItemModel, QStandardItem, QPixmap, QIcon
 from PySide6.QtWidgets import QStyledItemDelegate, QTableView
-from PySide6.QtCore import Qt, QSize
+from PySide6.QtCore import Qt, QSize, QSortFilterProxyModel
 import os
 import logging
 
@@ -19,20 +19,21 @@ class ImageDelegate(QStyledItemDelegate):
             super().paint(painter, option, index)
 
 class MySqlManager:
-
+    model = QStandardItemModel()
     def __init__(self):
         self.dbConnStr = pymysql.connect(host="localhost",user = "root", passwd="root", database="nh.vms")
         self.cursor = self.dbConnStr.cursor()
 
         #connection testing
         logging.basicConfig(filename='debug.log', level=logging.DEBUG)
+        
 
     def fillLogsTable(self, table):
         self.cursor.execute("SELECT * FROM `logs.tbl`")
         data = self.cursor.fetchall()
         
-        self.model = QStandardItemModel()
-        self.model.setHorizontalHeaderLabels(["ID", "DATE", "FACE CAPTURE"])
+        model = QStandardItemModel()
+        model.setHorizontalHeaderLabels(["ID", "DATE", "FACE CAPTURE"])
 
         last_col_index = 2  # The Image column is at index 3 (0-based)
 
@@ -57,9 +58,14 @@ class MySqlManager:
                     items[-1] = image  # Replace the last item with the image
 
             # After filling the row with columns and the image, add the entire row to the model
-            self.model.appendRow(items)
-        
-        table.setModel(self.model)
+            model.appendRow(items)
+
+        #table.setEditTriggers(QTableView.NoEditTriggers)
+        self.proxy_model = QSortFilterProxyModel()
+        self.proxy_model.setSourceModel(model)
+
+        table.setModel(self.proxy_model)
+        table.setSortingEnabled(True)
       
         image_delegate = ImageDelegate()
         table.setItemDelegateForColumn(last_col_index, image_delegate)
@@ -70,8 +76,8 @@ class MySqlManager:
         table.setIconSize(QSize(100, 100))   
         
 
-        for i in range(self.model.columnCount()):
-            table.setColumnWidth(i, table.width() // self.model.columnCount())
+        for i in range(model.columnCount()):
+            table.setColumnWidth(i, table.width() // model.columnCount())
     
     def imageLoader(self, imagePath):
         # Check if the image path exists

@@ -16,12 +16,14 @@ from set_entry import Get_Coordinates
 from PySide6.QtCore import QPropertyAnimation
 from PySide6.QtCore import QPropertyAnimation, QEasingCurve
 from database_module import MySqlManager 
+from datetime import date
 
-from PySide6.QtGui import QStandardItemModel, QStandardItem
+from export_pdf import exportPDF
 
 class CameraFeedWindow(QMainWindow):
     def __init__(self):
         msm = MySqlManager()
+        pdf = exportPDF()
         super().__init__()
         self.ui = Ui_MainWindow() 
         self.ui.setupUi(self)
@@ -49,10 +51,12 @@ class CameraFeedWindow(QMainWindow):
         self.ui.logs_btn.clicked.connect(lambda:self.ui.stackedWidget.setCurrentIndex(2))
         self.ui.settings_btn.clicked.connect(lambda:self.ui.stackedWidget.setCurrentIndex(3))
 
-       
+        date_today = date.today()
+        filepathexport = "Logs for " + date_today.strftime("%Y-%m-%d") + ".pdf"
+        
         self.ui.logs_tbl.setAlternatingRowColors(True)
         msm.fillLogsTable(self.ui.logs_tbl);      
-        # msm.imageLoader(r"D:\Browser Downloads\Taz.jpg",self.ui.label_6)
+        self.ui.export_btn.clicked.connect(lambda: pdf.exportTableToPDF(self.ui.logs_tbl, filepathexport))
 
     def start_feed(self):
         self.capture = cv2.VideoCapture(self.file_path)
@@ -194,8 +198,8 @@ class CameraFeedWindow(QMainWindow):
             pass
 
     def closeEvent(self, event):
-        """Release the video capture when the window is closed."""
-        self.capture.release()
+        if hasattr(self, 'capture') and self.capture.isOpened():
+            self.capture.release()
         event.accept()
     
     
