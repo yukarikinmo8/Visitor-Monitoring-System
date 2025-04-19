@@ -132,20 +132,6 @@ class CameraFeedWindow(QMainWindow):
         name_label.setPixmap(face_pixmap)
 
     def update_cap(self, result):
-        """
-        Update the camera feed with the latest frame and display face crops.
-        This method retrieves the next frame from the frame generator and processes
-        the face crops detected in the frame. It displays up to three face crops in
-        the UI.
-        Raises:
-            StopIteration: If the frame generator has no more frames to provide.
-        How it works:
-        1. Retrieves the next frame and result from the frame generator.
-        2. Initializes an empty list to store face crops.
-        3. Iterates over the detected persons and their details, printing the person ID and entry time.
-        4. Inserts the face crops into the list.
-        5. If there are face crops, decompresses and displays up to three face crops in the UI.
-        """
         try:
             # frame, result = next(self.frame_generator)  # Get the next frame from the generator
 
