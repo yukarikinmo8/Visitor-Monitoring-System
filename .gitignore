@@ -1,7 +1,18 @@
-.venv/
-__pycache__/
-Sample Test File/
-yolo-Weights/
-.vscode/
+# Environment and dependency files
 .env
+.venv/
+requirements.txt
+
+# Editor and IDE files
+.vscode/
+
+# Python-specific files
+__pycache__/
+
+# Logs
 *.log
+
+# Project-specific directories
+Sample Test File/
+SavedFaces/
+yolo-Weights/
