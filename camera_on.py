@@ -35,7 +35,7 @@ class CameraFeedWindow(QMainWindow):
         self.ui.stackedWidget.setCurrentIndex(0)
         # self.area1 = [(300, 300), (400, 559), (667, 675), (632, 681)]
         # self.area2 = [(110, 400), (313, 566), (579, 703), (624, 694)]
-
+        # self.ui.cap_4.setPixmap(QPixmap())
         # Timer for updating frames
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_frame)
@@ -52,7 +52,7 @@ class CameraFeedWindow(QMainWindow):
        
         self.ui.logs_tbl.setAlternatingRowColors(True)
         msm.fillLogsTable(self.ui.logs_tbl);      
-      
+        # msm.imageLoader(r"D:\Browser Downloads\Taz.jpg",self.ui.label_6)
 
     def start_feed(self):
         self.capture = cv2.VideoCapture(self.file_path)
