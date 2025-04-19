@@ -241,10 +241,10 @@ class CameraFeedWindow(QMainWindow):
     
     def clearUiMem(self):
         if hasattr(self, "animation"):
-                if self.animation.state() == QPropertyAnimation.Running:
-                    self.animation.stop()
-                self.animation.deleteLater()  # Mark for memory cleanup
-                self.animation = None
+            if self.animation.state() == QPropertyAnimation.Running:
+                self.animation.stop()
+            self.animation.deleteLater()  # Mark for memory cleanup
+            self.animation = None
 
 
 if __name__ == "__main__":
