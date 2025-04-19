@@ -3,3 +3,6 @@ __pycache__/
 Sample Test File/
 yolo-Weights/
 .vscode/
+*.log
+*.ui
+*.pdf
