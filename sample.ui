@@ -29,186 +29,6 @@
    <string notr="true">background-color: #232531</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>180</x>
-      <y>90</y>
-      <width>1001</width>
-      <height>551</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color:#EAEAEA;</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="start_btn">
-    <property name="geometry">
-     <rect>
-      <x>640</x>
-      <y>670</y>
-      <width>51</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>5</width>
-      <height>5</height>
-     </size>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="autoFillBackground">
-     <bool>false</bool>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">#start_btn {
-    background-color: #232531; /* Default color */
-    color: white;
-    border-radius: 25px;
-}
-
-#start_btn:hover {
-    background-color: #5897FB; /* Hover color */
-}</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>resources/Icons/Play.svg</normaloff>resources/Icons/Play.svg</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>45</width>
-      <height>45</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="stop_btn">
-    <property name="geometry">
-     <rect>
-      <x>700</x>
-      <y>670</y>
-      <width>51</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">#stop_btn {
-    background-color: #232531; /* Default color */
-    color: white;
-    border-radius: 25px;
-
-}
-
-#stop_btn:hover {
-    background-color: #5897FB; /* Hover color */
-}</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>resources/Icons/stop.svg</normaloff>resources/Icons/stop.svg</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>45</width>
-      <height>45</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QFrame" name="frame">
-    <property name="geometry">
-     <rect>
-      <x>1210</x>
-      <y>-10</y>
-      <width>291</width>
-      <height>831</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color:#2C2F40</string>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
-    <widget class="QLabel" name="cap_1">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>100</y>
-       <width>251</width>
-       <height>231</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:#EAEAEA;</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QLabel" name="cap_3">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>580</y>
-       <width>251</width>
-       <height>231</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:#EAEAEA;</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QLabel" name="cap_2">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>340</y>
-       <width>251</width>
-       <height>231</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:#EAEAEA;</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </widget>
    <widget class="QFrame" name="nav_bar">
     <property name="geometry">
      <rect>
@@ -363,7 +183,7 @@ background-color:#5897FB;
       </size>
      </property>
     </widget>
-    <widget class="QToolButton" name="setttings_btn">
+    <widget class="QToolButton" name="settings_btn">
      <property name="geometry">
       <rect>
        <x>30</x>
@@ -379,7 +199,9 @@ background-color:transparent;
 
 #settings_btn:hover{
 background-color:#5897FB;
-}</string>
+}
+
+</string>
      </property>
      <property name="text">
       <string/>
@@ -395,18 +217,180 @@ background-color:#5897FB;
       </size>
      </property>
     </widget>
+    <widget class="QLabel" name="dash_lbl">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>90</y>
+       <width>261</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Inter i</family>
+       <pointsize>-1</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel {
+    font-family: &quot;Inter&quot;i;
+    font-size: 25px; /* Adjust based on your UI scale */
+    color: #EAEAEA;
+    letter-spacing: 1px; /* Adjust for spacing */
+ }</string>
+     </property>
+     <property name="text">
+      <string>Dashboard</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lvf_lbl">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>150</y>
+       <width>271</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Inter i</family>
+       <pointsize>-1</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel {
+    font-family: &quot;Inter&quot;i;
+    font-size: 25px; /* Adjust based on your UI scale */
+    color: #EAEAEA;
+    letter-spacing:1px; /* Adjust for spacing */
+ }</string>
+     </property>
+     <property name="text">
+      <string>Live Video Feed</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="logs_lbl">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>210</y>
+       <width>181</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Inter i</family>
+       <pointsize>-1</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel {
+    font-family: &quot;Inter&quot;i;
+    font-size: 25px; /* Adjust based on your UI scale */
+    color: #EAEAEA;
+    letter-spacing: 1px; /* Adjust for spacing */
+ }</string>
+     </property>
+     <property name="text">
+      <string>Logs</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="setts_lbl">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>270</y>
+       <width>181</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Inter i</family>
+       <pointsize>-1</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel {
+    font-family: &quot;Inter&quot;i;
+    font-size: 25px; /* Adjust based on your UI scale */
+    color: #EAEAEA;
+    letter-spacing: 1px; /* Adjust for spacing */
+ }</string>
+     </property>
+     <property name="text">
+      <string>Settings</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="logo_lbl">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>20</y>
+       <width>481</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Inter i</family>
+       <pointsize>-1</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel {
+    font-family: &quot;Inter&quot;i;
+    font-size: 15px; /* Adjust based on your UI scale */
+    font-weight: bold;
+    color: white;
+    letter-spacing: 1px; /* Adjust for spacing */
+    text-transform: uppercase; /* Makes text all caps */
+ }</string>
+     </property>
+     <property name="text">
+      <string>Visitor Monitoring System</string>
+     </property>
+    </widget>
+    <zorder>logo_lbl</zorder>
+    <zorder>menu_btn</zorder>
+    <zorder>dash_btn</zorder>
+    <zorder>cam_btn</zorder>
+    <zorder>logs_btn</zorder>
+    <zorder>settings_btn</zorder>
+    <zorder>dash_lbl</zorder>
+    <zorder>lvf_lbl</zorder>
+    <zorder>logs_lbl</zorder>
+    <zorder>setts_lbl</zorder>
    </widget>
-   <widget class="QLabel" name="label_2">
+   <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
      <rect>
-      <x>130</x>
-      <y>30</y>
-      <width>291</width>
-      <height>31</height>
+      <x>120</x>
+      <y>0</y>
+      <width>1421</width>
+      <height>821</height>
      </rect>
     </property>
-    <property name="styleSheet">
-     <string notr="true">QLabel {
+    <property name="layoutDirection">
+     <enum>Qt::RightToLeft</enum>
+    </property>
+    <widget class="QWidget" name="DashBoard">
+     <widget class="QLabel" name="label_5">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>201</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel {
     font-family: &quot;Inter&quot;i;
     font-size: 30px; /* Adjust based on your UI scale */
     font-weight: bold;
@@ -414,88 +398,266 @@ background-color:#5897FB;
     letter-spacing: 1px; /* Adjust for spacing */
     text-transform: uppercase; /* Makes text all caps */
 }</string>
-    </property>
-    <property name="text">
-     <string>Live Video Feed</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pause_btn">
-    <property name="geometry">
-     <rect>
-      <x>570</x>
-      <y>670</y>
-      <width>51</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>5</width>
-      <height>5</height>
-     </size>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="autoFillBackground">
-     <bool>false</bool>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">#pause_btn{
+      </property>
+      <property name="text">
+       <string>Dashboard</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="LiveFeed">
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>90</y>
+        <width>1001</width>
+        <height>551</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:#EAEAEA;</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="stop_btn">
+      <property name="geometry">
+       <rect>
+        <x>580</x>
+        <y>670</y>
+        <width>51</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#stop_btn {
+    background-color: #232531; /* Default color */
+    color: white;
+    border-radius: 25px;
+
+}
+
+#stop_btn:hover {
+    background-color: #5897FB; /* Hover color */
+}</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>resources/Icons/stop.svg</normaloff>resources/Icons/stop.svg</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>45</width>
+        <height>45</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>291</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel {
+    font-family: &quot;Inter&quot;i;
+    font-size: 30px; /* Adjust based on your UI scale */
+    font-weight: bold;
+    color: white;
+    letter-spacing: 1px; /* Adjust for spacing */
+    text-transform: uppercase; /* Makes text all caps */
+}</string>
+      </property>
+      <property name="text">
+       <string>Live Video Feed</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="start_btn">
+      <property name="geometry">
+       <rect>
+        <x>520</x>
+        <y>670</y>
+        <width>51</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>5</width>
+        <height>5</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#start_btn {
     background-color: #232531; /* Default color */
     color: white;
     border-radius: 25px;
 }
 
-#pause_btn:hover{
-	background-color:#5897FB ;
+#start_btn:hover {
+    background-color: #5897FB; /* Hover color */
 }</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>resources/Icons/Pause.svg</normaloff>resources/Icons/Pause.svg</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>45</width>
-      <height>45</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="refresh_btn">
-    <property name="geometry">
-     <rect>
-      <x>760</x>
-      <y>670</y>
-      <width>51</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>5</width>
-      <height>5</height>
-     </size>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="autoFillBackground">
-     <bool>false</bool>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">#refresh_btn{
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>resources/Icons/Play.svg</normaloff>resources/Icons/Play.svg</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>45</width>
+        <height>45</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QFrame" name="frame">
+      <property name="geometry">
+       <rect>
+        <x>1090</x>
+        <y>-10</y>
+        <width>291</width>
+        <height>831</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:#2C2F40</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QLabel" name="cap_4">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>100</y>
+         <width>251</width>
+         <height>231</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color:#EAEAEA;</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="cap_5">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>580</y>
+         <width>251</width>
+         <height>231</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color:#EAEAEA;</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="cap_6">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>340</y>
+         <width>251</width>
+         <height>231</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color:#EAEAEA;</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_4">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>40</y>
+         <width>291</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+    font-family: &quot;Inter&quot;i;
+    font-size: 20px; /* Adjust based on your UI scale */
+    font-weight:bold;
+    color: white;
+    letter-spacing: 1px; /* Adjust for spacing */
+    text-transform: uppercase; /* Makes text all caps */
+}</string>
+       </property>
+       <property name="text">
+        <string>Face Capture</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QPushButton" name="refresh_btn">
+      <property name="geometry">
+       <rect>
+        <x>640</x>
+        <y>670</y>
+        <width>51</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>5</width>
+        <height>5</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#refresh_btn{
     background-color: #232531; /* Default color */
     color: white;
     border-radius: 25px;
@@ -504,48 +666,98 @@ background-color:#5897FB;
 #refresh_btn:hover{
 	background-color:#5897FB ;
 }</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>resources/Icons/refresh.svg</normaloff>resources/Icons/refresh.svg</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>45</width>
-      <height>45</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="upload_btn">
-    <property name="geometry">
-     <rect>
-      <x>820</x>
-      <y>670</y>
-      <width>51</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>5</width>
-      <height>5</height>
-     </size>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="autoFillBackground">
-     <bool>false</bool>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">#upload_btn{
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>resources/Icons/refresh.svg</normaloff>resources/Icons/refresh.svg</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>45</width>
+        <height>45</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pause_btn">
+      <property name="geometry">
+       <rect>
+        <x>450</x>
+        <y>670</y>
+        <width>51</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>5</width>
+        <height>5</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#pause_btn{
+    background-color: #232531; /* Default color */
+    color: white;
+    border-radius: 25px;
+}
+
+#pause_btn:hover{
+	background-color:#5897FB ;
+}</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>resources/Icons/Pause.svg</normaloff>resources/Icons/Pause.svg</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>45</width>
+        <height>45</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="upload_btn">
+      <property name="geometry">
+       <rect>
+        <x>700</x>
+        <y>670</y>
+        <width>51</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>5</width>
+        <height>5</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#upload_btn{
     background-color: #232531; /* Default color */
     color: white;
     border-radius: 25px;
@@ -554,48 +766,48 @@ background-color:#5897FB;
 #upload_btn:hover{
 	background-color:#5897FB ;
 }</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>resources/Icons/Upload.svg</normaloff>resources/Icons/Upload.svg</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>45</width>
-      <height>45</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="prec_btn">
-    <property name="geometry">
-     <rect>
-      <x>500</x>
-      <y>670</y>
-      <width>51</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>5</width>
-      <height>5</height>
-     </size>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="autoFillBackground">
-     <bool>false</bool>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">#prec_btn{
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>resources/Icons/Upload.svg</normaloff>resources/Icons/Upload.svg</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>45</width>
+        <height>45</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="prec_btn">
+      <property name="geometry">
+       <rect>
+        <x>380</x>
+        <y>670</y>
+        <width>51</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>5</width>
+        <height>5</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#prec_btn{
     background-color: #232531; /* Default color */
     color: white;
     border-radius: 25px;
@@ -604,21 +816,161 @@ background-color:#5897FB;
 #prec_btn:hover{
 	background-color:#5897FB ;
 }</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>resources/Icons/target.svg</normaloff>resources/Icons/target.svg</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>45</width>
-      <height>45</height>
-     </size>
-    </property>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>resources/Icons/target.svg</normaloff>resources/Icons/target.svg</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>45</width>
+        <height>45</height>
+       </size>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="Logs">
+     <widget class="QLabel" name="label_6">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>201</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel {
+    font-family: &quot;Inter&quot;i;
+    font-size: 30px; /* Adjust based on your UI scale */
+    font-weight: bold;
+    color: white;
+    letter-spacing: 1px; /* Adjust for spacing */
+    text-transform: uppercase; /* Makes text all caps */
+}</string>
+      </property>
+      <property name="text">
+       <string>LOGS</string>
+      </property>
+     </widget>
+     <widget class="QTableView" name="logs_tbl">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>200</y>
+        <width>1271</width>
+        <height>601</height>
+       </rect>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#logs_tbl {
+    background-color: white;
+    color: black;
+    font-size: 12px;
+ 	border: 1px solid white;
+    selection-background-color: #5897FB;
+    alternate-background-color:#dbe9f4;
+}
+
+#logs_tbl::item:selected {
+    background-color: #a7c8fb;
+}
+
+#logs_tbl QHeaderView::section {
+    background-color:#2c2f40;  /* Dark navy blue for header */
+    color: white;  /* White text */
+    font-size: 14px;  /* Optional: Adjust font size */
+    font-weight: bold;  /* Optional: Make text bold */
+    padding: 5px;  /* Optional: Adjust padding */
+    border: 1px solid #d3d3d3;  /* Border color for header */
+}
+</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="export_btn">
+      <property name="geometry">
+       <rect>
+        <x>1020</x>
+        <y>130</y>
+        <width>291</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#export_btn{
+    background-color: #5897FB; /* Default color */
+    color: white;
+	font-size: 20px;
+    border-radius: 5px;
+}
+
+#export_btn:hover{
+	background-color: #2F6CDF;
+}</string>
+      </property>
+      <property name="text">
+       <string>Export  PDF</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="search_txt">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>130</y>
+        <width>581</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#search_txt {
+    border: 2px solid #5897FB;
+    border-radius: 25px;
+    padding: 5px;
+    background-color: #f5f5f5;
+    font-size: 14px;
+    color: #333;
+	font-size: 20px;
+}</string>
+      </property>
+      <property name="text">
+       <string>Search</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="Settings">
+     <widget class="QLabel" name="label_7">
+      <property name="geometry">
+       <rect>
+        <x>610</x>
+        <y>450</y>
+        <width>201</width>
+        <height>101</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel {
+    font-family: &quot;Inter&quot;i;
+    font-size: 30px; /* Adjust based on your UI scale */
+    font-weight: bold;
+    color: white;
+    letter-spacing: 1px; /* Adjust for spacing */
+    text-transform: uppercase; /* Makes text all caps */
+}</string>
+      </property>
+      <property name="text">
+       <string>Settings</string>
+      </property>
+     </widget>
+    </widget>
    </widget>
+   <zorder>stackedWidget</zorder>
+   <zorder>nav_bar</zorder>
   </widget>
  </widget>
  <resources/>
