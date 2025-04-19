@@ -12,7 +12,11 @@ __pycache__/
 # Logs
 *.log
 
-# Project-specific directories
+# Project-specific files
 Sample Test File/
 SavedFaces/
 yolo-Weights/
+
+# Other file types
+*.ui
+*.pdf

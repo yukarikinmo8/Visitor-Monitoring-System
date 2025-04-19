@@ -13,17 +13,21 @@ from PySide6.QtGui import QImage, QPixmap
 from PySide6.QtWidgets import QApplication, QMainWindow, QTableWidgetItem
 from PySide6.QtCore import QPropertyAnimation
 from PySide6.QtCore import QPropertyAnimation, QEasingCurve
-from database_module import MySqlManager 
 from PySide6.QtGui import QStandardItemModel, QStandardItem
-from main_ui import Ui_MainWindow  # Import the generated UI file
 
+from database_module import MySqlManager 
 from counter_mod import Algorithm_Count
 from set_entry import Get_Coordinates
+from export_pdf import exportPDF
+from main_ui import Ui_MainWindow  # Import the generated UI file
+
+from datetime import date
 
 
 class CameraFeedWindow(QMainWindow):
     def __init__(self):
         msm = MySqlManager()
+        pdf = exportPDF()
         super().__init__()
         self.ui = Ui_MainWindow() 
         self.ui.setupUi(self)
@@ -56,10 +60,12 @@ class CameraFeedWindow(QMainWindow):
         self.ui.logs_btn.clicked.connect(lambda:self.ui.stackedWidget.setCurrentIndex(2))
         self.ui.settings_btn.clicked.connect(lambda:self.ui.stackedWidget.setCurrentIndex(3))
 
-       
+        date_today = date.today()
+        file_path_export = "Logs for " + date_today.strftime("%Y-%m-%d") + ".pdf"
+        
         self.ui.logs_tbl.setAlternatingRowColors(True)
         msm.fillLogsTable(self.ui.logs_tbl);      
-        # msm.imageLoader(r"D:\Browser Downloads\Taz.jpg",self.ui.label_6)
+        self.ui.export_btn.clicked.connect(lambda: pdf.exportTableToPDF(self.ui.logs_tbl, file_path_export))
 
     def start_feed(self):
         self.running = False  # stop any previous loop
@@ -186,6 +192,8 @@ class CameraFeedWindow(QMainWindow):
 
     def closeEvent(self, event):
         self.timer.stop()
+        # if hasattr(self, 'capture') and self.capture.isOpened():
+        #     self.capture.release()
         event.accept()
     
     def navbar_toggle(self):
