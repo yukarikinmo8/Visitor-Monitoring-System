@@ -23,8 +23,8 @@ class CameraFeedWindow(QMainWindow):
         self.ui.setupUi(self)
         self.ui.stop_btn.setEnabled(False)
 
-        # self.file_path = 'Sample Test File\\test_video.mp4'
-        self.file_path = 0
+        self.file_path = 'Sample Test File\\test_video.mp4'
+        # self.file_path = 0
         self.frame_queue = Queue(maxsize=1)
 
         self.ui.start_btn.clicked.connect(self.start_feed)
@@ -117,6 +117,10 @@ class CameraFeedWindow(QMainWindow):
                 continue
             try:
                 face_crop = pickle.loads(zlib.decompress(details['face_crops']))
+                
+                # Ensure 'details['time']' is a datetime object
+                if isinstance(details['time'], str):
+                    details['time'] = datetime.datetime.fromisoformat(details['time'])
                 filename = os.path.join(directory_name, f"face_{details['time'].strftime('%H-%M-%S')}.jpg")
                 cv2.imwrite(filename, face_crop)
                 processed_person_ids.add(person_id)
