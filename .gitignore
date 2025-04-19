@@ -2,3 +2,5 @@
 __pycache__/
 Sample Test File/
 .vscode/
+.env
+*.log
