@@ -23,8 +23,8 @@ class CameraFeedWindow(QMainWindow):
         self.ui.setupUi(self)
         self.ui.stop_btn.setEnabled(False)
 
-        self.file_path = 'Sample Test File\\test_video.mp4'
-        # self.file_path = 0
+        # self.file_path = 'Sample Test File\\test_video.mp4'
+        self.file_path = 0
         self.frame_queue = Queue(maxsize=1)
 
         self.ui.start_btn.clicked.connect(self.start_feed)
