@@ -154,11 +154,11 @@ class CameraFeedWindow(QMainWindow):
                 continue
             try:
                 face_crop = pickle.loads(zlib.decompress(details['face_crops']))
-                
-                # Ensure 'details['time']' is a datetime object
-                if isinstance(details['time'], str):
-                    details['time'] = datetime.datetime.fromisoformat(details['time'])
-                filename = os.path.join(directory_name, f"face_{details['time'].strftime('%H-%M-%S')}.jpg")
+                if isinstance(details['time'], datetime.datetime):
+                    time_str = details['time'].strftime('%H-%M-%S')
+                else:
+                    time_str = details['time'].replace(':', '-')
+                filename = os.path.join(directory_name, f"{person_id}-face_{time_str}.jpg")
                 cv2.imwrite(filename, face_crop)
                 processed_person_ids.add(person_id)
             except Exception as e:
