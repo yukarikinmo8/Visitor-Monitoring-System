@@ -38,12 +38,11 @@ class CameraFeedWindow(QMainWindow):
         self.ui.logs_lbl.setVisible(False)
         self.ui.lvf_lbl.setVisible(False)
 
-        # TODO: access ui point for area
-        self.coord_point = (0.5, 0.04) # default coordinates for the area of interest x=50% y=4%
-        self.area1 = [(261, 434), (337, 428), (522, 516), (450, 537)] # coordinates for the area of interest
-        self.area2 = [(154, 450), (246, 438), (406, 541), (292, 548)] # coordinates for the area of interest
-        self.file_path = 'Sample Test File\\test_video.mp4' # path to the video file
-        # self.file_path = 0 # for webcam feed
+        # self.area1 = [(300, 300), (400, 559), (667, 675), (632, 681)]
+        # self.area2 = [(110, 400), (313, 566), (579, 703), (624, 694)]
+        # self.file_path = 'Sample Test File\\test_video.mp4'
+        self.file_path = 0
+        
         self.frame_queue = Queue(maxsize=1)
 
         self.ui.stackedWidget.setCurrentIndex(0)
