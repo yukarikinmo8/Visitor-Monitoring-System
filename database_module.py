@@ -4,9 +4,8 @@ from PySide6.QtWidgets import QStyledItemDelegate, QTableView
 from PySide6.QtCore import Qt, QSize, QSortFilterProxyModel
 import os
 import logging
-from dotenv import load_dotenv
 
-load_dotenv()
+
 
 class ImageDelegate(QStyledItemDelegate):
     def paint(self, painter, option, index):
@@ -24,7 +23,7 @@ class ImageDelegate(QStyledItemDelegate):
 class MySqlManager:
     model = QStandardItemModel()
     def __init__(self):
-        self.dbConnStr = pymysql.connect(host = os.getenv("DB_HOST"),user = os.getenv("DB_USER"), passwd=os.getenv("DB_PASSWORD"), database=os.getenv("DB_NAME"))
+        self.dbConnStr = pymysql.connect(host = "localhost",user = "root", passwd="root", database="nh.vms")
         self.cursor = self.dbConnStr.cursor()
 
         #connection testing
@@ -36,9 +35,9 @@ class MySqlManager:
         data = self.cursor.fetchall()
         
         model = QStandardItemModel()
-        model.setHorizontalHeaderLabels(["ID", "DATE", "FACE CAPTURE"])
+        model.setHorizontalHeaderLabels(["ID", "DATE", "TIME", "FACE CAPTURE"])
 
-        last_col_index = 2  # The Image column is at index 3 (0-based)
+        last_col_index = 3 # The Image column is at index 3 (0-based)
 
         # Iterate through each row of data
         for row_data in data:
