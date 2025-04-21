@@ -7,6 +7,7 @@ import pickle
 import zlib
 import threading
 from queue import Queue
+import shutil
 
 from PySide6.QtCore import QTimer, Qt
 from PySide6.QtGui import QImage, QPixmap
@@ -14,6 +15,7 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QTableWidgetItem
 from PySide6.QtCore import QPropertyAnimation
 from PySide6.QtCore import QPropertyAnimation, QEasingCurve
 from PySide6.QtGui import QStandardItemModel, QStandardItem
+from PySide6.QtWidgets import QFileDialog
 
 from database_module import MySqlManager 
 from counter_mod import Algorithm_Count
@@ -26,46 +28,69 @@ from datetime import date
 
 class CameraFeedWindow(QMainWindow):
     def __init__(self):
-        msm = MySqlManager()
-        pdf = exportPDF()
         super().__init__()
-        self.ui = Ui_MainWindow() 
+        self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+
+        # Initialize video writer and settings
+        self.video_writer = None
+        self.save_video = True
+
+        # Default coordinates and file path
+        self.coord_point = (0.5, 0.04)
+        self.area1 = [(261, 434), (337, 428), (522, 516), (450, 537)]
+        self.area2 = [(154, 450), (246, 438), (406, 541), (292, 548)]
+        self.file_path = 'Sample Test File\\test_video.mp4'
+
+        # Frame queue for processing
+        self.frame_queue = Queue(maxsize=1)
+
+        # Timer for updating frames
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.update_frame)
+
+        # Initialize UI elements
+        self._initialize_ui()
+
+        # Initialize database and export functionality
+        self._initialize_database_and_export()
+
+    def _initialize_ui(self):
+        """Set up UI elements and connect signals."""
+        # Disable stop button initially
         self.ui.stop_btn.setEnabled(False)
+
+        # Hide navigation labels
         self.ui.dash_lbl.setVisible(False)
         self.ui.logo_lbl.setVisible(False)
         self.ui.setts_lbl.setVisible(False)
         self.ui.logs_lbl.setVisible(False)
         self.ui.lvf_lbl.setVisible(False)
 
-        # self.area1 = [(300, 300), (400, 559), (667, 675), (632, 681)]
-        # self.area2 = [(110, 400), (313, 566), (579, 703), (624, 694)]
-        # self.file_path = 'Sample Test File\\test_video.mp4'
-        self.file_path = 0
-        
-        self.frame_queue = Queue(maxsize=1)
-
+        # Set default stacked widget page
         self.ui.stackedWidget.setCurrentIndex(0)
-        # self.ui.cap_4.setPixmap(QPixmap())
 
-        # Timer for updating frames
-        self.timer = QTimer(self)
-        self.timer.timeout.connect(self.update_frame)
- 
-        # Connect the "On" button to start the feed
+        # Connect button signals
         self.ui.start_btn.clicked.connect(self.start_feed)
         self.ui.stop_btn.clicked.connect(self.stop_feed)
         self.ui.menu_btn.clicked.connect(self.navbar_toggle)
-        self.ui.dash_btn.clicked.connect(lambda:self.ui.stackedWidget.setCurrentIndex(0))
-        self.ui.cam_btn.clicked.connect(lambda:self.ui.stackedWidget.setCurrentIndex(1))
-        self.ui.logs_btn.clicked.connect(lambda:self.ui.stackedWidget.setCurrentIndex(2))
-        self.ui.settings_btn.clicked.connect(lambda:self.ui.stackedWidget.setCurrentIndex(3))
+        self.ui.dash_btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(0))
+        self.ui.cam_btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(1))
+        self.ui.logs_btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(2))
+        self.ui.settings_btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(3))
 
+    def _initialize_database_and_export(self):
+        """Set up database manager and export functionality."""
+        msm = MySqlManager()
+        pdf = exportPDF()
         date_today = date.today()
         file_path_export = "Logs for " + date_today.strftime("%Y-%m-%d") + ".pdf"
-        
+
+        # Configure logs table
         self.ui.logs_tbl.setAlternatingRowColors(True)
-        msm.fillLogsTable(self.ui.logs_tbl);      
+        msm.fillLogsTable(self.ui.logs_tbl)
+
+        # Connect export button
         self.ui.export_btn.clicked.connect(lambda: pdf.exportTableToPDF(self.ui.logs_tbl, file_path_export))
 
     def start_feed(self):
@@ -97,6 +122,24 @@ class CameraFeedWindow(QMainWindow):
             self.timer.start(30)
             self.ui.start_btn.setEnabled(False)
             self.ui.stop_btn.setEnabled(True)
+
+            if self.save_video:
+                output_dir = "recordings"
+                os.makedirs(output_dir, exist_ok=True)
+                # Create a folder with the current month and year
+                current_date = datetime.datetime.now()
+                month_year_folder = os.path.join(output_dir, current_date.strftime('%Y-%m'))
+                os.makedirs(month_year_folder, exist_ok=True)
+
+                # Set the filename to the current date
+                filename = f"{current_date.strftime('%Y-%m-%d')}.avi"
+                self.temp_video_path = os.path.join(month_year_folder, filename)
+                self.temp_video_path = os.path.join(output_dir, filename)
+
+                fourcc = cv2.VideoWriter_fourcc(*'XVID')
+                size = (self.ui.label.width(), self.ui.label.height())
+                self.video_writer = cv2.VideoWriter(self.temp_video_path, fourcc, 24.0, size)
+
         else:
             print("Coordinates not set.")
         return
@@ -118,6 +161,9 @@ class CameraFeedWindow(QMainWindow):
             self.show_face_crops(frame, self.ui.label)
             self.update_cap(result)
             self.save_crop_faces(result)
+            
+            if self.save_video and self.video_writer is not None:
+                self.video_writer.write(frame)
 
     def stop_feed(self):
         self.running = False
@@ -133,6 +179,32 @@ class CameraFeedWindow(QMainWindow):
 
         self.ui.start_btn.setEnabled(True)
         self.ui.stop_btn.setEnabled(False)
+
+        # 💾 Save processed video if enabled
+        if self.save_video and self.video_writer:
+            self.video_writer.release()
+            self.video_writer = None
+
+            # Show save dialog
+            current_date = datetime.datetime.now().strftime('%Y-%m-%d')
+            default_filename = f"processed_video_{current_date}.avi"
+            file_path, _ = QFileDialog.getSaveFileName(
+                self, "Save Processed Video", 
+                default_filename, 
+                "AVI Files (*.avi);;All Files (*)"
+            )
+
+            if file_path:
+                # Move temp file to selected location
+                try:
+                    shutil.move(self.temp_video_path, file_path)  # Use shutil.move instead of os.rename
+                    print(f"Video saved to: {file_path}")
+                except Exception as e:
+                    print(f"Error saving video: {e}")
+            else:
+                # User canceled - delete temp file
+                if os.path.exists(self.temp_video_path):
+                    os.remove(self.temp_video_path)
 
     def save_crop_faces(self, result):
         processed_person_ids = set()
@@ -153,11 +225,11 @@ class CameraFeedWindow(QMainWindow):
                 continue
             try:
                 face_crop = pickle.loads(zlib.decompress(details['face_crops']))
-                
-                # Ensure 'details['time']' is a datetime object
-                if isinstance(details['time'], str):
-                    details['time'] = datetime.datetime.fromisoformat(details['time'])
-                filename = os.path.join(directory_name, f"face_{details['time'].strftime('%H-%M-%S')}.jpg")
+                if isinstance(details['time'], datetime.datetime):
+                    time_str = details['time'].strftime('%H-%M-%S')
+                else:
+                    time_str = details['time'].replace(':', '-')
+                filename = os.path.join(directory_name, f"{person_id}-face_{time_str}.jpg")
                 cv2.imwrite(filename, face_crop)
                 processed_person_ids.add(person_id)
             except Exception as e:
