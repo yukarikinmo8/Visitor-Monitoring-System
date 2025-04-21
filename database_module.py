@@ -23,7 +23,7 @@ class ImageDelegate(QStyledItemDelegate):
 class MySqlManager:
     model = QStandardItemModel()
     def __init__(self):
-        self.dbConnStr = pymysql.connect(host = "localhost",user = "root", passwd="root", database="nh.vms")
+        self.dbConnStr = pymysql.connect(host = "localhost",user = "root", passwd="admin", database="nh.vms")
         self.cursor = self.dbConnStr.cursor()
 
         #connection testing
