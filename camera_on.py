@@ -26,50 +26,69 @@ from datetime import date
 
 class CameraFeedWindow(QMainWindow):
     def __init__(self):
-        msm = MySqlManager()
-        pdf = exportPDF()
         super().__init__()
-        self.ui = Ui_MainWindow() 
+        self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+
+        # Initialize video writer and settings
+        self.video_writer = None
+        self.save_video = True
+
+        # Default coordinates and file path
+        self.coord_point = (0.5, 0.04)
+        self.area1 = [(261, 434), (337, 428), (522, 516), (450, 537)]
+        self.area2 = [(154, 450), (246, 438), (406, 541), (292, 548)]
+        self.file_path = 'Sample Test File\\test_video.mp4'
+
+        # Frame queue for processing
+        self.frame_queue = Queue(maxsize=1)
+
+        # Timer for updating frames
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.update_frame)
+
+        # Initialize UI elements
+        self._initialize_ui()
+
+        # Initialize database and export functionality
+        self._initialize_database_and_export()
+
+    def _initialize_ui(self):
+        """Set up UI elements and connect signals."""
+        # Disable stop button initially
         self.ui.stop_btn.setEnabled(False)
+
+        # Hide navigation labels
         self.ui.dash_lbl.setVisible(False)
         self.ui.logo_lbl.setVisible(False)
         self.ui.setts_lbl.setVisible(False)
         self.ui.logs_lbl.setVisible(False)
         self.ui.lvf_lbl.setVisible(False)
 
-        self.video_writer = None
-        self.save_video = True
-
-        # TODO: access ui point for area
-        self.coord_point = (0.5, 0.04) # default coordinates for the area of interest x=50% y=4%
-        self.area1 = [(261, 434), (337, 428), (522, 516), (450, 537)] # coordinates for the area of interest
-        self.area2 = [(154, 450), (246, 438), (406, 541), (292, 548)] # coordinates for the area of interest
-        self.file_path = 'Sample Test File\\test_video.mp4' # path to the video file
-        # self.file_path = 0 # for webcam feed
-        self.frame_queue = Queue(maxsize=1)
-
+        # Set default stacked widget page
         self.ui.stackedWidget.setCurrentIndex(0)
-        # self.ui.cap_4.setPixmap(QPixmap())
 
-        # Timer for updating frames
-        self.timer = QTimer(self)
-        self.timer.timeout.connect(self.update_frame)
- 
-        # Connect the "On" button to start the feed
+        # Connect button signals
         self.ui.start_btn.clicked.connect(self.start_feed)
         self.ui.stop_btn.clicked.connect(self.stop_feed)
         self.ui.menu_btn.clicked.connect(self.navbar_toggle)
-        self.ui.dash_btn.clicked.connect(lambda:self.ui.stackedWidget.setCurrentIndex(0))
-        self.ui.cam_btn.clicked.connect(lambda:self.ui.stackedWidget.setCurrentIndex(1))
-        self.ui.logs_btn.clicked.connect(lambda:self.ui.stackedWidget.setCurrentIndex(2))
-        self.ui.settings_btn.clicked.connect(lambda:self.ui.stackedWidget.setCurrentIndex(3))
+        self.ui.dash_btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(0))
+        self.ui.cam_btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(1))
+        self.ui.logs_btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(2))
+        self.ui.settings_btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(3))
 
+    def _initialize_database_and_export(self):
+        """Set up database manager and export functionality."""
+        msm = MySqlManager()
+        pdf = exportPDF()
         date_today = date.today()
         file_path_export = "Logs for " + date_today.strftime("%Y-%m-%d") + ".pdf"
-        
+
+        # Configure logs table
         self.ui.logs_tbl.setAlternatingRowColors(True)
-        msm.fillLogsTable(self.ui.logs_tbl);      
+        msm.fillLogsTable(self.ui.logs_tbl)
+
+        # Connect export button
         self.ui.export_btn.clicked.connect(lambda: pdf.exportTableToPDF(self.ui.logs_tbl, file_path_export))
 
     def start_feed(self):
