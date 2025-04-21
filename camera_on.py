@@ -42,6 +42,7 @@ class CameraFeedWindow(QMainWindow):
         # self.area2 = [(110, 400), (313, 566), (579, 703), (624, 694)]
         # self.file_path = 'Sample Test File\\test_video.mp4'
         self.file_path = 0
+        
         self.frame_queue = Queue(maxsize=1)
 
         self.ui.stackedWidget.setCurrentIndex(0)
@@ -76,8 +77,8 @@ class CameraFeedWindow(QMainWindow):
         self.ui.cap_5.clear()
         self.ui.cap_6.clear()
 
-        self.a1 = None
-        self.a2 = None
+        self.a1 = self.area1
+        self.a2 = self.area2
         area = Get_Coordinates(self.file_path, (self.ui.label.width(), self.ui.label.height()))
         self.a1 = area.get_coordinates(self.a1, self.a2, 1)
         self.a2 = area.get_coordinates(self.a2, self.a1, 2)
@@ -86,7 +87,7 @@ class CameraFeedWindow(QMainWindow):
             self.running = True
 
             # 🔁 Re-create algorithm to reset memory
-            self.algo = Algorithm_Count(self.file_path, self.a1, self.a2, (self.ui.label.width(), self.ui.label.height()))
+            self.algo = Algorithm_Count(self.file_path, self.a1, self.a2, (self.ui.label.width(), self.ui.label.height()), self.coord_point)
             self.frame_generator = self.algo.main()
 
             # Start fresh capture thread
@@ -239,10 +240,10 @@ class CameraFeedWindow(QMainWindow):
     
     def clearUiMem(self):
         if hasattr(self, "animation"):
-                if self.animation.state() == QPropertyAnimation.Running:
-                    self.animation.stop()
-                self.animation.deleteLater()  # Mark for memory cleanup
-                self.animation = None
+            if self.animation.state() == QPropertyAnimation.Running:
+                self.animation.stop()
+            self.animation.deleteLater()  # Mark for memory cleanup
+            self.animation = None
 
 
 if __name__ == "__main__":
