@@ -35,9 +35,9 @@ class MySqlManager:
         data = self.cursor.fetchall()
         
         model = QStandardItemModel()
-        model.setHorizontalHeaderLabels(["ID", "DATE", "FACE CAPTURE"])
+        model.setHorizontalHeaderLabels(["ID", "DATE", "TIME", "FACE CAPTURE"])
 
-        last_col_index = 2  # The Image column is at index 3 (0-based)
+        last_col_index = 3 # The Image column is at index 3 (0-based)
 
         # Iterate through each row of data
         for row_data in data:
