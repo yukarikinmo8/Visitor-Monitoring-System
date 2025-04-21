@@ -70,7 +70,7 @@ class exportPDF:
             painter.end()
             msg = QMessageBox()
             msg.setText(f"PDF exported to: {filePath}")
-            msg.setWindowTitle("Info")
+            msg.setWindowTitle("Pdf Export Success")
             msg.setStandardButtons(QMessageBox.Ok)
             msg.exec_()
             
@@ -80,7 +80,7 @@ class exportPDF:
                 painter.end()
             painter.end()
             msg = QMessageBox()
-            msg.setText(f"Error exporting table to PDF: {e}")
+            msg.setText(f"Pdf Export Failed: {e}")
             msg.setWindowTitle("Info")
             msg.setStandardButtons(QMessageBox.Ok)
             msg.exec_()
