@@ -38,6 +38,9 @@ class CameraFeedWindow(QMainWindow):
         self.ui.logs_lbl.setVisible(False)
         self.ui.lvf_lbl.setVisible(False)
 
+        self.video_writer = None
+        self.save_video = True
+
         # TODO: access ui point for area
         self.coord_point = (0.5, 0.04) # default coordinates for the area of interest x=50% y=4%
         self.area1 = [(261, 434), (337, 428), (522, 516), (450, 537)] # coordinates for the area of interest
@@ -98,6 +101,17 @@ class CameraFeedWindow(QMainWindow):
             self.timer.start(30)
             self.ui.start_btn.setEnabled(False)
             self.ui.stop_btn.setEnabled(True)
+
+            if self.save_video:
+                output_dir = "recordings"
+                os.makedirs(output_dir, exist_ok=True)
+                filename = f"processed_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.avi"
+                filepath = os.path.join(output_dir, filename)
+                
+                fourcc = cv2.VideoWriter_fourcc(*'XVID')
+                size = (self.ui.label.width(), self.ui.label.height())
+                self.video_writer = cv2.VideoWriter(filepath, fourcc, 24.0, size)
+
         else:
             print("Coordinates not set.")
         return
@@ -119,6 +133,9 @@ class CameraFeedWindow(QMainWindow):
             self.show_face_crops(frame, self.ui.label)
             self.update_cap(result)
             self.save_crop_faces(result)
+            
+            if self.save_video and self.video_writer is not None:
+                self.video_writer.write(frame)
 
     def stop_feed(self):
         self.running = False
@@ -134,6 +151,10 @@ class CameraFeedWindow(QMainWindow):
 
         self.ui.start_btn.setEnabled(True)
         self.ui.stop_btn.setEnabled(False)
+
+        if self.video_writer:
+            self.video_writer.release()
+            self.video_writer = None
 
     def save_crop_faces(self, result):
         processed_person_ids = set()
