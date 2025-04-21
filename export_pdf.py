@@ -1,6 +1,6 @@
 from PySide6.QtGui import QPainter, QPdfWriter, QFont, QPageSize
 from PySide6.QtCore import Qt,QMarginsF,QSortFilterProxyModel
-from PySide6.QtWidgets import QTableView
+from PySide6.QtWidgets import QMessageBox
 import os
 
 class exportPDF:
@@ -68,9 +68,20 @@ class exportPDF:
                 y += row_height
 
             painter.end()
-            print(f"PDF exported to: {filePath}")
+            msg = QMessageBox()
+            msg.setText(f"PDF exported to: {filePath}")
+            msg.setWindowTitle("Info")
+            msg.setStandardButtons(QMessageBox.Ok)
+            msg.exec_()
+            
 
         except Exception as e:
             if painter.isActive():
                 painter.end()
-            print(f"Error exporting table to PDF: {e}")
+            painter.end()
+            msg = QMessageBox()
+            msg.setText(f"Error exporting table to PDF: {e}")
+            msg.setWindowTitle("Info")
+            msg.setStandardButtons(QMessageBox.Ok)
+            msg.exec_()
+            
