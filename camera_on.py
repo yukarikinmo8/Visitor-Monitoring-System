@@ -7,6 +7,7 @@ import pickle
 import zlib
 import threading
 from queue import Queue
+import shutil
 
 from PySide6.QtCore import QTimer, Qt
 from PySide6.QtGui import QImage, QPixmap
@@ -14,6 +15,7 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QTableWidgetItem
 from PySide6.QtCore import QPropertyAnimation
 from PySide6.QtCore import QPropertyAnimation, QEasingCurve
 from PySide6.QtGui import QStandardItemModel, QStandardItem
+from PySide6.QtWidgets import QFileDialog
 
 from database_module import MySqlManager 
 from counter_mod import Algorithm_Count
@@ -124,12 +126,19 @@ class CameraFeedWindow(QMainWindow):
             if self.save_video:
                 output_dir = "recordings"
                 os.makedirs(output_dir, exist_ok=True)
-                filename = f"processed_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.avi"
-                filepath = os.path.join(output_dir, filename)
-                
+                # Create a folder with the current month and year
+                current_date = datetime.datetime.now()
+                month_year_folder = os.path.join(output_dir, current_date.strftime('%Y-%m'))
+                os.makedirs(month_year_folder, exist_ok=True)
+
+                # Set the filename to the current date
+                filename = f"{current_date.strftime('%Y-%m-%d')}.avi"
+                self.temp_video_path = os.path.join(month_year_folder, filename)
+                self.temp_video_path = os.path.join(output_dir, filename)
+
                 fourcc = cv2.VideoWriter_fourcc(*'XVID')
                 size = (self.ui.label.width(), self.ui.label.height())
-                self.video_writer = cv2.VideoWriter(filepath, fourcc, 24.0, size)
+                self.video_writer = cv2.VideoWriter(self.temp_video_path, fourcc, 24.0, size)
 
         else:
             print("Coordinates not set.")
@@ -171,9 +180,31 @@ class CameraFeedWindow(QMainWindow):
         self.ui.start_btn.setEnabled(True)
         self.ui.stop_btn.setEnabled(False)
 
-        if self.video_writer:
+        # 💾 Save processed video if enabled
+        if self.save_video and self.video_writer:
             self.video_writer.release()
             self.video_writer = None
+
+            # Show save dialog
+            current_date = datetime.datetime.now().strftime('%Y-%m-%d')
+            default_filename = f"processed_video_{current_date}.avi"
+            file_path, _ = QFileDialog.getSaveFileName(
+                self, "Save Processed Video", 
+                default_filename, 
+                "AVI Files (*.avi);;All Files (*)"
+            )
+
+            if file_path:
+                # Move temp file to selected location
+                try:
+                    shutil.move(self.temp_video_path, file_path)  # Use shutil.move instead of os.rename
+                    print(f"Video saved to: {file_path}")
+                except Exception as e:
+                    print(f"Error saving video: {e}")
+            else:
+                # User canceled - delete temp file
+                if os.path.exists(self.temp_video_path):
+                    os.remove(self.temp_video_path)
 
     def save_crop_faces(self, result):
         processed_person_ids = set()
