@@ -8,6 +8,7 @@ import zlib
 import threading
 from queue import Queue
 import shutil
+import uuid
 
 from PySide6.QtCore import QTimer, Qt
 from PySide6.QtGui import QImage, QPixmap
@@ -55,6 +56,8 @@ class CameraFeedWindow(QMainWindow):
 
         # Initialize database and export functionality
         self._initialize_database_and_export()
+
+        self.person_uuid_map = {}
 
     def _initialize_ui(self):
         """Set up UI elements and connect signals."""
@@ -161,11 +164,17 @@ class CameraFeedWindow(QMainWindow):
     def update_frame(self):
         if not self.frame_queue.empty():
             frame, result = self.frame_queue.get()
-            self.last_result = result  # Save for use in other functions
+
+            uuid_result = {'entering_details': {}} # Initialize with empty dictionary
+            for person_id, details in result['entering_details'].items(): # Iterate through each person_id and details
+                uid = self.get_uuid_for_person(person_id) 
+                uuid_result['entering_details'][uid] = details # Store details with UUID as key
+
+            self.last_result = uuid_result
             self.show_face_crops(frame, self.ui.label)
-            self.update_cap(result)
-            self.save_crop_faces(result)
-            self.save_result_to_database(result)
+            self.update_cap(uuid_result)
+            self.save_crop_faces(uuid_result)
+            self.save_result_to_database(uuid_result)
             
             if self.save_video and self.video_writer is not None:
                 self.video_writer.write(frame)
@@ -348,6 +357,12 @@ class CameraFeedWindow(QMainWindow):
             # Optionally, refresh filtered table too
             selected_date = self.ui.dateFilter_cbx.currentText()
             self.onDateChanged(selected_date)
+
+    def get_uuid_for_person(self, person_id):
+        """"Generate or retrieve a UUID for a given person ID."""
+        if person_id not in self.person_uuid_map:
+            self.person_uuid_map[person_id] = str(uuid.uuid4())
+        return self.person_uuid_map[person_id]
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
