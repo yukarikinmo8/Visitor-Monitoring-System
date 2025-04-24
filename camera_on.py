@@ -29,6 +29,7 @@ from datetime import date
 class CameraFeedWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.msm = MySqlManager()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
@@ -78,20 +79,22 @@ class CameraFeedWindow(QMainWindow):
         self.ui.cam_btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(1))
         self.ui.logs_btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(2))
         self.ui.settings_btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(3))
+        self.ui.export_btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(4))
 
-    def _initialize_database_and_export(self):
-        """Set up database manager and export functionality."""
-        msm = MySqlManager()
+    def _initialize_database_and_export(self):       
         pdf = exportPDF()
-        date_today = date.today()
-        file_path_export = "Logs for " + date_today.strftime("%Y-%m-%d") + ".pdf"
+        date_today = date.today()   
 
-        # Configure logs table
         self.ui.logs_tbl.setAlternatingRowColors(True)
-        msm.fillLogsTable(self.ui.logs_tbl)
-
-        # Connect export button
-        self.ui.export_btn.clicked.connect(lambda: pdf.exportTableToPDF(self.ui.logs_tbl, file_path_export))
+        self.msm.fillLogsTable(self.ui.logs_tbl)
+        self.msm.fillComboBox(self.ui.dateFilter_cbx)
+        self.onDateChanged(self.ui.dateFilter_cbx.currentText())  
+        self.ui.dateFilter_cbx.currentTextChanged.connect(self.onDateChanged)    
+        self.ui.export_btn2.clicked.connect(
+            lambda: pdf.exportTableToPDF(
+                self.ui.export_tbl, "Logs for " + self.ui.dateFilter_cbx.currentText() + ".pdf"
+            )
+        ) 
 
     def start_feed(self):
         self.running = False  # stop any previous loop
@@ -180,7 +183,6 @@ class CameraFeedWindow(QMainWindow):
         self.ui.start_btn.setEnabled(True)
         self.ui.stop_btn.setEnabled(False)
 
-        # 💾 Save processed video if enabled
         if self.save_video and self.video_writer:
             self.video_writer.release()
             self.video_writer = None
@@ -234,7 +236,6 @@ class CameraFeedWindow(QMainWindow):
                 processed_person_ids.add(person_id)
             except Exception as e:
                 print(f"Error saving face {person_id}: {e}")
-
 
     def show_face_crops(self, face_crops, name_label):
         face_resized = cv2.resize(face_crops, (name_label.width(), name_label.height()), interpolation=cv2.INTER_LINEAR)
@@ -317,6 +318,8 @@ class CameraFeedWindow(QMainWindow):
             self.animation.deleteLater()  # Mark for memory cleanup
             self.animation = None
 
+    def onDateChanged(self, selected_date):
+        self.msm.fillExportTable(selected_date, self.ui.export_tbl)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
