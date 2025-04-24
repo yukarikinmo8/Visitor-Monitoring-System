@@ -95,6 +95,7 @@ class CameraFeedWindow(QMainWindow):
                 self.ui.export_tbl, "Logs for " + self.ui.dateFilter_cbx.currentText() + ".pdf"
             )
         ) 
+        self.ui.stackedWidget.currentChanged.connect(self.onPageChanged)
 
     def start_feed(self):
         self.running = False  # stop any previous loop
@@ -164,6 +165,7 @@ class CameraFeedWindow(QMainWindow):
             self.show_face_crops(frame, self.ui.label)
             self.update_cap(result)
             self.save_crop_faces(result)
+            self.save_result_to_database(result)
             
             if self.save_video and self.video_writer is not None:
                 self.video_writer.write(frame)
@@ -207,6 +209,23 @@ class CameraFeedWindow(QMainWindow):
                 # User canceled - delete temp file
                 if os.path.exists(self.temp_video_path):
                     os.remove(self.temp_video_path)
+
+    def save_result_to_database(self, result):
+        """Save the result data to the database."""
+        try:
+            for person_id, details in result['entering_details'].items():
+                # Example data to save
+                face_crop = zlib.compress(pickle.dumps(details['face_crops']))
+                timestamp = details['time'].replace(':', '-')
+                project_dir = os.path.dirname(os.path.abspath(__file__))
+                directory_name = os.path.join(project_dir, "SavedFaces", datetime.datetime.now().strftime('%Y-%m-%d'), f"{person_id}-face_{timestamp}.jpg")
+
+                # Call the database manager to save the data
+                self.msm.insertLogEntries(person_id, details['date'], details['time'], directory_name)
+
+
+        except Exception as e:
+            print(f"Error saving result to database: {e}")
 
     def save_crop_faces(self, result):
         processed_person_ids = set()
@@ -320,6 +339,15 @@ class CameraFeedWindow(QMainWindow):
 
     def onDateChanged(self, selected_date):
         self.msm.fillExportTable(selected_date, self.ui.export_tbl)
+
+    def onPageChanged(self, index):
+        if index == 2:  # for example, index 2 is your logs page
+            self.msm.fillLogsTable(self.ui.logs_tbl)
+            self.msm.fillComboBox(self.ui.dateFilter_cbx)
+
+            # Optionally, refresh filtered table too
+            selected_date = self.ui.dateFilter_cbx.currentText()
+            self.onDateChanged(selected_date)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
