@@ -275,6 +275,7 @@ class CameraFeedWindow(QMainWindow):
         name_label.setPixmap(face_pixmap)
 
     def update_cap(self, result):
+        """""Update the UI with the face crops."""
         temp = []
         for person_id, details in result['entering_details'].items():
             temp.insert(0, details['face_crops'])
