@@ -8,6 +8,7 @@ import zlib
 import threading
 from queue import Queue
 import shutil
+import uuid
 
 from PySide6.QtCore import QTimer, Qt
 from PySide6.QtGui import QImage, QPixmap
@@ -56,6 +57,8 @@ class CameraFeedWindow(QMainWindow):
         # Initialize database and export functionality
         self._initialize_database_and_export()
 
+        self.person_uuid_map = {}
+
     def _initialize_ui(self):
         """Set up UI elements and connect signals."""
         # Disable stop button initially
@@ -95,6 +98,7 @@ class CameraFeedWindow(QMainWindow):
                 self.ui.export_tbl, "Logs for " + self.ui.dateFilter_cbx.currentText() + ".pdf"
             )
         ) 
+        self.ui.stackedWidget.currentChanged.connect(self.onPageChanged)
 
     def start_feed(self):
         self.running = False  # stop any previous loop
@@ -160,10 +164,17 @@ class CameraFeedWindow(QMainWindow):
     def update_frame(self):
         if not self.frame_queue.empty():
             frame, result = self.frame_queue.get()
-            self.last_result = result  # Save for use in other functions
+
+            uuid_result = {'entering_details': {}} # Initialize with empty dictionary
+            for person_id, details in result['entering_details'].items(): # Iterate through each person_id and details
+                uid = self.get_uuid_for_person(person_id) 
+                uuid_result['entering_details'][uid] = details # Store details with UUID as key
+
+            self.last_result = uuid_result
             self.show_face_crops(frame, self.ui.label)
-            self.update_cap(result)
-            self.save_crop_faces(result)
+            self.update_cap(uuid_result)
+            self.save_crop_faces(uuid_result)
+            self.save_result_to_database(uuid_result)
             
             if self.save_video and self.video_writer is not None:
                 self.video_writer.write(frame)
@@ -208,6 +219,23 @@ class CameraFeedWindow(QMainWindow):
                 if os.path.exists(self.temp_video_path):
                     os.remove(self.temp_video_path)
 
+    def save_result_to_database(self, result):
+        """Save the result data to the database."""
+        try:
+            for person_id, details in result['entering_details'].items():
+                # Example data to save
+                face_crop = zlib.compress(pickle.dumps(details['face_crops']))
+                timestamp = details['time'].replace(':', '-')
+                project_dir = os.path.dirname(os.path.abspath(__file__))
+                directory_name = os.path.join(project_dir, "SavedFaces", datetime.datetime.now().strftime('%Y-%m-%d'), f"{person_id}-face_{timestamp}.jpg")
+
+                # Call the database manager to save the data
+                self.msm.insertLogEntries(person_id, details['date'], details['time'], directory_name)
+
+
+        except Exception as e:
+            print(f"Error saving result to database: {e}")
+
     def save_crop_faces(self, result):
         processed_person_ids = set()
         
@@ -247,6 +275,7 @@ class CameraFeedWindow(QMainWindow):
         name_label.setPixmap(face_pixmap)
 
     def update_cap(self, result):
+        """""Update the UI with the face crops."""
         temp = []
         for person_id, details in result['entering_details'].items():
             temp.insert(0, details['face_crops'])
@@ -320,6 +349,21 @@ class CameraFeedWindow(QMainWindow):
 
     def onDateChanged(self, selected_date):
         self.msm.fillExportTable(selected_date, self.ui.export_tbl)
+
+    def onPageChanged(self, index):
+        if index == 2:  # for example, index 2 is your logs page
+            self.msm.fillLogsTable(self.ui.logs_tbl)
+            self.msm.fillComboBox(self.ui.dateFilter_cbx)
+
+            # Optionally, refresh filtered table too
+            selected_date = self.ui.dateFilter_cbx.currentText()
+            self.onDateChanged(selected_date)
+
+    def get_uuid_for_person(self, person_id):
+        """"Generate or retrieve a UUID for a given person ID."""
+        if person_id not in self.person_uuid_map:
+            self.person_uuid_map[person_id] = str(uuid.uuid4())
+        return self.person_uuid_map[person_id]
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

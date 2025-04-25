@@ -23,7 +23,7 @@ class ImageDelegate(QStyledItemDelegate):
 class MySqlManager:
     model = QStandardItemModel()
     def __init__(self):
-        self.dbConnStr = pymysql.connect(host = "localhost",user = "root", passwd="root", database="nh.vms")
+        self.dbConnStr = pymysql.connect(host = "localhost",user = "root", passwd="admin", database="nh.vms")
         self.cursor = self.dbConnStr.cursor()
 
         #connection testing
@@ -146,14 +146,17 @@ class MySqlManager:
         for i in range(model.columnCount()):
             table.setColumnWidth(i, table.width() // model.columnCount())
 
-    def insertLogEntries(self, results):
+    def insertLogEntries(self, id, date, time, faceCrop):
+        self.cursor.execute("SELECT COUNT(*) FROM `logs.tbl` WHERE time = %s", (time,))
+        if self.cursor.fetchone()[0] > 0:
+            logging.debug(f"Skipping insert: Time {time} already exists.")
+            return  # Skip inserting duplicates
+
         query = """
-            INSERT INTO `logs.tbl` (id, date, time, face_crop)
+            INSERT INTO `logs.tbl` (person_id, date, time, face_crops)
             VALUES (%s, %s, %s, %s)
         """
-       
-        self.cursor.execute(query, (results.Id, results.Date, results.Time, results.FaceCrops))
-        
+        self.cursor.execute(query, (id, date, time, faceCrop))
         self.dbConnStr.commit()
 
     def imageLoader(self, imagePath):
