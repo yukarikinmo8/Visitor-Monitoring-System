@@ -10,11 +10,10 @@ from queue import Queue
 import shutil
 import uuid
 
-from PySide6.QtCore import QTimer, Qt
-from PySide6.QtGui import QImage, QPixmap
-from PySide6.QtWidgets import QApplication, QMainWindow, QTableWidgetItem
-from PySide6.QtCore import QPropertyAnimation
-from PySide6.QtCore import QPropertyAnimation, QEasingCurve
+from PySide6.QtCore import QTimer, QPoint
+from PySide6.QtGui import QImage, QPixmap, QAction
+from PySide6.QtWidgets import QApplication, QMainWindow, QTableWidgetItem,  QWidget, QMenu, QMessageBox
+from PySide6.QtCore import QPropertyAnimation, Qt
 from PySide6.QtGui import QStandardItemModel, QStandardItem
 from PySide6.QtWidgets import QFileDialog
 
@@ -23,9 +22,14 @@ from counter_mod import Algorithm_Count
 from set_entry import Get_Coordinates
 from export_pdf import exportPDF
 from main_ui import Ui_MainWindow  # Import the generated UI file
+from image_comparison import Ui_Form
 
 from datetime import date
 
+class PopupWindow(QWidget, Ui_Form):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self) 
 
 class CameraFeedWindow(QMainWindow):
     def __init__(self):
@@ -58,6 +62,8 @@ class CameraFeedWindow(QMainWindow):
         self._initialize_database_and_export()
 
         self.person_uuid_map = {}
+        self.ui.logs_tbl.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.ui.logs_tbl.customContextMenuRequested.connect(self.open_menu)
 
     def _initialize_ui(self):
         """Set up UI elements and connect signals."""
@@ -364,6 +370,36 @@ class CameraFeedWindow(QMainWindow):
         if person_id not in self.person_uuid_map:
             self.person_uuid_map[person_id] = str(uuid.uuid4())
         return self.person_uuid_map[person_id]
+    
+    def open_menu(self, position: QPoint):
+        index = self.ui.logs_tbl.indexAt(position)
+        if not index.isValid():
+            return  # Clicked outside any cell
+        
+        # Create the menu
+        menu = QMenu()
+        
+        imageSearch_action = QAction("Search for Similar Image", self)
+                
+        # Connect actions
+        imageSearch_action.triggered.connect(lambda: self.show_popup())
+        
+        
+        # Add actions to the menu
+        menu.addAction(imageSearch_action)        
+        
+        # Show the menu
+        menu.exec(self.ui.logs_tbl.viewport().mapToGlobal(position))
+        return index
+
+        
+    
+    def show_popup(self):
+        # Create an instance of the PopupWindow and show it
+        self.popup = PopupWindow()
+        self.popup.show()  # Display the popup widget (non-modal)
+
+    
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
