@@ -7,66 +7,104 @@ import pickle
 import zlib
 import threading
 from queue import Queue
+import shutil
+import uuid
 
-from PySide6.QtCore import QTimer, Qt
-from PySide6.QtGui import QImage, QPixmap
-from PySide6.QtWidgets import QApplication, QMainWindow, QTableWidgetItem
-from PySide6.QtCore import QPropertyAnimation
-from PySide6.QtCore import QPropertyAnimation, QEasingCurve
+from PySide6.QtCore import QTimer, QPoint
+from PySide6.QtGui import QImage, QPixmap, QAction
+from PySide6.QtWidgets import QApplication, QMainWindow, QTableWidgetItem,  QWidget, QMenu, QMessageBox
+from PySide6.QtCore import QPropertyAnimation, Qt
 from PySide6.QtGui import QStandardItemModel, QStandardItem
+from PySide6.QtWidgets import QFileDialog
 
 from database_module import MySqlManager 
 from counter_mod import Algorithm_Count
 from set_entry import Get_Coordinates
 from export_pdf import exportPDF
 from main_ui import Ui_MainWindow  # Import the generated UI file
+from image_comparison import Ui_Form
 
 from datetime import date
 
+class PopupWindow(QWidget, Ui_Form):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self) 
 
 class CameraFeedWindow(QMainWindow):
     def __init__(self):
-        msm = MySqlManager()
-        pdf = exportPDF()
         super().__init__()
-        self.ui = Ui_MainWindow() 
+        self.msm = MySqlManager()
+        self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+
+        # Initialize video writer and settings
+        self.video_writer = None
+        self.save_video = True
+
+        # Default coordinates and file path
+        self.coord_point = (0.5, 0.04)
+        self.area1 = [(261, 434), (337, 428), (522, 516), (450, 537)]
+        self.area2 = [(154, 450), (246, 438), (406, 541), (292, 548)]
+        self.file_path = 'Sample Test File\\test_video.mp4'
+
+        # Frame queue for processing
+        self.frame_queue = Queue(maxsize=1)
+
+        # Timer for updating frames
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.update_frame)
+
+        # Initialize UI elements
+        self._initialize_ui()
+
+        # Initialize database and export functionality
+        self._initialize_database_and_export()
+
+        self.person_uuid_map = {}
+        self.ui.logs_tbl.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.ui.logs_tbl.customContextMenuRequested.connect(self.open_menu)
+
+    def _initialize_ui(self):
+        """Set up UI elements and connect signals."""
+        # Disable stop button initially
         self.ui.stop_btn.setEnabled(False)
+
+        # Hide navigation labels
         self.ui.dash_lbl.setVisible(False)
         self.ui.logo_lbl.setVisible(False)
         self.ui.setts_lbl.setVisible(False)
         self.ui.logs_lbl.setVisible(False)
         self.ui.lvf_lbl.setVisible(False)
 
-        # self.area1 = [(300, 300), (400, 559), (667, 675), (632, 681)]
-        # self.area2 = [(110, 400), (313, 566), (579, 703), (624, 694)]
-        # self.file_path = 'Sample Test File\\test_video.mp4'
-        self.file_path = 0
-        
-        self.frame_queue = Queue(maxsize=1)
-
+        # Set default stacked widget page
         self.ui.stackedWidget.setCurrentIndex(0)
-        # self.ui.cap_4.setPixmap(QPixmap())
 
-        # Timer for updating frames
-        self.timer = QTimer(self)
-        self.timer.timeout.connect(self.update_frame)
- 
-        # Connect the "On" button to start the feed
+        # Connect button signals
         self.ui.start_btn.clicked.connect(self.start_feed)
         self.ui.stop_btn.clicked.connect(self.stop_feed)
         self.ui.menu_btn.clicked.connect(self.navbar_toggle)
-        self.ui.dash_btn.clicked.connect(lambda:self.ui.stackedWidget.setCurrentIndex(0))
-        self.ui.cam_btn.clicked.connect(lambda:self.ui.stackedWidget.setCurrentIndex(1))
-        self.ui.logs_btn.clicked.connect(lambda:self.ui.stackedWidget.setCurrentIndex(2))
-        self.ui.settings_btn.clicked.connect(lambda:self.ui.stackedWidget.setCurrentIndex(3))
+        self.ui.dash_btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(0))
+        self.ui.cam_btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(1))
+        self.ui.logs_btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(2))
+        self.ui.settings_btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(3))
+        self.ui.export_btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(4))
 
-        date_today = date.today()
-        file_path_export = "Logs for " + date_today.strftime("%Y-%m-%d") + ".pdf"
-        
+    def _initialize_database_and_export(self):       
+        pdf = exportPDF()
+        date_today = date.today()   
+
         self.ui.logs_tbl.setAlternatingRowColors(True)
-        msm.fillLogsTable(self.ui.logs_tbl);      
-        self.ui.export_btn.clicked.connect(lambda: pdf.exportTableToPDF(self.ui.logs_tbl, file_path_export))
+        self.msm.fillLogsTable(self.ui.logs_tbl)
+        self.msm.fillComboBox(self.ui.dateFilter_cbx)
+        self.onDateChanged(self.ui.dateFilter_cbx.currentText())  
+        self.ui.dateFilter_cbx.currentTextChanged.connect(self.onDateChanged)    
+        self.ui.export_btn2.clicked.connect(
+            lambda: pdf.exportTableToPDF(
+                self.ui.export_tbl, "Logs for " + self.ui.dateFilter_cbx.currentText() + ".pdf"
+            )
+        ) 
+        self.ui.stackedWidget.currentChanged.connect(self.onPageChanged)
 
     def start_feed(self):
         self.running = False  # stop any previous loop
@@ -97,6 +135,24 @@ class CameraFeedWindow(QMainWindow):
             self.timer.start(30)
             self.ui.start_btn.setEnabled(False)
             self.ui.stop_btn.setEnabled(True)
+
+            if self.save_video:
+                output_dir = "recordings"
+                os.makedirs(output_dir, exist_ok=True)
+                # Create a folder with the current month and year
+                current_date = datetime.datetime.now()
+                month_year_folder = os.path.join(output_dir, current_date.strftime('%Y-%m'))
+                os.makedirs(month_year_folder, exist_ok=True)
+
+                # Set the filename to the current date
+                filename = f"{current_date.strftime('%Y-%m-%d')}.avi"
+                self.temp_video_path = os.path.join(month_year_folder, filename)
+                self.temp_video_path = os.path.join(output_dir, filename)
+
+                fourcc = cv2.VideoWriter_fourcc(*'XVID')
+                size = (self.ui.label.width(), self.ui.label.height())
+                self.video_writer = cv2.VideoWriter(self.temp_video_path, fourcc, 24.0, size)
+
         else:
             print("Coordinates not set.")
         return
@@ -114,10 +170,20 @@ class CameraFeedWindow(QMainWindow):
     def update_frame(self):
         if not self.frame_queue.empty():
             frame, result = self.frame_queue.get()
-            self.last_result = result  # Save for use in other functions
+
+            uuid_result = {'entering_details': {}} # Initialize with empty dictionary
+            for person_id, details in result['entering_details'].items(): # Iterate through each person_id and details
+                uid = self.get_uuid_for_person(person_id) 
+                uuid_result['entering_details'][uid] = details # Store details with UUID as key
+
+            self.last_result = uuid_result
             self.show_face_crops(frame, self.ui.label)
-            self.update_cap(result)
-            self.save_crop_faces(result)
+            self.update_cap(uuid_result)
+            self.save_crop_faces(uuid_result)
+            self.save_result_to_database(uuid_result)
+            
+            if self.save_video and self.video_writer is not None:
+                self.video_writer.write(frame)
 
     def stop_feed(self):
         self.running = False
@@ -133,6 +199,48 @@ class CameraFeedWindow(QMainWindow):
 
         self.ui.start_btn.setEnabled(True)
         self.ui.stop_btn.setEnabled(False)
+
+        if self.save_video and self.video_writer:
+            self.video_writer.release()
+            self.video_writer = None
+
+            # Show save dialog
+            current_date = datetime.datetime.now().strftime('%Y-%m-%d')
+            default_filename = f"processed_video_{current_date}.avi"
+            file_path, _ = QFileDialog.getSaveFileName(
+                self, "Save Processed Video", 
+                default_filename, 
+                "AVI Files (*.avi);;All Files (*)"
+            )
+
+            if file_path:
+                # Move temp file to selected location
+                try:
+                    shutil.move(self.temp_video_path, file_path)  # Use shutil.move instead of os.rename
+                    print(f"Video saved to: {file_path}")
+                except Exception as e:
+                    print(f"Error saving video: {e}")
+            else:
+                # User canceled - delete temp file
+                if os.path.exists(self.temp_video_path):
+                    os.remove(self.temp_video_path)
+
+    def save_result_to_database(self, result):
+        """Save the result data to the database."""
+        try:
+            for person_id, details in result['entering_details'].items():
+                # Example data to save
+                face_crop = zlib.compress(pickle.dumps(details['face_crops']))
+                timestamp = details['time'].replace(':', '-')
+                project_dir = os.path.dirname(os.path.abspath(__file__))
+                directory_name = os.path.join(project_dir, "SavedFaces", datetime.datetime.now().strftime('%Y-%m-%d'), f"{person_id}-face_{timestamp}.jpg")
+
+                # Call the database manager to save the data
+                self.msm.insertLogEntries(person_id, details['date'], details['time'], directory_name)
+
+
+        except Exception as e:
+            print(f"Error saving result to database: {e}")
 
     def save_crop_faces(self, result):
         processed_person_ids = set()
@@ -153,16 +261,15 @@ class CameraFeedWindow(QMainWindow):
                 continue
             try:
                 face_crop = pickle.loads(zlib.decompress(details['face_crops']))
-                
-                # Ensure 'details['time']' is a datetime object
-                if isinstance(details['time'], str):
-                    details['time'] = datetime.datetime.fromisoformat(details['time'])
-                filename = os.path.join(directory_name, f"face_{details['time'].strftime('%H-%M-%S')}.jpg")
+                if isinstance(details['time'], datetime.datetime):
+                    time_str = details['time'].strftime('%H-%M-%S')
+                else:
+                    time_str = details['time'].replace(':', '-')
+                filename = os.path.join(directory_name, f"{person_id}-face_{time_str}.jpg")
                 cv2.imwrite(filename, face_crop)
                 processed_person_ids.add(person_id)
             except Exception as e:
                 print(f"Error saving face {person_id}: {e}")
-
 
     def show_face_crops(self, face_crops, name_label):
         face_resized = cv2.resize(face_crops, (name_label.width(), name_label.height()), interpolation=cv2.INTER_LINEAR)
@@ -174,6 +281,7 @@ class CameraFeedWindow(QMainWindow):
         name_label.setPixmap(face_pixmap)
 
     def update_cap(self, result):
+        """""Update the UI with the face crops."""
         temp = []
         for person_id, details in result['entering_details'].items():
             temp.insert(0, details['face_crops'])
@@ -245,6 +353,53 @@ class CameraFeedWindow(QMainWindow):
             self.animation.deleteLater()  # Mark for memory cleanup
             self.animation = None
 
+    def onDateChanged(self, selected_date):
+        self.msm.fillExportTable(selected_date, self.ui.export_tbl)
+
+    def onPageChanged(self, index):
+        if index == 2:  # for example, index 2 is your logs page
+            self.msm.fillLogsTable(self.ui.logs_tbl)
+            self.msm.fillComboBox(self.ui.dateFilter_cbx)
+
+            # Optionally, refresh filtered table too
+            selected_date = self.ui.dateFilter_cbx.currentText()
+            self.onDateChanged(selected_date)
+
+    def get_uuid_for_person(self, person_id):
+        """"Generate or retrieve a UUID for a given person ID."""
+        if person_id not in self.person_uuid_map:
+            self.person_uuid_map[person_id] = str(uuid.uuid4())
+        return self.person_uuid_map[person_id]
+    
+    def open_menu(self, position: QPoint):
+        index = self.ui.logs_tbl.indexAt(position)
+        if not index.isValid():
+            return  # Clicked outside any cell
+        
+        # Create the menu
+        menu = QMenu()
+        
+        imageSearch_action = QAction("Search for Similar Image", self)
+                
+        # Connect actions
+        imageSearch_action.triggered.connect(lambda: self.show_popup())
+        
+        
+        # Add actions to the menu
+        menu.addAction(imageSearch_action)        
+        
+        # Show the menu
+        menu.exec(self.ui.logs_tbl.viewport().mapToGlobal(position))
+        return index
+
+        
+    
+    def show_popup(self):
+        # Create an instance of the PopupWindow and show it
+        self.popup = PopupWindow()
+        self.popup.show()  # Display the popup widget (non-modal)
+
+    
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

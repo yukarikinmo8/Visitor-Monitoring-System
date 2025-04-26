@@ -15,9 +15,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QHeaderView, QLabel,
-    QLineEdit, QMainWindow, QPushButton, QSizePolicy,
-    QStackedWidget, QTableView, QToolButton, QWidget)
+from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QHeaderView,
+    QLabel, QLineEdit, QMainWindow, QPushButton,
+    QSizePolicy, QStackedWidget, QTableView, QToolButton,
+    QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -441,6 +442,82 @@ class Ui_MainWindow(object):
 "    text-transform: uppercase; /* Makes text all caps */\n"
 "}")
         self.stackedWidget.addWidget(self.Settings)
+        self.export_page = QWidget()
+        self.export_page.setObjectName(u"export_page")
+        self.label_8 = QLabel(self.export_page)
+        self.label_8.setObjectName(u"label_8")
+        self.label_8.setGeometry(QRect(10, 30, 201, 31))
+        self.label_8.setStyleSheet(u"QLabel {\n"
+"    font-family: \"Inter\"i;\n"
+"    font-size: 30px; /* Adjust based on your UI scale */\n"
+"    font-weight: bold;\n"
+"    color: white;\n"
+"    letter-spacing: 1px; /* Adjust for spacing */\n"
+"    text-transform: uppercase; /* Makes text all caps */\n"
+"}")
+        self.export_tbl = QTableView(self.export_page)
+        self.export_tbl.setObjectName(u"export_tbl")
+        self.export_tbl.setGeometry(QRect(40, 200, 1271, 601))
+        self.export_tbl.setLayoutDirection(Qt.LeftToRight)
+        self.export_tbl.setStyleSheet(u"#export_tbl {\n"
+"    background-color: white;\n"
+"    color: black;\n"
+"    font-size: 20px;\n"
+" 	border: 1px solid white;\n"
+"    selection-background-color: #5897FB;\n"
+"    alternate-background-color:#dbe9f4;\n"
+"}\n"
+"\n"
+"#export_tbl::item:selected {\n"
+"    background-color: #a7c8fb;\n"
+"}\n"
+"\n"
+"#export_tbl QHeaderView::section {\n"
+"    background-color:#2c2f40;  /* Dark navy blue for header */\n"
+"    color: white;  /* White text */\n"
+"    font-size: 14px;  /* Optional: Adjust font size */\n"
+"    font-weight: bold;  /* Optional: Make text bold */\n"
+"    padding: 5px;  /* Optional: Adjust padding */\n"
+"    border: 1px solid #d3d3d3;  /* Border color for header */\n"
+"}\n"
+"")
+        self.dateFilter_cbx = QComboBox(self.export_page)
+        self.dateFilter_cbx.setObjectName(u"dateFilter_cbx")
+        self.dateFilter_cbx.setGeometry(QRect(40, 131, 571, 41))
+        self.dateFilter_cbx.setLayoutDirection(Qt.LeftToRight)
+        self.dateFilter_cbx.setStyleSheet(u"#dateFilter_cbx {\n"
+"    background-color: white;\n"
+"    color: black;\n"
+"    font-size: 20px;\n"
+" 	border: 1px solid white;\n"
+"    selection-background-color: #5897FB;\n"
+"    alternate-background-color:#dbe9f4;\n"
+"}")
+        self.export_btn2 = QPushButton(self.export_page)
+        self.export_btn2.setObjectName(u"export_btn2")
+        self.export_btn2.setGeometry(QRect(1020, 120, 291, 51))
+        self.export_btn2.setStyleSheet(u"#export_btn2{\n"
+"    background-color: #5897FB; /* Default color */\n"
+"    color: white;\n"
+"	font-size: 20px;\n"
+"    border-radius: 5px;\n"
+"}\n"
+"\n"
+"#export_btn2:hover{\n"
+"	background-color: #2F6CDF;\n"
+"}")
+        self.label_9 = QLabel(self.export_page)
+        self.label_9.setObjectName(u"label_9")
+        self.label_9.setGeometry(QRect(40, 90, 311, 31))
+        self.label_9.setStyleSheet(u"QLabel {\n"
+"    font-family: \"Inter\"i;\n"
+"    font-size: 15px; /* Adjust based on your UI scale */\n"
+"    font-weight: bold;\n"
+"    color: white;\n"
+"    letter-spacing: 1px; /* Adjust for spacing */\n"
+"    text-transform: uppercase; /* Makes text all caps */\n"
+"}")
+        self.stackedWidget.addWidget(self.export_page)
         MainWindow.setCentralWidget(self.centralwidget)
         self.stackedWidget.raise_()
         self.nav_bar.raise_()
@@ -476,8 +553,11 @@ class Ui_MainWindow(object):
         self.upload_btn.setText("")
         self.prec_btn.setText("")
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"LOGS", None))
-        self.export_btn.setText(QCoreApplication.translate("MainWindow", u"Export  PDF", None))
+        self.export_btn.setText(QCoreApplication.translate("MainWindow", u"Export to PDF", None))
         self.search_txt.setText(QCoreApplication.translate("MainWindow", u"Search", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"Settings", None))
+        self.label_8.setText(QCoreApplication.translate("MainWindow", u"Export PDF", None))
+        self.export_btn2.setText(QCoreApplication.translate("MainWindow", u"Export", None))
+        self.label_9.setText(QCoreApplication.translate("MainWindow", u"available dates for export:", None))
     # retranslateUi
 

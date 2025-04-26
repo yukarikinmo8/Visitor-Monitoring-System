@@ -155,7 +155,8 @@ class Algorithm_Count:
         if id in tracker_dict and cv2.pointPolygonTest(area_to, (cx, cy), False) >= 0:
             if id not in action_dict:
                 action_dict[id] = {
-                    'time': datetime.datetime.now().isoformat(),
+                    'date': datetime.datetime.now().date().isoformat(),
+                    'time': datetime.datetime.now().strftime("%H:%M:%S.%f"),
                     'duration': time.time() - tracker_dict[id]['time'],
                     'face_crops': self._safe_face_crop(x1, y1, x2, y2, frame)
                 }

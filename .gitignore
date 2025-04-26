@@ -16,6 +16,7 @@ __pycache__/
 Sample Test File/
 SavedFaces/
 yolo-Weights/
+recordings/
 
 # Other file types
 *.ui
