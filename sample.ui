@@ -370,8 +370,8 @@ background-color:#5897FB;
    <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
      <rect>
-      <x>120</x>
-      <y>0</y>
+      <x>130</x>
+      <y>-10</y>
       <width>1421</width>
       <height>821</height>
      </rect>
@@ -965,6 +965,168 @@ background-color:#5897FB;
       </property>
       <property name="text">
        <string>Settings</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="export_page">
+     <widget class="QPushButton" name="export_btn2">
+      <property name="geometry">
+       <rect>
+        <x>1020</x>
+        <y>120</y>
+        <width>291</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#export_btn2{
+    background-color: #5897FB; /* Default color */
+    color: white;
+	font-size: 20px;
+    border-radius: 5px;
+}
+
+#export_btn2:hover{
+	background-color: #2F6CDF;
+}</string>
+      </property>
+      <property name="text">
+       <string>Export</string>
+      </property>
+     </widget>
+     <widget class="QTableView" name="export_tbl">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>200</y>
+        <width>1271</width>
+        <height>601</height>
+       </rect>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#export_tbl {
+    background-color: white;
+    color: black;
+    font-size: 20px;
+ 	border: 1px solid white;
+    selection-background-color: #5897FB;
+    alternate-background-color:#dbe9f4;
+}
+
+#export_tbl::item:selected {
+    background-color: #a7c8fb;
+}
+
+#export_tbl::QHeaderView::section {
+    background-color:#2c2f40;  /* Dark navy blue for header */
+    color: white;  /* White text */
+    font-size: 14px;  /* Optional: Adjust font size */
+    font-weight: bold;  /* Optional: Make text bold */
+    padding: 5px;  /* Optional: Adjust padding */
+    border: 1px solid #d3d3d3;  /* Border color for header */
+}
+</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="dateFilter_cbx">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>141</y>
+        <width>521</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#dateFilter_cbx {
+    border: 2px solid #1D69E2;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 20px;
+    font-family: 'Roboto', sans-serif;
+    background-color: white;
+    color: black;
+}
+
+#dateFilter_cbx:hover {
+    border: 2px solid transparent;
+}
+
+#dateFilter_cbx:focus {
+    border: 2px solid transparent;
+    background-color: white;
+}
+
+#dateFilter_cbx::drop-down {
+    border-left: 1px solid transparent;
+    background-color: white;
+}
+
+#dateFilter_cbx QAbstractItemView {
+    background-color: white;
+    selection-background-color: #1D69E2;
+    selection-color: white;
+}
+
+#dateFilter_cbx QAbstractItemView::item {
+    padding: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+    color: black;
+}</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_3">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>201</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel {
+    font-family: &quot;Inter&quot;i;
+    font-size: 30px; /* Adjust based on your UI scale */
+    font-weight: bold;
+    color: white;
+    letter-spacing: 1px; /* Adjust for spacing */
+    text-transform: uppercase; /* Makes text all caps */
+}</string>
+      </property>
+      <property name="text">
+       <string>export pdf</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_8">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>120</y>
+        <width>261</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel {
+    font-family: &quot;Inter&quot;i;
+    font-size: 15px; /* Adjust based on your UI scale */
+    font-weight: bold;
+    color: white;
+    letter-spacing: 1px; /* Adjust for spacing */
+    text-transform: uppercase; /* Makes text all caps */
+}</string>
+      </property>
+      <property name="text">
+       <string>available dates for export:</string>
       </property>
      </widget>
     </widget>
