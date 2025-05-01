@@ -71,12 +71,8 @@ class CameraFeedWindow(QMainWindow):
         self.ui.stop_btn.setEnabled(False)
 
         # Hide navigation labels
-        self.ui.dash_lbl.setVisible(False)
-        self.ui.logo_lbl.setVisible(False)
-        self.ui.setts_lbl.setVisible(False)
-        self.ui.logs_lbl.setVisible(False)
-        self.ui.lvf_lbl.setVisible(False)
-
+        self.ui.logo_lbl.setVisible(False)        
+        self.ui.search_txt.textChanged.connect(self.onTextChanged)
         # Set default stacked widget page
         self.ui.stackedWidget.setCurrentIndex(0)
 
@@ -95,7 +91,10 @@ class CameraFeedWindow(QMainWindow):
         date_today = date.today()   
 
         self.ui.logs_tbl.setAlternatingRowColors(True)
+        self.ui.export_tbl.setAlternatingRowColors(True)
+        self.ui.logsPrev_tbl.setAlternatingRowColors(True)
         self.msm.fillLogsTable(self.ui.logs_tbl)
+        self.msm.fillLogsTable(self.ui.logsPrev_tbl) #for testing
         self.msm.fillComboBox(self.ui.dateFilter_cbx)
         self.onDateChanged(self.ui.dateFilter_cbx.currentText())  
         self.ui.dateFilter_cbx.currentTextChanged.connect(self.onDateChanged)    
@@ -314,14 +313,18 @@ class CameraFeedWindow(QMainWindow):
             self.animation.setEndValue(401)  # Expand or Collapse
             self.animation.start()
 
-            self.animation.finished.connect(lambda: self.ui.nav_bar.setFixedWidth(401))
+            self.animation.finished.connect(lambda: self.ui.nav_bar.setFixedWidth(300))
 
-            self.ui.menu_btn.setGeometry(340, 20, 50, 50)
-            self.ui.dash_lbl.setVisible(True)
+            self.ui.menu_btn.setGeometry(250, 0, 50, 50)
+            self.ui.dash_btn.setFixedWidth(300)
+            self.ui.dash_btn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+            self.ui.cam_btn.setFixedWidth(300)
+            self.ui.cam_btn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+            self.ui.logs_btn.setFixedWidth(300)
+            self.ui.logs_btn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+            self.ui.settings_btn.setFixedWidth(300)
+            self.ui.settings_btn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
             self.ui.logo_lbl.setVisible(True)
-            self.ui.setts_lbl.setVisible(True)
-            self.ui.logs_lbl.setVisible(True)
-            self.ui.lvf_lbl.setVisible(True)
 
         else: 
 
@@ -339,12 +342,17 @@ class CameraFeedWindow(QMainWindow):
             self.animation.finished.connect(lambda: self.update_ui()) 
         
     def update_ui(self):
-        self.ui.menu_btn.setGeometry(30, 20, 50, 50)
-        self.ui.dash_lbl.setVisible(False)
+        self.ui.menu_btn.setGeometry(0, 0, 111, 51)
+        self.ui.dash_btn.setFixedWidth(111)
+        self.ui.cam_btn.setFixedWidth(111)
+        self.ui.logs_btn.setFixedWidth(111)
+        self.ui.settings_btn.setFixedWidth(111)
+        self.ui.cam_btn.setToolButtonStyle(Qt.ToolButtonIconOnly)
+        self.ui.logs_btn.setToolButtonStyle(Qt.ToolButtonIconOnly)
+        self.ui.settings_btn.setToolButtonStyle(Qt.ToolButtonIconOnly)
+        self.ui.dash_btn.setToolButtonStyle(Qt.ToolButtonIconOnly)
+        self.ui.logo_lbl.setVisible(True)
         self.ui.logo_lbl.setVisible(False)
-        self.ui.setts_lbl.setVisible(False)
-        self.ui.logs_lbl.setVisible(False)
-        self.ui.lvf_lbl.setVisible(False)
     
     def clearUiMem(self):
         if hasattr(self, "animation"):
@@ -383,7 +391,7 @@ class CameraFeedWindow(QMainWindow):
                 
         # Connect actions
         imageSearch_action.triggered.connect(lambda: self.show_popup())
-        
+        self.ui.search_txt.place
         
         # Add actions to the menu
         menu.addAction(imageSearch_action)        
@@ -392,8 +400,11 @@ class CameraFeedWindow(QMainWindow):
         menu.exec(self.ui.logs_tbl.viewport().mapToGlobal(position))
         return index
 
+    def onTextChanged(self, text):       
+        self.ui.logs_tbl.model().setFilterCaseSensitivity(Qt.CaseInsensitive)
+        self.ui.logs_tbl.model().setFilterKeyColumn(2)  # Column index to filter (e.g., 1 = "Date")
+        self.ui.logs_tbl.model().setFilterFixedString(text)    
         
-    
     def show_popup(self):
         # Create an instance of the PopupWindow and show it
         self.popup = PopupWindow()
