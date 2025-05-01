@@ -386,7 +386,7 @@ class Ui_MainWindow(object):
 "}")
         self.dashFrame5 = QFrame(self.DashBoard)
         self.dashFrame5.setObjectName(u"dashFrame5")
-        self.dashFrame5.setGeometry(QRect(40, 500, 621, 281))
+        self.dashFrame5.setGeometry(QRect(40, 470, 621, 311))
         self.dashFrame5.setStyleSheet(u"#dashFrame5 {\n"
 "  border-radius: 15px;\n"
 "    background: qlineargradient(\n"
@@ -410,7 +410,7 @@ class Ui_MainWindow(object):
         self.dashFrame5.setFrameShadow(QFrame.Raised)
         self.logsPrev = QLabel(self.dashFrame5)
         self.logsPrev.setObjectName(u"logsPrev")
-        self.logsPrev.setGeometry(QRect(20, 10, 221, 41))
+        self.logsPrev.setGeometry(QRect(10, 10, 181, 41))
         self.logsPrev.setStyleSheet(u"#logsPrev{\n"
 "    color: white;\n"
 "    background: transparent;  /* Let the frame's gradient show through */\n"
@@ -425,7 +425,7 @@ class Ui_MainWindow(object):
 "}")
         self.logsPrev_tbl = QTableView(self.dashFrame5)
         self.logsPrev_tbl.setObjectName(u"logsPrev_tbl")
-        self.logsPrev_tbl.setGeometry(QRect(40, 61, 561, 201))
+        self.logsPrev_tbl.setGeometry(QRect(20, 61, 581, 231))
         self.logsPrev_tbl.setLayoutDirection(Qt.LeftToRight)
         self.logsPrev_tbl.setStyleSheet(u"#logsPrev_tbl {\n"
 "    background-color: white;\n"
@@ -451,7 +451,7 @@ class Ui_MainWindow(object):
 "")
         self.dashFrame6 = QFrame(self.DashBoard)
         self.dashFrame6.setObjectName(u"dashFrame6")
-        self.dashFrame6.setGeometry(QRect(680, 500, 621, 281))
+        self.dashFrame6.setGeometry(QRect(680, 470, 621, 311))
         self.dashFrame6.setStyleSheet(u"#dashFrame6 {\n"
 "  border-radius: 15px;\n"
 "    background: qlineargradient(\n"
@@ -850,7 +850,7 @@ class Ui_MainWindow(object):
         self.dateLabel3.setText(QCoreApplication.translate("MainWindow", u"Date: ", None))
         self.totalEntry4.setText(QCoreApplication.translate("MainWindow", u"Total Entry:", None))
         self.dateLabel4.setText(QCoreApplication.translate("MainWindow", u"Date: ", None))
-        self.logsPrev.setText(QCoreApplication.translate("MainWindow", u"Logs for Today:", None))
+        self.logsPrev.setText(QCoreApplication.translate("MainWindow", u"Logs for Today", None))
         self.label.setText("")
         self.stop_btn.setText("")
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Live Video Feed", None))
