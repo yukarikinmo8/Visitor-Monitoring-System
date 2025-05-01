@@ -131,19 +131,20 @@ class Ui_MainWindow(object):
         self.settings_btn.setIconSize(QSize(45, 45))
         self.logo_lbl = QLabel(self.nav_bar)
         self.logo_lbl.setObjectName(u"logo_lbl")
-        self.logo_lbl.setGeometry(QRect(40, 20, 481, 51))
+        self.logo_lbl.setGeometry(QRect(30, 10, 201, 51))
         font = QFont()
         font.setFamilies([u"Inter i"])
         font.setBold(True)
         self.logo_lbl.setFont(font)
         self.logo_lbl.setStyleSheet(u"QLabel {\n"
 "    font-family: \"Inter\"i;\n"
-"    font-size: 15px; /* Adjust based on your UI scale */\n"
+"    font-size: 20px; /* Adjust based on your UI scale */\n"
 "    font-weight: bold;\n"
 "    color: white;\n"
 "    letter-spacing: 1px; /* Adjust for spacing */\n"
 "    text-transform: uppercase; /* Makes text all caps */\n"
 " }")
+        self.logo_lbl.setPixmap(QPixmap(u"resources/Icons/logonhvms.png"))
         self.logo_lbl.raise_()
         self.menu_btn.raise_()
         self.dash_btn.raise_()
@@ -534,7 +535,7 @@ class Ui_MainWindow(object):
         self.cam_btn.setText(QCoreApplication.translate("MainWindow", u"Live Video Feed", None))
         self.logs_btn.setText(QCoreApplication.translate("MainWindow", u"Logs", None))
         self.settings_btn.setText(QCoreApplication.translate("MainWindow", u"Settings", None))
-        self.logo_lbl.setText(QCoreApplication.translate("MainWindow", u"Visitor Monitoring System", None))
+        self.logo_lbl.setText("")
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Dashboard", None))
         self.label.setText("")
         self.stop_btn.setText("")

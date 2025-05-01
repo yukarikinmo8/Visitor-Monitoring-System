@@ -239,9 +239,9 @@ background-color:#5897FB;
     <widget class="QLabel" name="logo_lbl">
      <property name="geometry">
       <rect>
-       <x>40</x>
-       <y>20</y>
-       <width>481</width>
+       <x>30</x>
+       <y>10</y>
+       <width>201</width>
        <height>51</height>
       </rect>
      </property>
@@ -256,7 +256,7 @@ background-color:#5897FB;
      <property name="styleSheet">
       <string notr="true">QLabel {
     font-family: &quot;Inter&quot;i;
-    font-size: 15px; /* Adjust based on your UI scale */
+    font-size: 20px; /* Adjust based on your UI scale */
     font-weight: bold;
     color: white;
     letter-spacing: 1px; /* Adjust for spacing */
@@ -264,7 +264,10 @@ background-color:#5897FB;
  }</string>
      </property>
      <property name="text">
-      <string>Visitor Monitoring System</string>
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap>resources/Icons/logonhvms.png</pixmap>
      </property>
     </widget>
     <zorder>logo_lbl</zorder>
