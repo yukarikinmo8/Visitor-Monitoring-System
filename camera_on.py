@@ -380,10 +380,20 @@ class CameraFeedWindow(QMainWindow):
         return self.person_uuid_map[person_id]
     
     def open_menu(self, position: QPoint):
-        index = self.ui.logs_tbl.indexAt(position)
-        if not index.isValid():
-            return  # Clicked outside any cell
-        
+        index = self.ui.logs_tbl.indexAt(position)        
+        if index.isValid():
+            # Get the row of the clicked cell
+            row = index.row()
+
+            # Map the index of column 3 in the same row from proxy to source
+            proxy_index = self.ui.logs_tbl.model().index(row, 3)
+            source_index = self.ui.logs_tbl.model().mapToSource(proxy_index)
+
+            # Retrieve the file path stored in Qt.UserRole
+            file_path = self.ui.logs_tbl.model().sourceModel().itemFromIndex(source_index).data(Qt.UserRole)
+
+            print(f"File path for clicked row: {file_path}")
+
         # Create the menu
         menu = QMenu()
         
@@ -391,14 +401,14 @@ class CameraFeedWindow(QMainWindow):
                 
         # Connect actions
         imageSearch_action.triggered.connect(lambda: self.show_popup())
-        self.ui.search_txt.place
         
         # Add actions to the menu
         menu.addAction(imageSearch_action)        
         
         # Show the menu
         menu.exec(self.ui.logs_tbl.viewport().mapToGlobal(position))
-        return index
+        
+        return file_path
 
     def onTextChanged(self, text):       
         self.ui.logs_tbl.model().setFilterCaseSensitivity(Qt.CaseInsensitive)
