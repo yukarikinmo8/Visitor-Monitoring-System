@@ -91,7 +91,10 @@ class CameraFeedWindow(QMainWindow):
         date_today = date.today()   
 
         self.ui.logs_tbl.setAlternatingRowColors(True)
+        self.ui.export_tbl.setAlternatingRowColors(True)
+        self.ui.logsPrev_tbl.setAlternatingRowColors(True)
         self.msm.fillLogsTable(self.ui.logs_tbl)
+        self.msm.fillLogsTable(self.ui.logsPrev_tbl) #for testing
         self.msm.fillComboBox(self.ui.dateFilter_cbx)
         self.onDateChanged(self.ui.dateFilter_cbx.currentText())  
         self.ui.dateFilter_cbx.currentTextChanged.connect(self.onDateChanged)    

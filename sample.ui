@@ -313,6 +313,508 @@ background-color:#5897FB;
        <string>Dashboard</string>
       </property>
      </widget>
+     <widget class="QFrame" name="dashFrame1">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>170</y>
+        <width>301</width>
+        <height>281</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#dashFrame1 {
+  border-radius: 15px;
+    background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 0, y2: 1,
+        stop: 0 #3A8DFF,
+        stop: 1 #1D69E2
+    );
+    border: 2px solid #2a85ff;
+}
+
+#dashFrame1::hover {
+    background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 0, y2: 1,
+        stop: 0 #5BAEFF,
+        stop: 1 #3284E6
+    );
+}</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QLabel" name="dateLabel1">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>20</y>
+         <width>131</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#dateLabel1 {
+    color: white;
+    background: transparent;  /* Let the frame's gradient show through */
+    font-weight: bold;
+    font-size: 20px;
+    padding: 4px 8px;
+    border-radius: 10px;
+}
+
+#dateLabel1:hover {
+    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */
+}</string>
+       </property>
+       <property name="text">
+        <string>Date: </string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="totalEntry1">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>190</y>
+         <width>141</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#totalEntry1{
+    color: white;
+    background: transparent;  /* Let the frame's gradient show through */
+    font-weight: bold;
+    font-size: 20px;
+    padding: 4px 8px;
+    border-radius: 10px;
+}
+
+#totalEntry1:hover {
+    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */
+}</string>
+       </property>
+       <property name="text">
+        <string>Total Entry:</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QFrame" name="dashFrame2">
+      <property name="geometry">
+       <rect>
+        <x>360</x>
+        <y>170</y>
+        <width>301</width>
+        <height>281</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#dashFrame2 {
+  border-radius: 15px;
+    background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 0, y2: 1,
+        stop: 0 #3A8DFF,
+        stop: 1 #1D69E2
+    );
+    border: 2px solid #2a85ff;
+}
+
+#dashFrame2::hover {
+    background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 0, y2: 1,
+        stop: 0 #5BAEFF,
+        stop: 1 #3284E6
+    );
+}</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QLabel" name="dateLabel2">
+       <property name="geometry">
+        <rect>
+         <x>40</x>
+         <y>30</y>
+         <width>131</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#dateLabel2 {
+    color: white;
+    background: transparent;  /* Let the frame's gradient show through */
+    font-weight: bold;
+    font-size: 20px;
+    padding: 4px 8px;
+    border-radius: 10px;
+}
+
+#dateLabel2:hover {
+    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */
+}</string>
+       </property>
+       <property name="text">
+        <string>Date: </string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="totalEntry2">
+       <property name="geometry">
+        <rect>
+         <x>40</x>
+         <y>200</y>
+         <width>141</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#totalEntry2{
+    color: white;
+    background: transparent;  /* Let the frame's gradient show through */
+    font-weight: bold;
+    font-size: 20px;
+    padding: 4px 8px;
+    border-radius: 10px;
+}
+
+#totalEntry2:hover {
+    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */
+}</string>
+       </property>
+       <property name="text">
+        <string>Total Entry:</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QFrame" name="dashFrame3">
+      <property name="geometry">
+       <rect>
+        <x>680</x>
+        <y>170</y>
+        <width>301</width>
+        <height>281</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#dashFrame3 {
+  border-radius: 15px;
+    background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 0, y2: 1,
+        stop: 0 #3A8DFF,
+        stop: 1 #1D69E2
+    );
+    border: 2px solid #2a85ff;
+}
+
+#dashFrame3::hover {
+    background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 0, y2: 1,
+        stop: 0 #5BAEFF,
+        stop: 1 #3284E6
+    );
+}</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QLabel" name="totalEntry3">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>200</y>
+         <width>141</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#totalEntry3{
+    color: white;
+    background: transparent;  /* Let the frame's gradient show through */
+    font-weight: bold;
+    font-size: 20px;
+    padding: 4px 8px;
+    border-radius: 10px;
+}
+
+#totalEntry3:hover {
+    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */
+}</string>
+       </property>
+       <property name="text">
+        <string>Total Entry:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="dateLabel3">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>30</y>
+         <width>131</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#dateLabel3 {
+    color: white;
+    background: transparent;  /* Let the frame's gradient show through */
+    font-weight: bold;
+    font-size: 20px;
+    padding: 4px 8px;
+    border-radius: 10px;
+}
+
+#dateLabel3:hover {
+    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */
+}</string>
+       </property>
+       <property name="text">
+        <string>Date: </string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QFrame" name="dashFrame4">
+      <property name="geometry">
+       <rect>
+        <x>1000</x>
+        <y>170</y>
+        <width>301</width>
+        <height>281</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#dashFrame4 {
+  border-radius: 15px;
+    background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 0, y2: 1,
+        stop: 0 #3A8DFF,
+        stop: 1 #1D69E2
+    );
+    border: 2px solid #2a85ff;
+}
+
+#dashFrame4::hover {
+    background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 0, y2: 1,
+        stop: 0 #5BAEFF,
+        stop: 1 #3284E6
+    );
+}</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QLabel" name="totalEntry4">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>200</y>
+         <width>141</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#totalEntry4{
+    color: white;
+    background: transparent;  /* Let the frame's gradient show through */
+    font-weight: bold;
+    font-size: 20px;
+    padding: 4px 8px;
+    border-radius: 10px;
+}
+
+#totalEntry4:hover {
+    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */
+}</string>
+       </property>
+       <property name="text">
+        <string>Total Entry:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="dateLabel4">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>30</y>
+         <width>131</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#dateLabel4 {
+    color: white;
+    background: transparent;  /* Let the frame's gradient show through */
+    font-weight: bold;
+    font-size: 20px;
+    padding: 4px 8px;
+    border-radius: 10px;
+}
+
+#dateLabel4:hover {
+    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */
+}</string>
+       </property>
+       <property name="text">
+        <string>Date: </string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QFrame" name="dashFrame5">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>500</y>
+        <width>621</width>
+        <height>281</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#dashFrame5 {
+  border-radius: 15px;
+    background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 0, y2: 1,
+        stop: 0 #3A8DFF,
+        stop: 1 #1D69E2
+    );
+    border: 2px solid #2a85ff;
+}
+
+#dashFrame5::hover {
+    background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 0, y2: 1,
+        stop: 0 #5BAEFF,
+        stop: 1 #3284E6
+    );
+}</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QLabel" name="logsPrev">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>10</y>
+         <width>221</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#logsPrev{
+    color: white;
+    background: transparent;  /* Let the frame's gradient show through */
+    font-weight: bold;
+    font-size: 20px;
+    padding: 4px 8px;
+    border-radius: 10px;
+}
+
+#logsPrev:hover {
+    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */
+}</string>
+       </property>
+       <property name="text">
+        <string>Logs for Today:</string>
+       </property>
+      </widget>
+      <widget class="QTableView" name="logsPrev_tbl">
+       <property name="geometry">
+        <rect>
+         <x>40</x>
+         <y>61</y>
+         <width>561</width>
+         <height>201</height>
+        </rect>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#logsPrev_tbl {
+    background-color: white;
+    color: black;
+    font-size: 20px;
+ 	border: 1px solid white;
+    selection-background-color: #5897FB;
+    alternate-background-color:#dbe9f4;
+}
+
+#logsPrev_tbl::item:selected {
+    background-color: #a7c8fb;
+}
+
+#logsPrev_tbl QHeaderView::section {
+    background-color:#2c2f40;  /* Dark navy blue for header */
+    color: white;  /* White text */
+    font-size: 14px;  /* Optional: Adjust font size */
+    font-weight: bold;  /* Optional: Make text bold */
+    padding: 5px;  /* Optional: Adjust padding */
+    border: 1px solid #d3d3d3;  /* Border color for header */
+}
+</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QFrame" name="dashFrame6">
+      <property name="geometry">
+       <rect>
+        <x>680</x>
+        <y>500</y>
+        <width>621</width>
+        <height>281</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#dashFrame6 {
+  border-radius: 15px;
+    background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 0, y2: 1,
+        stop: 0 #3A8DFF,
+        stop: 1 #1D69E2
+    );
+    border: 2px solid #2a85ff;
+}
+
+#dashFrame6::hover {
+    background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 0, y2: 1,
+        stop: 0 #5BAEFF,
+        stop: 1 #3284E6
+    );
+}</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="LiveFeed">
      <widget class="QLabel" name="label">

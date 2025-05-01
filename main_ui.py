@@ -168,6 +168,311 @@ class Ui_MainWindow(object):
 "    letter-spacing: 1px; /* Adjust for spacing */\n"
 "    text-transform: uppercase; /* Makes text all caps */\n"
 "}")
+        self.dashFrame1 = QFrame(self.DashBoard)
+        self.dashFrame1.setObjectName(u"dashFrame1")
+        self.dashFrame1.setGeometry(QRect(40, 170, 301, 281))
+        self.dashFrame1.setStyleSheet(u"#dashFrame1 {\n"
+"  border-radius: 15px;\n"
+"    background: qlineargradient(\n"
+"        x1: 0, y1: 0,\n"
+"        x2: 0, y2: 1,\n"
+"        stop: 0 #3A8DFF,\n"
+"        stop: 1 #1D69E2\n"
+"    );\n"
+"    border: 2px solid #2a85ff;\n"
+"}\n"
+"\n"
+"#dashFrame1::hover {\n"
+"    background: qlineargradient(\n"
+"        x1: 0, y1: 0,\n"
+"        x2: 0, y2: 1,\n"
+"        stop: 0 #5BAEFF,\n"
+"        stop: 1 #3284E6\n"
+"    );\n"
+"}")
+        self.dashFrame1.setFrameShape(QFrame.StyledPanel)
+        self.dashFrame1.setFrameShadow(QFrame.Raised)
+        self.dateLabel1 = QLabel(self.dashFrame1)
+        self.dateLabel1.setObjectName(u"dateLabel1")
+        self.dateLabel1.setGeometry(QRect(30, 20, 131, 41))
+        self.dateLabel1.setStyleSheet(u"#dateLabel1 {\n"
+"    color: white;\n"
+"    background: transparent;  /* Let the frame's gradient show through */\n"
+"    font-weight: bold;\n"
+"    font-size: 20px;\n"
+"    padding: 4px 8px;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"#dateLabel1:hover {\n"
+"    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */\n"
+"}")
+        self.totalEntry1 = QLabel(self.dashFrame1)
+        self.totalEntry1.setObjectName(u"totalEntry1")
+        self.totalEntry1.setGeometry(QRect(30, 190, 141, 41))
+        self.totalEntry1.setStyleSheet(u"#totalEntry1{\n"
+"    color: white;\n"
+"    background: transparent;  /* Let the frame's gradient show through */\n"
+"    font-weight: bold;\n"
+"    font-size: 20px;\n"
+"    padding: 4px 8px;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"#totalEntry1:hover {\n"
+"    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */\n"
+"}")
+        self.dashFrame2 = QFrame(self.DashBoard)
+        self.dashFrame2.setObjectName(u"dashFrame2")
+        self.dashFrame2.setGeometry(QRect(360, 170, 301, 281))
+        self.dashFrame2.setStyleSheet(u"#dashFrame2 {\n"
+"  border-radius: 15px;\n"
+"    background: qlineargradient(\n"
+"        x1: 0, y1: 0,\n"
+"        x2: 0, y2: 1,\n"
+"        stop: 0 #3A8DFF,\n"
+"        stop: 1 #1D69E2\n"
+"    );\n"
+"    border: 2px solid #2a85ff;\n"
+"}\n"
+"\n"
+"#dashFrame2::hover {\n"
+"    background: qlineargradient(\n"
+"        x1: 0, y1: 0,\n"
+"        x2: 0, y2: 1,\n"
+"        stop: 0 #5BAEFF,\n"
+"        stop: 1 #3284E6\n"
+"    );\n"
+"}")
+        self.dashFrame2.setFrameShape(QFrame.StyledPanel)
+        self.dashFrame2.setFrameShadow(QFrame.Raised)
+        self.dateLabel2 = QLabel(self.dashFrame2)
+        self.dateLabel2.setObjectName(u"dateLabel2")
+        self.dateLabel2.setGeometry(QRect(40, 30, 131, 41))
+        self.dateLabel2.setStyleSheet(u"#dateLabel2 {\n"
+"    color: white;\n"
+"    background: transparent;  /* Let the frame's gradient show through */\n"
+"    font-weight: bold;\n"
+"    font-size: 20px;\n"
+"    padding: 4px 8px;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"#dateLabel2:hover {\n"
+"    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */\n"
+"}")
+        self.totalEntry2 = QLabel(self.dashFrame2)
+        self.totalEntry2.setObjectName(u"totalEntry2")
+        self.totalEntry2.setGeometry(QRect(40, 200, 141, 41))
+        self.totalEntry2.setStyleSheet(u"#totalEntry2{\n"
+"    color: white;\n"
+"    background: transparent;  /* Let the frame's gradient show through */\n"
+"    font-weight: bold;\n"
+"    font-size: 20px;\n"
+"    padding: 4px 8px;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"#totalEntry2:hover {\n"
+"    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */\n"
+"}")
+        self.dashFrame3 = QFrame(self.DashBoard)
+        self.dashFrame3.setObjectName(u"dashFrame3")
+        self.dashFrame3.setGeometry(QRect(680, 170, 301, 281))
+        self.dashFrame3.setStyleSheet(u"#dashFrame3 {\n"
+"  border-radius: 15px;\n"
+"    background: qlineargradient(\n"
+"        x1: 0, y1: 0,\n"
+"        x2: 0, y2: 1,\n"
+"        stop: 0 #3A8DFF,\n"
+"        stop: 1 #1D69E2\n"
+"    );\n"
+"    border: 2px solid #2a85ff;\n"
+"}\n"
+"\n"
+"#dashFrame3::hover {\n"
+"    background: qlineargradient(\n"
+"        x1: 0, y1: 0,\n"
+"        x2: 0, y2: 1,\n"
+"        stop: 0 #5BAEFF,\n"
+"        stop: 1 #3284E6\n"
+"    );\n"
+"}")
+        self.dashFrame3.setFrameShape(QFrame.StyledPanel)
+        self.dashFrame3.setFrameShadow(QFrame.Raised)
+        self.totalEntry3 = QLabel(self.dashFrame3)
+        self.totalEntry3.setObjectName(u"totalEntry3")
+        self.totalEntry3.setGeometry(QRect(30, 200, 141, 41))
+        self.totalEntry3.setStyleSheet(u"#totalEntry3{\n"
+"    color: white;\n"
+"    background: transparent;  /* Let the frame's gradient show through */\n"
+"    font-weight: bold;\n"
+"    font-size: 20px;\n"
+"    padding: 4px 8px;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"#totalEntry3:hover {\n"
+"    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */\n"
+"}")
+        self.dateLabel3 = QLabel(self.dashFrame3)
+        self.dateLabel3.setObjectName(u"dateLabel3")
+        self.dateLabel3.setGeometry(QRect(30, 30, 131, 41))
+        self.dateLabel3.setStyleSheet(u"#dateLabel3 {\n"
+"    color: white;\n"
+"    background: transparent;  /* Let the frame's gradient show through */\n"
+"    font-weight: bold;\n"
+"    font-size: 20px;\n"
+"    padding: 4px 8px;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"#dateLabel3:hover {\n"
+"    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */\n"
+"}")
+        self.dashFrame4 = QFrame(self.DashBoard)
+        self.dashFrame4.setObjectName(u"dashFrame4")
+        self.dashFrame4.setGeometry(QRect(1000, 170, 301, 281))
+        self.dashFrame4.setStyleSheet(u"#dashFrame4 {\n"
+"  border-radius: 15px;\n"
+"    background: qlineargradient(\n"
+"        x1: 0, y1: 0,\n"
+"        x2: 0, y2: 1,\n"
+"        stop: 0 #3A8DFF,\n"
+"        stop: 1 #1D69E2\n"
+"    );\n"
+"    border: 2px solid #2a85ff;\n"
+"}\n"
+"\n"
+"#dashFrame4::hover {\n"
+"    background: qlineargradient(\n"
+"        x1: 0, y1: 0,\n"
+"        x2: 0, y2: 1,\n"
+"        stop: 0 #5BAEFF,\n"
+"        stop: 1 #3284E6\n"
+"    );\n"
+"}")
+        self.dashFrame4.setFrameShape(QFrame.StyledPanel)
+        self.dashFrame4.setFrameShadow(QFrame.Raised)
+        self.totalEntry4 = QLabel(self.dashFrame4)
+        self.totalEntry4.setObjectName(u"totalEntry4")
+        self.totalEntry4.setGeometry(QRect(20, 200, 141, 41))
+        self.totalEntry4.setStyleSheet(u"#totalEntry4{\n"
+"    color: white;\n"
+"    background: transparent;  /* Let the frame's gradient show through */\n"
+"    font-weight: bold;\n"
+"    font-size: 20px;\n"
+"    padding: 4px 8px;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"#totalEntry4:hover {\n"
+"    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */\n"
+"}")
+        self.dateLabel4 = QLabel(self.dashFrame4)
+        self.dateLabel4.setObjectName(u"dateLabel4")
+        self.dateLabel4.setGeometry(QRect(20, 30, 131, 41))
+        self.dateLabel4.setStyleSheet(u"#dateLabel4 {\n"
+"    color: white;\n"
+"    background: transparent;  /* Let the frame's gradient show through */\n"
+"    font-weight: bold;\n"
+"    font-size: 20px;\n"
+"    padding: 4px 8px;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"#dateLabel4:hover {\n"
+"    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */\n"
+"}")
+        self.dashFrame5 = QFrame(self.DashBoard)
+        self.dashFrame5.setObjectName(u"dashFrame5")
+        self.dashFrame5.setGeometry(QRect(40, 500, 621, 281))
+        self.dashFrame5.setStyleSheet(u"#dashFrame5 {\n"
+"  border-radius: 15px;\n"
+"    background: qlineargradient(\n"
+"        x1: 0, y1: 0,\n"
+"        x2: 0, y2: 1,\n"
+"        stop: 0 #3A8DFF,\n"
+"        stop: 1 #1D69E2\n"
+"    );\n"
+"    border: 2px solid #2a85ff;\n"
+"}\n"
+"\n"
+"#dashFrame5::hover {\n"
+"    background: qlineargradient(\n"
+"        x1: 0, y1: 0,\n"
+"        x2: 0, y2: 1,\n"
+"        stop: 0 #5BAEFF,\n"
+"        stop: 1 #3284E6\n"
+"    );\n"
+"}")
+        self.dashFrame5.setFrameShape(QFrame.StyledPanel)
+        self.dashFrame5.setFrameShadow(QFrame.Raised)
+        self.logsPrev = QLabel(self.dashFrame5)
+        self.logsPrev.setObjectName(u"logsPrev")
+        self.logsPrev.setGeometry(QRect(20, 10, 221, 41))
+        self.logsPrev.setStyleSheet(u"#logsPrev{\n"
+"    color: white;\n"
+"    background: transparent;  /* Let the frame's gradient show through */\n"
+"    font-weight: bold;\n"
+"    font-size: 20px;\n"
+"    padding: 4px 8px;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"#logsPrev:hover {\n"
+"    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */\n"
+"}")
+        self.logsPrev_tbl = QTableView(self.dashFrame5)
+        self.logsPrev_tbl.setObjectName(u"logsPrev_tbl")
+        self.logsPrev_tbl.setGeometry(QRect(40, 61, 561, 201))
+        self.logsPrev_tbl.setLayoutDirection(Qt.LeftToRight)
+        self.logsPrev_tbl.setStyleSheet(u"#logsPrev_tbl {\n"
+"    background-color: white;\n"
+"    color: black;\n"
+"    font-size: 20px;\n"
+" 	border: 1px solid white;\n"
+"    selection-background-color: #5897FB;\n"
+"    alternate-background-color:#dbe9f4;\n"
+"}\n"
+"\n"
+"#logsPrev_tbl::item:selected {\n"
+"    background-color: #a7c8fb;\n"
+"}\n"
+"\n"
+"#logsPrev_tbl QHeaderView::section {\n"
+"    background-color:#2c2f40;  /* Dark navy blue for header */\n"
+"    color: white;  /* White text */\n"
+"    font-size: 14px;  /* Optional: Adjust font size */\n"
+"    font-weight: bold;  /* Optional: Make text bold */\n"
+"    padding: 5px;  /* Optional: Adjust padding */\n"
+"    border: 1px solid #d3d3d3;  /* Border color for header */\n"
+"}\n"
+"")
+        self.dashFrame6 = QFrame(self.DashBoard)
+        self.dashFrame6.setObjectName(u"dashFrame6")
+        self.dashFrame6.setGeometry(QRect(680, 500, 621, 281))
+        self.dashFrame6.setStyleSheet(u"#dashFrame6 {\n"
+"  border-radius: 15px;\n"
+"    background: qlineargradient(\n"
+"        x1: 0, y1: 0,\n"
+"        x2: 0, y2: 1,\n"
+"        stop: 0 #3A8DFF,\n"
+"        stop: 1 #1D69E2\n"
+"    );\n"
+"    border: 2px solid #2a85ff;\n"
+"}\n"
+"\n"
+"#dashFrame6::hover {\n"
+"    background: qlineargradient(\n"
+"        x1: 0, y1: 0,\n"
+"        x2: 0, y2: 1,\n"
+"        stop: 0 #5BAEFF,\n"
+"        stop: 1 #3284E6\n"
+"    );\n"
+"}")
+        self.dashFrame6.setFrameShape(QFrame.StyledPanel)
+        self.dashFrame6.setFrameShadow(QFrame.Raised)
         self.stackedWidget.addWidget(self.DashBoard)
         self.LiveFeed = QWidget()
         self.LiveFeed.setObjectName(u"LiveFeed")
@@ -537,6 +842,15 @@ class Ui_MainWindow(object):
         self.settings_btn.setText(QCoreApplication.translate("MainWindow", u"Settings", None))
         self.logo_lbl.setText("")
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Dashboard", None))
+        self.dateLabel1.setText(QCoreApplication.translate("MainWindow", u"Date: ", None))
+        self.totalEntry1.setText(QCoreApplication.translate("MainWindow", u"Total Entry:", None))
+        self.dateLabel2.setText(QCoreApplication.translate("MainWindow", u"Date: ", None))
+        self.totalEntry2.setText(QCoreApplication.translate("MainWindow", u"Total Entry:", None))
+        self.totalEntry3.setText(QCoreApplication.translate("MainWindow", u"Total Entry:", None))
+        self.dateLabel3.setText(QCoreApplication.translate("MainWindow", u"Date: ", None))
+        self.totalEntry4.setText(QCoreApplication.translate("MainWindow", u"Total Entry:", None))
+        self.dateLabel4.setText(QCoreApplication.translate("MainWindow", u"Date: ", None))
+        self.logsPrev.setText(QCoreApplication.translate("MainWindow", u"Logs for Today:", None))
         self.label.setText("")
         self.stop_btn.setText("")
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Live Video Feed", None))
