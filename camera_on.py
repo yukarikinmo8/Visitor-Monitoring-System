@@ -22,7 +22,7 @@ from counter_mod import Algorithm_Count
 from set_entry import Get_Coordinates
 from export_pdf import exportPDF
 from main_ui import Ui_MainWindow  # Import the generated UI file
-from image_comparison import Ui_Form
+from ui_image_comparison import Ui_Form
 
 from datetime import date
 
