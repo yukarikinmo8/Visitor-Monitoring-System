@@ -194,7 +194,7 @@ class Ui_MainWindow(object):
         self.dashFrame1.setFrameShadow(QFrame.Raised)
         self.dateLabel1 = QLabel(self.dashFrame1)
         self.dateLabel1.setObjectName(u"dateLabel1")
-        self.dateLabel1.setGeometry(QRect(30, 20, 131, 41))
+        self.dateLabel1.setGeometry(QRect(10, 30, 261, 41))
         self.dateLabel1.setStyleSheet(u"#dateLabel1 {\n"
 "    color: white;\n"
 "    background: transparent;  /* Let the frame's gradient show through */\n"
@@ -209,7 +209,7 @@ class Ui_MainWindow(object):
 "}")
         self.totalEntry1 = QLabel(self.dashFrame1)
         self.totalEntry1.setObjectName(u"totalEntry1")
-        self.totalEntry1.setGeometry(QRect(30, 190, 141, 41))
+        self.totalEntry1.setGeometry(QRect(10, 220, 271, 41))
         self.totalEntry1.setStyleSheet(u"#totalEntry1{\n"
 "    color: white;\n"
 "    background: transparent;  /* Let the frame's gradient show through */\n"
@@ -248,7 +248,7 @@ class Ui_MainWindow(object):
         self.dashFrame2.setFrameShadow(QFrame.Raised)
         self.dateLabel2 = QLabel(self.dashFrame2)
         self.dateLabel2.setObjectName(u"dateLabel2")
-        self.dateLabel2.setGeometry(QRect(40, 30, 131, 41))
+        self.dateLabel2.setGeometry(QRect(10, 30, 261, 41))
         self.dateLabel2.setStyleSheet(u"#dateLabel2 {\n"
 "    color: white;\n"
 "    background: transparent;  /* Let the frame's gradient show through */\n"
@@ -263,7 +263,7 @@ class Ui_MainWindow(object):
 "}")
         self.totalEntry2 = QLabel(self.dashFrame2)
         self.totalEntry2.setObjectName(u"totalEntry2")
-        self.totalEntry2.setGeometry(QRect(40, 200, 141, 41))
+        self.totalEntry2.setGeometry(QRect(10, 220, 261, 41))
         self.totalEntry2.setStyleSheet(u"#totalEntry2{\n"
 "    color: white;\n"
 "    background: transparent;  /* Let the frame's gradient show through */\n"
@@ -302,7 +302,7 @@ class Ui_MainWindow(object):
         self.dashFrame3.setFrameShadow(QFrame.Raised)
         self.totalEntry3 = QLabel(self.dashFrame3)
         self.totalEntry3.setObjectName(u"totalEntry3")
-        self.totalEntry3.setGeometry(QRect(30, 200, 141, 41))
+        self.totalEntry3.setGeometry(QRect(10, 220, 271, 41))
         self.totalEntry3.setStyleSheet(u"#totalEntry3{\n"
 "    color: white;\n"
 "    background: transparent;  /* Let the frame's gradient show through */\n"
@@ -317,7 +317,7 @@ class Ui_MainWindow(object):
 "}")
         self.dateLabel3 = QLabel(self.dashFrame3)
         self.dateLabel3.setObjectName(u"dateLabel3")
-        self.dateLabel3.setGeometry(QRect(30, 30, 131, 41))
+        self.dateLabel3.setGeometry(QRect(10, 30, 251, 41))
         self.dateLabel3.setStyleSheet(u"#dateLabel3 {\n"
 "    color: white;\n"
 "    background: transparent;  /* Let the frame's gradient show through */\n"
@@ -356,7 +356,7 @@ class Ui_MainWindow(object):
         self.dashFrame4.setFrameShadow(QFrame.Raised)
         self.totalEntry4 = QLabel(self.dashFrame4)
         self.totalEntry4.setObjectName(u"totalEntry4")
-        self.totalEntry4.setGeometry(QRect(20, 200, 141, 41))
+        self.totalEntry4.setGeometry(QRect(10, 220, 271, 41))
         self.totalEntry4.setStyleSheet(u"#totalEntry4{\n"
 "    color: white;\n"
 "    background: transparent;  /* Let the frame's gradient show through */\n"
@@ -371,7 +371,7 @@ class Ui_MainWindow(object):
 "}")
         self.dateLabel4 = QLabel(self.dashFrame4)
         self.dateLabel4.setObjectName(u"dateLabel4")
-        self.dateLabel4.setGeometry(QRect(20, 30, 131, 41))
+        self.dateLabel4.setGeometry(QRect(10, 30, 271, 41))
         self.dateLabel4.setStyleSheet(u"#dateLabel4 {\n"
 "    color: white;\n"
 "    background: transparent;  /* Let the frame's gradient show through */\n"

@@ -352,9 +352,9 @@ background-color:#5897FB;
       <widget class="QLabel" name="dateLabel1">
        <property name="geometry">
         <rect>
-         <x>30</x>
-         <y>20</y>
-         <width>131</width>
+         <x>10</x>
+         <y>30</y>
+         <width>261</width>
          <height>41</height>
         </rect>
        </property>
@@ -379,9 +379,9 @@ background-color:#5897FB;
       <widget class="QLabel" name="totalEntry1">
        <property name="geometry">
         <rect>
-         <x>30</x>
-         <y>190</y>
-         <width>141</width>
+         <x>10</x>
+         <y>220</y>
+         <width>271</width>
          <height>41</height>
         </rect>
        </property>
@@ -443,9 +443,9 @@ background-color:#5897FB;
       <widget class="QLabel" name="dateLabel2">
        <property name="geometry">
         <rect>
-         <x>40</x>
+         <x>10</x>
          <y>30</y>
-         <width>131</width>
+         <width>261</width>
          <height>41</height>
         </rect>
        </property>
@@ -470,9 +470,9 @@ background-color:#5897FB;
       <widget class="QLabel" name="totalEntry2">
        <property name="geometry">
         <rect>
-         <x>40</x>
-         <y>200</y>
-         <width>141</width>
+         <x>10</x>
+         <y>220</y>
+         <width>261</width>
          <height>41</height>
         </rect>
        </property>
@@ -534,9 +534,9 @@ background-color:#5897FB;
       <widget class="QLabel" name="totalEntry3">
        <property name="geometry">
         <rect>
-         <x>30</x>
-         <y>200</y>
-         <width>141</width>
+         <x>10</x>
+         <y>220</y>
+         <width>271</width>
          <height>41</height>
         </rect>
        </property>
@@ -561,9 +561,9 @@ background-color:#5897FB;
       <widget class="QLabel" name="dateLabel3">
        <property name="geometry">
         <rect>
-         <x>30</x>
+         <x>10</x>
          <y>30</y>
-         <width>131</width>
+         <width>251</width>
          <height>41</height>
         </rect>
        </property>
@@ -625,9 +625,9 @@ background-color:#5897FB;
       <widget class="QLabel" name="totalEntry4">
        <property name="geometry">
         <rect>
-         <x>20</x>
-         <y>200</y>
-         <width>141</width>
+         <x>10</x>
+         <y>220</y>
+         <width>271</width>
          <height>41</height>
         </rect>
        </property>
@@ -652,9 +652,9 @@ background-color:#5897FB;
       <widget class="QLabel" name="dateLabel4">
        <property name="geometry">
         <rect>
-         <x>20</x>
+         <x>10</x>
          <y>30</y>
-         <width>131</width>
+         <width>271</width>
          <height>41</height>
         </rect>
        </property>

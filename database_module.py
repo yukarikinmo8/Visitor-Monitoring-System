@@ -173,7 +173,39 @@ class MySqlManager:
 
         return item
  
-    
+    def updateDashboardStats(self, date_labels, count_labels):
+        try:
+            # Step 1: Get 4 latest unique dates
+            self.cursor.execute("""
+                SELECT DISTINCT DATE(date) AS log_date
+                FROM `logs.tbl`
+                ORDER BY log_date DESC
+                LIMIT 4
+            """)
+            recent_dates = [row[0] for row in self.cursor.fetchall()]
+
+            results = []
+            # Step 2: For each date, count number of entries
+            for log_date in recent_dates:
+                self.cursor.execute("""
+                    SELECT COUNT(*) FROM `logs.tbl`
+                    WHERE DATE(date) = %s
+                """, (log_date,))
+                count = self.cursor.fetchone()[0]
+                results.append((log_date, count))
+
+            # Step 3: Populate passed UI label lists
+            for i, (log_date, entry_count) in enumerate(results):
+                date_labels[i].setText(f"Date: {log_date}")
+                count_labels[i].setText(f"Total Entry: {entry_count}")
+
+            # Step 4: Fill empty labels if fewer than 4 dates
+            for j in range(len(results), 4):
+                date_labels[j].setText("Date: No Data")
+                count_labels[j].setText("Total Entry: 0")
+
+        except Exception as e:
+            print(f"Error updating dashboard stats: {e}")
 
 if __name__ == "__main__":
     msm = MySqlManager()

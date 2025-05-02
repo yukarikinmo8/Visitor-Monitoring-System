@@ -89,7 +89,17 @@ class CameraFeedWindow(QMainWindow):
     def _initialize_database_and_export(self):       
         pdf = exportPDF()
         date_today = date.today()   
-
+     
+        self.msm.updateDashboardStats(
+            date_labels=[
+                self.ui.dateLabel1, self.ui.dateLabel2,
+                self.ui.dateLabel3, self.ui.dateLabel4
+            ],
+            count_labels=[
+                self.ui.totalEntry1, self.ui.totalEntry2,
+                self.ui.totalEntry3, self.ui.totalEntry4
+            ]
+        )
         self.ui.logs_tbl.setAlternatingRowColors(True)
         self.ui.export_tbl.setAlternatingRowColors(True)
         self.ui.logsPrev_tbl.setAlternatingRowColors(True)
@@ -372,7 +382,7 @@ class CameraFeedWindow(QMainWindow):
             # Optionally, refresh filtered table too
             selected_date = self.ui.dateFilter_cbx.currentText()
             self.onDateChanged(selected_date)
-
+        
     def get_uuid_for_person(self, person_id):
         """"Generate or retrieve a UUID for a given person ID."""
         if person_id not in self.person_uuid_map:
