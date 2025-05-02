@@ -38,9 +38,10 @@ class Ui_MainWindow(object):
         self.nav_bar.setFrameShadow(QFrame.Raised)
         self.menu_btn = QToolButton(self.nav_bar)
         self.menu_btn.setObjectName(u"menu_btn")
-        self.menu_btn.setGeometry(QRect(30, 20, 51, 51))
+        self.menu_btn.setGeometry(QRect(0, 0, 111, 51))
         self.menu_btn.setStyleSheet(u"#menu_btn{\n"
 "	background-color: transparent;\n"
+"	border: none;\n"
 "}\n"
 "\n"
 "#menu_btn:hover{\n"
@@ -52,13 +53,17 @@ class Ui_MainWindow(object):
         self.menu_btn.setIconSize(QSize(45, 45))
         self.dash_btn = QToolButton(self.nav_bar)
         self.dash_btn.setObjectName(u"dash_btn")
-        self.dash_btn.setGeometry(QRect(30, 90, 51, 51))
+        self.dash_btn.setGeometry(QRect(0, 90, 111, 51))
+        self.dash_btn.setLayoutDirection(Qt.LeftToRight)
         self.dash_btn.setStyleSheet(u"#dash_btn{\n"
-"background-color:transparent;\n"
+"	background-color:transparent;\n"
+"	font-size: 25px;\n"
+"	font-family: \"Inter\"i;\n"
+"	border: none;\n"
 "}\n"
 "\n"
 "#dash_btn:hover{\n"
-"background-color:#5897FB;\n"
+"	background-color:#5897FB;\n"
 "}\n"
 "")
         icon1 = QIcon()
@@ -69,14 +74,18 @@ class Ui_MainWindow(object):
         self.dash_btn.setToolButtonStyle(Qt.ToolButtonIconOnly)
         self.cam_btn = QToolButton(self.nav_bar)
         self.cam_btn.setObjectName(u"cam_btn")
-        self.cam_btn.setGeometry(QRect(30, 150, 51, 51))
+        self.cam_btn.setGeometry(QRect(0, 150, 111, 51))
         self.cam_btn.setStyleSheet(u"#cam_btn{\n"
-"background-color:transparent;\n"
+"	background-color:transparent;\n"
+"	font-size: 25px;\n"
+"	font-family: \"Inter\"i;\n"
+"	border: none;\n"
 "}\n"
 "\n"
 "#cam_btn:hover{\n"
 "background-color:#5897FB;\n"
 "}\n"
+"\n"
 "")
         icon2 = QIcon()
         icon2.addFile(u"resources/Icons/Camera.svg", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
@@ -84,104 +93,67 @@ class Ui_MainWindow(object):
         self.cam_btn.setIconSize(QSize(45, 45))
         self.logs_btn = QToolButton(self.nav_bar)
         self.logs_btn.setObjectName(u"logs_btn")
-        self.logs_btn.setGeometry(QRect(30, 210, 51, 51))
+        self.logs_btn.setGeometry(QRect(0, 210, 111, 51))
         self.logs_btn.setStyleSheet(u"#logs_btn{\n"
-"background-color:transparent;\n"
+"	background-color:transparent;\n"
+"	font-size: 25px;\n"
+"	font-family: \"Inter\"i;\n"
+"	border: none;\n"
 "}\n"
 "\n"
 "#logs_btn:hover{\n"
 "background-color:#5897FB;\n"
-"}")
+"}\n"
+"")
         icon3 = QIcon()
         icon3.addFile(u"resources/Icons/Logs.svg", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.logs_btn.setIcon(icon3)
         self.logs_btn.setIconSize(QSize(45, 45))
         self.settings_btn = QToolButton(self.nav_bar)
         self.settings_btn.setObjectName(u"settings_btn")
-        self.settings_btn.setGeometry(QRect(30, 270, 51, 51))
+        self.settings_btn.setGeometry(QRect(0, 270, 111, 51))
         self.settings_btn.setStyleSheet(u"#settings_btn{\n"
-"background-color:transparent;\n"
+"	background-color:transparent;\n"
+"	font-size: 25px;\n"
+"	font-family: \"Inter\"i;\n"
+"	border: none;\n"
 "}\n"
 "\n"
 "#settings_btn:hover{\n"
 "background-color:#5897FB;\n"
 "}\n"
 "\n"
+"\n"
 "")
         icon4 = QIcon()
         icon4.addFile(u"resources/Icons/Settings.svg", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.settings_btn.setIcon(icon4)
         self.settings_btn.setIconSize(QSize(45, 45))
-        self.dash_lbl = QLabel(self.nav_bar)
-        self.dash_lbl.setObjectName(u"dash_lbl")
-        self.dash_lbl.setGeometry(QRect(100, 90, 261, 51))
-        font = QFont()
-        font.setFamilies([u"Inter i"])
-        self.dash_lbl.setFont(font)
-        self.dash_lbl.setStyleSheet(u"QLabel {\n"
-"    font-family: \"Inter\"i;\n"
-"    font-size: 25px; /* Adjust based on your UI scale */\n"
-"    color: #EAEAEA;\n"
-"    letter-spacing: 1px; /* Adjust for spacing */\n"
-" }")
-        self.lvf_lbl = QLabel(self.nav_bar)
-        self.lvf_lbl.setObjectName(u"lvf_lbl")
-        self.lvf_lbl.setGeometry(QRect(100, 150, 271, 51))
-        self.lvf_lbl.setFont(font)
-        self.lvf_lbl.setStyleSheet(u"QLabel {\n"
-"    font-family: \"Inter\"i;\n"
-"    font-size: 25px; /* Adjust based on your UI scale */\n"
-"    color: #EAEAEA;\n"
-"    letter-spacing:1px; /* Adjust for spacing */\n"
-" }")
-        self.logs_lbl = QLabel(self.nav_bar)
-        self.logs_lbl.setObjectName(u"logs_lbl")
-        self.logs_lbl.setGeometry(QRect(100, 210, 181, 51))
-        self.logs_lbl.setFont(font)
-        self.logs_lbl.setStyleSheet(u"QLabel {\n"
-"    font-family: \"Inter\"i;\n"
-"    font-size: 25px; /* Adjust based on your UI scale */\n"
-"    color: #EAEAEA;\n"
-"    letter-spacing: 1px; /* Adjust for spacing */\n"
-" }")
-        self.setts_lbl = QLabel(self.nav_bar)
-        self.setts_lbl.setObjectName(u"setts_lbl")
-        self.setts_lbl.setGeometry(QRect(100, 270, 181, 51))
-        self.setts_lbl.setFont(font)
-        self.setts_lbl.setStyleSheet(u"QLabel {\n"
-"    font-family: \"Inter\"i;\n"
-"    font-size: 25px; /* Adjust based on your UI scale */\n"
-"    color: #EAEAEA;\n"
-"    letter-spacing: 1px; /* Adjust for spacing */\n"
-" }")
         self.logo_lbl = QLabel(self.nav_bar)
         self.logo_lbl.setObjectName(u"logo_lbl")
-        self.logo_lbl.setGeometry(QRect(40, 20, 481, 51))
-        font1 = QFont()
-        font1.setFamilies([u"Inter i"])
-        font1.setBold(True)
-        self.logo_lbl.setFont(font1)
+        self.logo_lbl.setGeometry(QRect(30, 10, 201, 51))
+        font = QFont()
+        font.setFamilies([u"Inter i"])
+        font.setBold(True)
+        self.logo_lbl.setFont(font)
         self.logo_lbl.setStyleSheet(u"QLabel {\n"
 "    font-family: \"Inter\"i;\n"
-"    font-size: 15px; /* Adjust based on your UI scale */\n"
+"    font-size: 20px; /* Adjust based on your UI scale */\n"
 "    font-weight: bold;\n"
 "    color: white;\n"
 "    letter-spacing: 1px; /* Adjust for spacing */\n"
 "    text-transform: uppercase; /* Makes text all caps */\n"
 " }")
+        self.logo_lbl.setPixmap(QPixmap(u"resources/Icons/logonhvms.png"))
         self.logo_lbl.raise_()
         self.menu_btn.raise_()
         self.dash_btn.raise_()
         self.cam_btn.raise_()
         self.logs_btn.raise_()
         self.settings_btn.raise_()
-        self.dash_lbl.raise_()
-        self.lvf_lbl.raise_()
-        self.logs_lbl.raise_()
-        self.setts_lbl.raise_()
         self.stackedWidget = QStackedWidget(self.centralwidget)
         self.stackedWidget.setObjectName(u"stackedWidget")
-        self.stackedWidget.setGeometry(QRect(120, 0, 1421, 821))
+        self.stackedWidget.setGeometry(QRect(130, -10, 1421, 821))
         self.stackedWidget.setLayoutDirection(Qt.RightToLeft)
         self.DashBoard = QWidget()
         self.DashBoard.setObjectName(u"DashBoard")
@@ -196,23 +168,328 @@ class Ui_MainWindow(object):
 "    letter-spacing: 1px; /* Adjust for spacing */\n"
 "    text-transform: uppercase; /* Makes text all caps */\n"
 "}")
+        self.dashFrame1 = QFrame(self.DashBoard)
+        self.dashFrame1.setObjectName(u"dashFrame1")
+        self.dashFrame1.setGeometry(QRect(40, 170, 301, 281))
+        self.dashFrame1.setStyleSheet(u"#dashFrame1 {\n"
+"  border-radius: 15px;\n"
+"    background: qlineargradient(\n"
+"        x1: 0, y1: 0,\n"
+"        x2: 0, y2: 1,\n"
+"        stop: 0 #3A8DFF,\n"
+"        stop: 1 #1D69E2\n"
+"    );\n"
+"    border: 2px solid #2a85ff;\n"
+"}\n"
+"\n"
+"#dashFrame1::hover {\n"
+"    background: qlineargradient(\n"
+"        x1: 0, y1: 0,\n"
+"        x2: 0, y2: 1,\n"
+"        stop: 0 #5BAEFF,\n"
+"        stop: 1 #3284E6\n"
+"    );\n"
+"}")
+        self.dashFrame1.setFrameShape(QFrame.StyledPanel)
+        self.dashFrame1.setFrameShadow(QFrame.Raised)
+        self.dateLabel1 = QLabel(self.dashFrame1)
+        self.dateLabel1.setObjectName(u"dateLabel1")
+        self.dateLabel1.setGeometry(QRect(10, 30, 261, 41))
+        self.dateLabel1.setStyleSheet(u"#dateLabel1 {\n"
+"    color: white;\n"
+"    background: transparent;  /* Let the frame's gradient show through */\n"
+"    font-weight: bold;\n"
+"    font-size: 20px;\n"
+"    padding: 4px 8px;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"#dateLabel1:hover {\n"
+"    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */\n"
+"}")
+        self.totalEntry1 = QLabel(self.dashFrame1)
+        self.totalEntry1.setObjectName(u"totalEntry1")
+        self.totalEntry1.setGeometry(QRect(10, 220, 271, 41))
+        self.totalEntry1.setStyleSheet(u"#totalEntry1{\n"
+"    color: white;\n"
+"    background: transparent;  /* Let the frame's gradient show through */\n"
+"    font-weight: bold;\n"
+"    font-size: 20px;\n"
+"    padding: 4px 8px;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"#totalEntry1:hover {\n"
+"    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */\n"
+"}")
+        self.dashFrame2 = QFrame(self.DashBoard)
+        self.dashFrame2.setObjectName(u"dashFrame2")
+        self.dashFrame2.setGeometry(QRect(360, 170, 301, 281))
+        self.dashFrame2.setStyleSheet(u"#dashFrame2 {\n"
+"  border-radius: 15px;\n"
+"    background: qlineargradient(\n"
+"        x1: 0, y1: 0,\n"
+"        x2: 0, y2: 1,\n"
+"        stop: 0 #3A8DFF,\n"
+"        stop: 1 #1D69E2\n"
+"    );\n"
+"    border: 2px solid #2a85ff;\n"
+"}\n"
+"\n"
+"#dashFrame2::hover {\n"
+"    background: qlineargradient(\n"
+"        x1: 0, y1: 0,\n"
+"        x2: 0, y2: 1,\n"
+"        stop: 0 #5BAEFF,\n"
+"        stop: 1 #3284E6\n"
+"    );\n"
+"}")
+        self.dashFrame2.setFrameShape(QFrame.StyledPanel)
+        self.dashFrame2.setFrameShadow(QFrame.Raised)
+        self.dateLabel2 = QLabel(self.dashFrame2)
+        self.dateLabel2.setObjectName(u"dateLabel2")
+        self.dateLabel2.setGeometry(QRect(10, 30, 261, 41))
+        self.dateLabel2.setStyleSheet(u"#dateLabel2 {\n"
+"    color: white;\n"
+"    background: transparent;  /* Let the frame's gradient show through */\n"
+"    font-weight: bold;\n"
+"    font-size: 20px;\n"
+"    padding: 4px 8px;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"#dateLabel2:hover {\n"
+"    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */\n"
+"}")
+        self.totalEntry2 = QLabel(self.dashFrame2)
+        self.totalEntry2.setObjectName(u"totalEntry2")
+        self.totalEntry2.setGeometry(QRect(10, 220, 261, 41))
+        self.totalEntry2.setStyleSheet(u"#totalEntry2{\n"
+"    color: white;\n"
+"    background: transparent;  /* Let the frame's gradient show through */\n"
+"    font-weight: bold;\n"
+"    font-size: 20px;\n"
+"    padding: 4px 8px;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"#totalEntry2:hover {\n"
+"    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */\n"
+"}")
+        self.dashFrame3 = QFrame(self.DashBoard)
+        self.dashFrame3.setObjectName(u"dashFrame3")
+        self.dashFrame3.setGeometry(QRect(680, 170, 301, 281))
+        self.dashFrame3.setStyleSheet(u"#dashFrame3 {\n"
+"  border-radius: 15px;\n"
+"    background: qlineargradient(\n"
+"        x1: 0, y1: 0,\n"
+"        x2: 0, y2: 1,\n"
+"        stop: 0 #3A8DFF,\n"
+"        stop: 1 #1D69E2\n"
+"    );\n"
+"    border: 2px solid #2a85ff;\n"
+"}\n"
+"\n"
+"#dashFrame3::hover {\n"
+"    background: qlineargradient(\n"
+"        x1: 0, y1: 0,\n"
+"        x2: 0, y2: 1,\n"
+"        stop: 0 #5BAEFF,\n"
+"        stop: 1 #3284E6\n"
+"    );\n"
+"}")
+        self.dashFrame3.setFrameShape(QFrame.StyledPanel)
+        self.dashFrame3.setFrameShadow(QFrame.Raised)
+        self.totalEntry3 = QLabel(self.dashFrame3)
+        self.totalEntry3.setObjectName(u"totalEntry3")
+        self.totalEntry3.setGeometry(QRect(10, 220, 271, 41))
+        self.totalEntry3.setStyleSheet(u"#totalEntry3{\n"
+"    color: white;\n"
+"    background: transparent;  /* Let the frame's gradient show through */\n"
+"    font-weight: bold;\n"
+"    font-size: 20px;\n"
+"    padding: 4px 8px;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"#totalEntry3:hover {\n"
+"    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */\n"
+"}")
+        self.dateLabel3 = QLabel(self.dashFrame3)
+        self.dateLabel3.setObjectName(u"dateLabel3")
+        self.dateLabel3.setGeometry(QRect(10, 30, 251, 41))
+        self.dateLabel3.setStyleSheet(u"#dateLabel3 {\n"
+"    color: white;\n"
+"    background: transparent;  /* Let the frame's gradient show through */\n"
+"    font-weight: bold;\n"
+"    font-size: 20px;\n"
+"    padding: 4px 8px;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"#dateLabel3:hover {\n"
+"    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */\n"
+"}")
+        self.dashFrame4 = QFrame(self.DashBoard)
+        self.dashFrame4.setObjectName(u"dashFrame4")
+        self.dashFrame4.setGeometry(QRect(1000, 170, 301, 281))
+        self.dashFrame4.setStyleSheet(u"#dashFrame4 {\n"
+"  border-radius: 15px;\n"
+"    background: qlineargradient(\n"
+"        x1: 0, y1: 0,\n"
+"        x2: 0, y2: 1,\n"
+"        stop: 0 #3A8DFF,\n"
+"        stop: 1 #1D69E2\n"
+"    );\n"
+"    border: 2px solid #2a85ff;\n"
+"}\n"
+"\n"
+"#dashFrame4::hover {\n"
+"    background: qlineargradient(\n"
+"        x1: 0, y1: 0,\n"
+"        x2: 0, y2: 1,\n"
+"        stop: 0 #5BAEFF,\n"
+"        stop: 1 #3284E6\n"
+"    );\n"
+"}")
+        self.dashFrame4.setFrameShape(QFrame.StyledPanel)
+        self.dashFrame4.setFrameShadow(QFrame.Raised)
+        self.totalEntry4 = QLabel(self.dashFrame4)
+        self.totalEntry4.setObjectName(u"totalEntry4")
+        self.totalEntry4.setGeometry(QRect(10, 220, 271, 41))
+        self.totalEntry4.setStyleSheet(u"#totalEntry4{\n"
+"    color: white;\n"
+"    background: transparent;  /* Let the frame's gradient show through */\n"
+"    font-weight: bold;\n"
+"    font-size: 20px;\n"
+"    padding: 4px 8px;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"#totalEntry4:hover {\n"
+"    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */\n"
+"}")
+        self.dateLabel4 = QLabel(self.dashFrame4)
+        self.dateLabel4.setObjectName(u"dateLabel4")
+        self.dateLabel4.setGeometry(QRect(10, 30, 271, 41))
+        self.dateLabel4.setStyleSheet(u"#dateLabel4 {\n"
+"    color: white;\n"
+"    background: transparent;  /* Let the frame's gradient show through */\n"
+"    font-weight: bold;\n"
+"    font-size: 20px;\n"
+"    padding: 4px 8px;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"#dateLabel4:hover {\n"
+"    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */\n"
+"}")
+        self.dashFrame5 = QFrame(self.DashBoard)
+        self.dashFrame5.setObjectName(u"dashFrame5")
+        self.dashFrame5.setGeometry(QRect(40, 470, 621, 311))
+        self.dashFrame5.setStyleSheet(u"#dashFrame5 {\n"
+"  border-radius: 15px;\n"
+"    background: qlineargradient(\n"
+"        x1: 0, y1: 0,\n"
+"        x2: 0, y2: 1,\n"
+"        stop: 0 #3A8DFF,\n"
+"        stop: 1 #1D69E2\n"
+"    );\n"
+"    border: 2px solid #2a85ff;\n"
+"}\n"
+"\n"
+"#dashFrame5::hover {\n"
+"    background: qlineargradient(\n"
+"        x1: 0, y1: 0,\n"
+"        x2: 0, y2: 1,\n"
+"        stop: 0 #5BAEFF,\n"
+"        stop: 1 #3284E6\n"
+"    );\n"
+"}")
+        self.dashFrame5.setFrameShape(QFrame.StyledPanel)
+        self.dashFrame5.setFrameShadow(QFrame.Raised)
+        self.logsPrev = QLabel(self.dashFrame5)
+        self.logsPrev.setObjectName(u"logsPrev")
+        self.logsPrev.setGeometry(QRect(10, 10, 181, 41))
+        self.logsPrev.setStyleSheet(u"#logsPrev{\n"
+"    color: white;\n"
+"    background: transparent;  /* Let the frame's gradient show through */\n"
+"    font-weight: bold;\n"
+"    font-size: 20px;\n"
+"    padding: 4px 8px;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"#logsPrev:hover {\n"
+"    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */\n"
+"}")
+        self.logsPrev_tbl = QTableView(self.dashFrame5)
+        self.logsPrev_tbl.setObjectName(u"logsPrev_tbl")
+        self.logsPrev_tbl.setGeometry(QRect(20, 61, 581, 231))
+        self.logsPrev_tbl.setLayoutDirection(Qt.LeftToRight)
+        self.logsPrev_tbl.setStyleSheet(u"#logsPrev_tbl {\n"
+"    background-color: white;\n"
+"    color: black;\n"
+"    font-size: 20px;\n"
+" 	border: 1px solid white;\n"
+"    selection-background-color: #5897FB;\n"
+"    alternate-background-color:#dbe9f4;\n"
+"}\n"
+"\n"
+"#logsPrev_tbl::item:selected {\n"
+"    background-color: #a7c8fb;\n"
+"}\n"
+"\n"
+"#logsPrev_tbl QHeaderView::section {\n"
+"    background-color:#2c2f40;  /* Dark navy blue for header */\n"
+"    color: white;  /* White text */\n"
+"    font-size: 14px;  /* Optional: Adjust font size */\n"
+"    font-weight: bold;  /* Optional: Make text bold */\n"
+"    padding: 5px;  /* Optional: Adjust padding */\n"
+"    border: 1px solid #d3d3d3;  /* Border color for header */\n"
+"}\n"
+"")
+        self.dashFrame6 = QFrame(self.DashBoard)
+        self.dashFrame6.setObjectName(u"dashFrame6")
+        self.dashFrame6.setGeometry(QRect(680, 470, 621, 311))
+        self.dashFrame6.setStyleSheet(u"#dashFrame6 {\n"
+"  border-radius: 15px;\n"
+"    background: qlineargradient(\n"
+"        x1: 0, y1: 0,\n"
+"        x2: 0, y2: 1,\n"
+"        stop: 0 #3A8DFF,\n"
+"        stop: 1 #1D69E2\n"
+"    );\n"
+"    border: 2px solid #2a85ff;\n"
+"}\n"
+"\n"
+"#dashFrame6::hover {\n"
+"    background: qlineargradient(\n"
+"        x1: 0, y1: 0,\n"
+"        x2: 0, y2: 1,\n"
+"        stop: 0 #5BAEFF,\n"
+"        stop: 1 #3284E6\n"
+"    );\n"
+"}")
+        self.dashFrame6.setFrameShape(QFrame.StyledPanel)
+        self.dashFrame6.setFrameShadow(QFrame.Raised)
         self.stackedWidget.addWidget(self.DashBoard)
         self.LiveFeed = QWidget()
         self.LiveFeed.setObjectName(u"LiveFeed")
         self.label = QLabel(self.LiveFeed)
         self.label.setObjectName(u"label")
         self.label.setGeometry(QRect(60, 90, 1001, 551))
-        font2 = QFont()
-        font2.setPointSize(12)
-        self.label.setFont(font2)
+        font1 = QFont()
+        font1.setPointSize(12)
+        self.label.setFont(font1)
         self.label.setStyleSheet(u"background-color:#EAEAEA;")
         self.stop_btn = QPushButton(self.LiveFeed)
         self.stop_btn.setObjectName(u"stop_btn")
         self.stop_btn.setGeometry(QRect(580, 670, 51, 51))
-        font3 = QFont()
-        font3.setPointSize(12)
-        font3.setBold(True)
-        self.stop_btn.setFont(font3)
+        font2 = QFont()
+        font2.setPointSize(12)
+        font2.setBold(True)
+        self.stop_btn.setFont(font2)
         self.stop_btn.setStyleSheet(u"#stop_btn {\n"
 "    background-color: #232531; /* Default color */\n"
 "    color: white;\n"
@@ -242,7 +519,7 @@ class Ui_MainWindow(object):
         self.start_btn.setObjectName(u"start_btn")
         self.start_btn.setGeometry(QRect(520, 670, 51, 51))
         self.start_btn.setMinimumSize(QSize(5, 5))
-        self.start_btn.setFont(font3)
+        self.start_btn.setFont(font2)
         self.start_btn.setAutoFillBackground(False)
         self.start_btn.setStyleSheet(u"#start_btn {\n"
 "    background-color: #232531; /* Default color */\n"
@@ -290,7 +567,7 @@ class Ui_MainWindow(object):
         self.refresh_btn.setObjectName(u"refresh_btn")
         self.refresh_btn.setGeometry(QRect(640, 670, 51, 51))
         self.refresh_btn.setMinimumSize(QSize(5, 5))
-        self.refresh_btn.setFont(font3)
+        self.refresh_btn.setFont(font2)
         self.refresh_btn.setAutoFillBackground(False)
         self.refresh_btn.setStyleSheet(u"#refresh_btn{\n"
 "    background-color: #232531; /* Default color */\n"
@@ -309,7 +586,7 @@ class Ui_MainWindow(object):
         self.pause_btn.setObjectName(u"pause_btn")
         self.pause_btn.setGeometry(QRect(450, 670, 51, 51))
         self.pause_btn.setMinimumSize(QSize(5, 5))
-        self.pause_btn.setFont(font3)
+        self.pause_btn.setFont(font2)
         self.pause_btn.setAutoFillBackground(False)
         self.pause_btn.setStyleSheet(u"#pause_btn{\n"
 "    background-color: #232531; /* Default color */\n"
@@ -328,7 +605,7 @@ class Ui_MainWindow(object):
         self.upload_btn.setObjectName(u"upload_btn")
         self.upload_btn.setGeometry(QRect(700, 670, 51, 51))
         self.upload_btn.setMinimumSize(QSize(5, 5))
-        self.upload_btn.setFont(font3)
+        self.upload_btn.setFont(font2)
         self.upload_btn.setAutoFillBackground(False)
         self.upload_btn.setStyleSheet(u"#upload_btn{\n"
 "    background-color: #232531; /* Default color */\n"
@@ -347,7 +624,7 @@ class Ui_MainWindow(object):
         self.prec_btn.setObjectName(u"prec_btn")
         self.prec_btn.setGeometry(QRect(380, 670, 51, 51))
         self.prec_btn.setMinimumSize(QSize(5, 5))
-        self.prec_btn.setFont(font3)
+        self.prec_btn.setFont(font2)
         self.prec_btn.setAutoFillBackground(False)
         self.prec_btn.setStyleSheet(u"#prec_btn{\n"
 "    background-color: #232531; /* Default color */\n"
@@ -444,16 +721,18 @@ class Ui_MainWindow(object):
         self.stackedWidget.addWidget(self.Settings)
         self.export_page = QWidget()
         self.export_page.setObjectName(u"export_page")
-        self.label_8 = QLabel(self.export_page)
-        self.label_8.setObjectName(u"label_8")
-        self.label_8.setGeometry(QRect(10, 30, 201, 31))
-        self.label_8.setStyleSheet(u"QLabel {\n"
-"    font-family: \"Inter\"i;\n"
-"    font-size: 30px; /* Adjust based on your UI scale */\n"
-"    font-weight: bold;\n"
+        self.export_btn2 = QPushButton(self.export_page)
+        self.export_btn2.setObjectName(u"export_btn2")
+        self.export_btn2.setGeometry(QRect(1020, 120, 291, 51))
+        self.export_btn2.setStyleSheet(u"#export_btn2{\n"
+"    background-color: #5897FB; /* Default color */\n"
 "    color: white;\n"
-"    letter-spacing: 1px; /* Adjust for spacing */\n"
-"    text-transform: uppercase; /* Makes text all caps */\n"
+"	font-size: 20px;\n"
+"    border-radius: 5px;\n"
+"}\n"
+"\n"
+"#export_btn2:hover{\n"
+"	background-color: #2F6CDF;\n"
 "}")
         self.export_tbl = QTableView(self.export_page)
         self.export_tbl.setObjectName(u"export_tbl")
@@ -472,7 +751,7 @@ class Ui_MainWindow(object):
 "    background-color: #a7c8fb;\n"
 "}\n"
 "\n"
-"#export_tbl QHeaderView::section {\n"
+"#export_tbl::QHeaderView::section {\n"
 "    background-color:#2c2f40;  /* Dark navy blue for header */\n"
 "    color: white;  /* White text */\n"
 "    font-size: 14px;  /* Optional: Adjust font size */\n"
@@ -483,33 +762,60 @@ class Ui_MainWindow(object):
 "")
         self.dateFilter_cbx = QComboBox(self.export_page)
         self.dateFilter_cbx.setObjectName(u"dateFilter_cbx")
-        self.dateFilter_cbx.setGeometry(QRect(40, 131, 571, 41))
+        self.dateFilter_cbx.setGeometry(QRect(40, 141, 521, 41))
         self.dateFilter_cbx.setLayoutDirection(Qt.LeftToRight)
         self.dateFilter_cbx.setStyleSheet(u"#dateFilter_cbx {\n"
+"    border: 2px solid #1D69E2;\n"
+"    border-radius: 5px;\n"
+"    padding: 5px;\n"
+"    font-size: 20px;\n"
+"    font-family: 'Roboto', sans-serif;\n"
 "    background-color: white;\n"
 "    color: black;\n"
-"    font-size: 20px;\n"
-" 	border: 1px solid white;\n"
-"    selection-background-color: #5897FB;\n"
-"    alternate-background-color:#dbe9f4;\n"
-"}")
-        self.export_btn2 = QPushButton(self.export_page)
-        self.export_btn2.setObjectName(u"export_btn2")
-        self.export_btn2.setGeometry(QRect(1020, 120, 291, 51))
-        self.export_btn2.setStyleSheet(u"#export_btn2{\n"
-"    background-color: #5897FB; /* Default color */\n"
-"    color: white;\n"
-"	font-size: 20px;\n"
-"    border-radius: 5px;\n"
 "}\n"
 "\n"
-"#export_btn2:hover{\n"
-"	background-color: #2F6CDF;\n"
+"#dateFilter_cbx:hover {\n"
+"    border: 2px solid transparent;\n"
+"}\n"
+"\n"
+"#dateFilter_cbx:focus {\n"
+"    border: 2px solid transparent;\n"
+"    background-color: white;\n"
+"}\n"
+"\n"
+"#dateFilter_cbx::drop-down {\n"
+"    border-left: 1px solid transparent;\n"
+"    background-color: white;\n"
+"}\n"
+"\n"
+"#dateFilter_cbx QAbstractItemView {\n"
+"    background-color: white;\n"
+"    selection-background-color: #1D69E2;\n"
+"    selection-color: white;\n"
+"}\n"
+"\n"
+"#dateFilter_cbx QAbstractItemView::item {\n"
+"    padding: 10px;\n"
+"    font-size: 14px;\n"
+"    font-weight: bold;\n"
+"    font-family: 'Roboto', sans-serif;\n"
+"    color: black;\n"
 "}")
-        self.label_9 = QLabel(self.export_page)
-        self.label_9.setObjectName(u"label_9")
-        self.label_9.setGeometry(QRect(40, 90, 311, 31))
-        self.label_9.setStyleSheet(u"QLabel {\n"
+        self.label_3 = QLabel(self.export_page)
+        self.label_3.setObjectName(u"label_3")
+        self.label_3.setGeometry(QRect(10, 30, 201, 31))
+        self.label_3.setStyleSheet(u"QLabel {\n"
+"    font-family: \"Inter\"i;\n"
+"    font-size: 30px; /* Adjust based on your UI scale */\n"
+"    font-weight: bold;\n"
+"    color: white;\n"
+"    letter-spacing: 1px; /* Adjust for spacing */\n"
+"    text-transform: uppercase; /* Makes text all caps */\n"
+"}")
+        self.label_8 = QLabel(self.export_page)
+        self.label_8.setObjectName(u"label_8")
+        self.label_8.setGeometry(QRect(40, 120, 261, 20))
+        self.label_8.setStyleSheet(u"QLabel {\n"
 "    font-family: \"Inter\"i;\n"
 "    font-size: 15px; /* Adjust based on your UI scale */\n"
 "    font-weight: bold;\n"
@@ -530,16 +836,21 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Visitor Monitoring System", None))
         self.menu_btn.setText("")
-        self.dash_btn.setText("")
-        self.cam_btn.setText("")
-        self.logs_btn.setText("")
-        self.settings_btn.setText("")
-        self.dash_lbl.setText(QCoreApplication.translate("MainWindow", u"Dashboard", None))
-        self.lvf_lbl.setText(QCoreApplication.translate("MainWindow", u"Live Video Feed", None))
-        self.logs_lbl.setText(QCoreApplication.translate("MainWindow", u"Logs", None))
-        self.setts_lbl.setText(QCoreApplication.translate("MainWindow", u"Settings", None))
-        self.logo_lbl.setText(QCoreApplication.translate("MainWindow", u"Visitor Monitoring System", None))
+        self.dash_btn.setText(QCoreApplication.translate("MainWindow", u"Dashboard", None))
+        self.cam_btn.setText(QCoreApplication.translate("MainWindow", u"Live Video Feed", None))
+        self.logs_btn.setText(QCoreApplication.translate("MainWindow", u"Logs", None))
+        self.settings_btn.setText(QCoreApplication.translate("MainWindow", u"Settings", None))
+        self.logo_lbl.setText("")
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Dashboard", None))
+        self.dateLabel1.setText(QCoreApplication.translate("MainWindow", u"Date: ", None))
+        self.totalEntry1.setText(QCoreApplication.translate("MainWindow", u"Total Entry:", None))
+        self.dateLabel2.setText(QCoreApplication.translate("MainWindow", u"Date: ", None))
+        self.totalEntry2.setText(QCoreApplication.translate("MainWindow", u"Total Entry:", None))
+        self.totalEntry3.setText(QCoreApplication.translate("MainWindow", u"Total Entry:", None))
+        self.dateLabel3.setText(QCoreApplication.translate("MainWindow", u"Date: ", None))
+        self.totalEntry4.setText(QCoreApplication.translate("MainWindow", u"Total Entry:", None))
+        self.dateLabel4.setText(QCoreApplication.translate("MainWindow", u"Date: ", None))
+        self.logsPrev.setText(QCoreApplication.translate("MainWindow", u"Logs for Today", None))
         self.label.setText("")
         self.stop_btn.setText("")
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Live Video Feed", None))
@@ -553,11 +864,12 @@ class Ui_MainWindow(object):
         self.upload_btn.setText("")
         self.prec_btn.setText("")
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"LOGS", None))
-        self.export_btn.setText(QCoreApplication.translate("MainWindow", u"Export to PDF", None))
-        self.search_txt.setText(QCoreApplication.translate("MainWindow", u"Search", None))
+        self.export_btn.setText(QCoreApplication.translate("MainWindow", u"Export  PDF", None))
+        self.search_txt.setText("")
+        self.search_txt.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"Settings", None))
-        self.label_8.setText(QCoreApplication.translate("MainWindow", u"Export PDF", None))
         self.export_btn2.setText(QCoreApplication.translate("MainWindow", u"Export", None))
-        self.label_9.setText(QCoreApplication.translate("MainWindow", u"available dates for export:", None))
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"export pdf", None))
+        self.label_8.setText(QCoreApplication.translate("MainWindow", u"available dates for export:", None))
     # retranslateUi
 

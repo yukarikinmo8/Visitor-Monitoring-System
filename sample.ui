@@ -50,15 +50,16 @@
     <widget class="QToolButton" name="menu_btn">
      <property name="geometry">
       <rect>
-       <x>30</x>
-       <y>20</y>
-       <width>51</width>
+       <x>0</x>
+       <y>0</y>
+       <width>111</width>
        <height>51</height>
       </rect>
      </property>
      <property name="styleSheet">
       <string notr="true">#menu_btn{
 	background-color: transparent;
+	border: none;
 }
 
 #menu_btn:hover{
@@ -82,24 +83,30 @@
     <widget class="QToolButton" name="dash_btn">
      <property name="geometry">
       <rect>
-       <x>30</x>
+       <x>0</x>
        <y>90</y>
-       <width>51</width>
+       <width>111</width>
        <height>51</height>
       </rect>
      </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
      <property name="styleSheet">
       <string notr="true">#dash_btn{
-background-color:transparent;
+	background-color:transparent;
+	font-size: 25px;
+	font-family: &quot;Inter&quot;i;
+	border: none;
 }
 
 #dash_btn:hover{
-background-color:#5897FB;
+	background-color:#5897FB;
 }
 </string>
      </property>
      <property name="text">
-      <string/>
+      <string>Dashboard</string>
      </property>
      <property name="icon">
       <iconset>
@@ -121,24 +128,28 @@ background-color:#5897FB;
     <widget class="QToolButton" name="cam_btn">
      <property name="geometry">
       <rect>
-       <x>30</x>
+       <x>0</x>
        <y>150</y>
-       <width>51</width>
+       <width>111</width>
        <height>51</height>
       </rect>
      </property>
      <property name="styleSheet">
       <string notr="true">#cam_btn{
-background-color:transparent;
+	background-color:transparent;
+	font-size: 25px;
+	font-family: &quot;Inter&quot;i;
+	border: none;
 }
 
 #cam_btn:hover{
 background-color:#5897FB;
 }
+
 </string>
      </property>
      <property name="text">
-      <string/>
+      <string>Live Video Feed</string>
      </property>
      <property name="icon">
       <iconset>
@@ -154,23 +165,27 @@ background-color:#5897FB;
     <widget class="QToolButton" name="logs_btn">
      <property name="geometry">
       <rect>
-       <x>30</x>
+       <x>0</x>
        <y>210</y>
-       <width>51</width>
+       <width>111</width>
        <height>51</height>
       </rect>
      </property>
      <property name="styleSheet">
       <string notr="true">#logs_btn{
-background-color:transparent;
+	background-color:transparent;
+	font-size: 25px;
+	font-family: &quot;Inter&quot;i;
+	border: none;
 }
 
 #logs_btn:hover{
 background-color:#5897FB;
-}</string>
+}
+</string>
      </property>
      <property name="text">
-      <string/>
+      <string>Logs</string>
      </property>
      <property name="icon">
       <iconset>
@@ -186,25 +201,29 @@ background-color:#5897FB;
     <widget class="QToolButton" name="settings_btn">
      <property name="geometry">
       <rect>
-       <x>30</x>
+       <x>0</x>
        <y>270</y>
-       <width>51</width>
+       <width>111</width>
        <height>51</height>
       </rect>
      </property>
      <property name="styleSheet">
       <string notr="true">#settings_btn{
-background-color:transparent;
+	background-color:transparent;
+	font-size: 25px;
+	font-family: &quot;Inter&quot;i;
+	border: none;
 }
 
 #settings_btn:hover{
 background-color:#5897FB;
 }
 
+
 </string>
      </property>
      <property name="text">
-      <string/>
+      <string>Settings</string>
      </property>
      <property name="icon">
       <iconset>
@@ -217,120 +236,12 @@ background-color:#5897FB;
       </size>
      </property>
     </widget>
-    <widget class="QLabel" name="dash_lbl">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>90</y>
-       <width>261</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Inter i</family>
-       <pointsize>-1</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QLabel {
-    font-family: &quot;Inter&quot;i;
-    font-size: 25px; /* Adjust based on your UI scale */
-    color: #EAEAEA;
-    letter-spacing: 1px; /* Adjust for spacing */
- }</string>
-     </property>
-     <property name="text">
-      <string>Dashboard</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="lvf_lbl">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>150</y>
-       <width>271</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Inter i</family>
-       <pointsize>-1</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QLabel {
-    font-family: &quot;Inter&quot;i;
-    font-size: 25px; /* Adjust based on your UI scale */
-    color: #EAEAEA;
-    letter-spacing:1px; /* Adjust for spacing */
- }</string>
-     </property>
-     <property name="text">
-      <string>Live Video Feed</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="logs_lbl">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>210</y>
-       <width>181</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Inter i</family>
-       <pointsize>-1</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QLabel {
-    font-family: &quot;Inter&quot;i;
-    font-size: 25px; /* Adjust based on your UI scale */
-    color: #EAEAEA;
-    letter-spacing: 1px; /* Adjust for spacing */
- }</string>
-     </property>
-     <property name="text">
-      <string>Logs</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="setts_lbl">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>270</y>
-       <width>181</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Inter i</family>
-       <pointsize>-1</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QLabel {
-    font-family: &quot;Inter&quot;i;
-    font-size: 25px; /* Adjust based on your UI scale */
-    color: #EAEAEA;
-    letter-spacing: 1px; /* Adjust for spacing */
- }</string>
-     </property>
-     <property name="text">
-      <string>Settings</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="logo_lbl">
      <property name="geometry">
       <rect>
-       <x>40</x>
-       <y>20</y>
-       <width>481</width>
+       <x>30</x>
+       <y>10</y>
+       <width>201</width>
        <height>51</height>
       </rect>
      </property>
@@ -345,7 +256,7 @@ background-color:#5897FB;
      <property name="styleSheet">
       <string notr="true">QLabel {
     font-family: &quot;Inter&quot;i;
-    font-size: 15px; /* Adjust based on your UI scale */
+    font-size: 20px; /* Adjust based on your UI scale */
     font-weight: bold;
     color: white;
     letter-spacing: 1px; /* Adjust for spacing */
@@ -353,7 +264,10 @@ background-color:#5897FB;
  }</string>
      </property>
      <property name="text">
-      <string>Visitor Monitoring System</string>
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap>resources/Icons/logonhvms.png</pixmap>
      </property>
     </widget>
     <zorder>logo_lbl</zorder>
@@ -362,16 +276,12 @@ background-color:#5897FB;
     <zorder>cam_btn</zorder>
     <zorder>logs_btn</zorder>
     <zorder>settings_btn</zorder>
-    <zorder>dash_lbl</zorder>
-    <zorder>lvf_lbl</zorder>
-    <zorder>logs_lbl</zorder>
-    <zorder>setts_lbl</zorder>
    </widget>
    <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
      <rect>
-      <x>120</x>
-      <y>0</y>
+      <x>130</x>
+      <y>-10</y>
       <width>1421</width>
       <height>821</height>
      </rect>
@@ -401,6 +311,508 @@ background-color:#5897FB;
       </property>
       <property name="text">
        <string>Dashboard</string>
+      </property>
+     </widget>
+     <widget class="QFrame" name="dashFrame1">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>170</y>
+        <width>301</width>
+        <height>281</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#dashFrame1 {
+  border-radius: 15px;
+    background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 0, y2: 1,
+        stop: 0 #3A8DFF,
+        stop: 1 #1D69E2
+    );
+    border: 2px solid #2a85ff;
+}
+
+#dashFrame1::hover {
+    background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 0, y2: 1,
+        stop: 0 #5BAEFF,
+        stop: 1 #3284E6
+    );
+}</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QLabel" name="dateLabel1">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>30</y>
+         <width>261</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#dateLabel1 {
+    color: white;
+    background: transparent;  /* Let the frame's gradient show through */
+    font-weight: bold;
+    font-size: 20px;
+    padding: 4px 8px;
+    border-radius: 10px;
+}
+
+#dateLabel1:hover {
+    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */
+}</string>
+       </property>
+       <property name="text">
+        <string>Date: </string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="totalEntry1">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>220</y>
+         <width>271</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#totalEntry1{
+    color: white;
+    background: transparent;  /* Let the frame's gradient show through */
+    font-weight: bold;
+    font-size: 20px;
+    padding: 4px 8px;
+    border-radius: 10px;
+}
+
+#totalEntry1:hover {
+    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */
+}</string>
+       </property>
+       <property name="text">
+        <string>Total Entry:</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QFrame" name="dashFrame2">
+      <property name="geometry">
+       <rect>
+        <x>360</x>
+        <y>170</y>
+        <width>301</width>
+        <height>281</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#dashFrame2 {
+  border-radius: 15px;
+    background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 0, y2: 1,
+        stop: 0 #3A8DFF,
+        stop: 1 #1D69E2
+    );
+    border: 2px solid #2a85ff;
+}
+
+#dashFrame2::hover {
+    background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 0, y2: 1,
+        stop: 0 #5BAEFF,
+        stop: 1 #3284E6
+    );
+}</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QLabel" name="dateLabel2">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>30</y>
+         <width>261</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#dateLabel2 {
+    color: white;
+    background: transparent;  /* Let the frame's gradient show through */
+    font-weight: bold;
+    font-size: 20px;
+    padding: 4px 8px;
+    border-radius: 10px;
+}
+
+#dateLabel2:hover {
+    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */
+}</string>
+       </property>
+       <property name="text">
+        <string>Date: </string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="totalEntry2">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>220</y>
+         <width>261</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#totalEntry2{
+    color: white;
+    background: transparent;  /* Let the frame's gradient show through */
+    font-weight: bold;
+    font-size: 20px;
+    padding: 4px 8px;
+    border-radius: 10px;
+}
+
+#totalEntry2:hover {
+    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */
+}</string>
+       </property>
+       <property name="text">
+        <string>Total Entry:</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QFrame" name="dashFrame3">
+      <property name="geometry">
+       <rect>
+        <x>680</x>
+        <y>170</y>
+        <width>301</width>
+        <height>281</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#dashFrame3 {
+  border-radius: 15px;
+    background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 0, y2: 1,
+        stop: 0 #3A8DFF,
+        stop: 1 #1D69E2
+    );
+    border: 2px solid #2a85ff;
+}
+
+#dashFrame3::hover {
+    background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 0, y2: 1,
+        stop: 0 #5BAEFF,
+        stop: 1 #3284E6
+    );
+}</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QLabel" name="totalEntry3">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>220</y>
+         <width>271</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#totalEntry3{
+    color: white;
+    background: transparent;  /* Let the frame's gradient show through */
+    font-weight: bold;
+    font-size: 20px;
+    padding: 4px 8px;
+    border-radius: 10px;
+}
+
+#totalEntry3:hover {
+    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */
+}</string>
+       </property>
+       <property name="text">
+        <string>Total Entry:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="dateLabel3">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>30</y>
+         <width>251</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#dateLabel3 {
+    color: white;
+    background: transparent;  /* Let the frame's gradient show through */
+    font-weight: bold;
+    font-size: 20px;
+    padding: 4px 8px;
+    border-radius: 10px;
+}
+
+#dateLabel3:hover {
+    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */
+}</string>
+       </property>
+       <property name="text">
+        <string>Date: </string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QFrame" name="dashFrame4">
+      <property name="geometry">
+       <rect>
+        <x>1000</x>
+        <y>170</y>
+        <width>301</width>
+        <height>281</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#dashFrame4 {
+  border-radius: 15px;
+    background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 0, y2: 1,
+        stop: 0 #3A8DFF,
+        stop: 1 #1D69E2
+    );
+    border: 2px solid #2a85ff;
+}
+
+#dashFrame4::hover {
+    background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 0, y2: 1,
+        stop: 0 #5BAEFF,
+        stop: 1 #3284E6
+    );
+}</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QLabel" name="totalEntry4">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>220</y>
+         <width>271</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#totalEntry4{
+    color: white;
+    background: transparent;  /* Let the frame's gradient show through */
+    font-weight: bold;
+    font-size: 20px;
+    padding: 4px 8px;
+    border-radius: 10px;
+}
+
+#totalEntry4:hover {
+    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */
+}</string>
+       </property>
+       <property name="text">
+        <string>Total Entry:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="dateLabel4">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>30</y>
+         <width>271</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#dateLabel4 {
+    color: white;
+    background: transparent;  /* Let the frame's gradient show through */
+    font-weight: bold;
+    font-size: 20px;
+    padding: 4px 8px;
+    border-radius: 10px;
+}
+
+#dateLabel4:hover {
+    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */
+}</string>
+       </property>
+       <property name="text">
+        <string>Date: </string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QFrame" name="dashFrame5">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>470</y>
+        <width>621</width>
+        <height>311</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#dashFrame5 {
+  border-radius: 15px;
+    background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 0, y2: 1,
+        stop: 0 #3A8DFF,
+        stop: 1 #1D69E2
+    );
+    border: 2px solid #2a85ff;
+}
+
+#dashFrame5::hover {
+    background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 0, y2: 1,
+        stop: 0 #5BAEFF,
+        stop: 1 #3284E6
+    );
+}</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QLabel" name="logsPrev">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>181</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#logsPrev{
+    color: white;
+    background: transparent;  /* Let the frame's gradient show through */
+    font-weight: bold;
+    font-size: 20px;
+    padding: 4px 8px;
+    border-radius: 10px;
+}
+
+#logsPrev:hover {
+    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */
+}</string>
+       </property>
+       <property name="text">
+        <string>Logs for Today</string>
+       </property>
+      </widget>
+      <widget class="QTableView" name="logsPrev_tbl">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>61</y>
+         <width>581</width>
+         <height>231</height>
+        </rect>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#logsPrev_tbl {
+    background-color: white;
+    color: black;
+    font-size: 20px;
+ 	border: 1px solid white;
+    selection-background-color: #5897FB;
+    alternate-background-color:#dbe9f4;
+}
+
+#logsPrev_tbl::item:selected {
+    background-color: #a7c8fb;
+}
+
+#logsPrev_tbl QHeaderView::section {
+    background-color:#2c2f40;  /* Dark navy blue for header */
+    color: white;  /* White text */
+    font-size: 14px;  /* Optional: Adjust font size */
+    font-weight: bold;  /* Optional: Make text bold */
+    padding: 5px;  /* Optional: Adjust padding */
+    border: 1px solid #d3d3d3;  /* Border color for header */
+}
+</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QFrame" name="dashFrame6">
+      <property name="geometry">
+       <rect>
+        <x>680</x>
+        <y>470</y>
+        <width>621</width>
+        <height>311</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#dashFrame6 {
+  border-radius: 15px;
+    background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 0, y2: 1,
+        stop: 0 #3A8DFF,
+        stop: 1 #1D69E2
+    );
+    border: 2px solid #2a85ff;
+}
+
+#dashFrame6::hover {
+    background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 0, y2: 1,
+        stop: 0 #5BAEFF,
+        stop: 1 #3284E6
+    );
+}</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
       </property>
      </widget>
     </widget>
@@ -939,6 +1351,9 @@ background-color:#5897FB;
 }</string>
       </property>
       <property name="text">
+       <string/>
+      </property>
+      <property name="placeholderText">
        <string>Search</string>
       </property>
      </widget>
@@ -965,6 +1380,168 @@ background-color:#5897FB;
       </property>
       <property name="text">
        <string>Settings</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="export_page">
+     <widget class="QPushButton" name="export_btn2">
+      <property name="geometry">
+       <rect>
+        <x>1020</x>
+        <y>120</y>
+        <width>291</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#export_btn2{
+    background-color: #5897FB; /* Default color */
+    color: white;
+	font-size: 20px;
+    border-radius: 5px;
+}
+
+#export_btn2:hover{
+	background-color: #2F6CDF;
+}</string>
+      </property>
+      <property name="text">
+       <string>Export</string>
+      </property>
+     </widget>
+     <widget class="QTableView" name="export_tbl">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>200</y>
+        <width>1271</width>
+        <height>601</height>
+       </rect>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#export_tbl {
+    background-color: white;
+    color: black;
+    font-size: 20px;
+ 	border: 1px solid white;
+    selection-background-color: #5897FB;
+    alternate-background-color:#dbe9f4;
+}
+
+#export_tbl::item:selected {
+    background-color: #a7c8fb;
+}
+
+#export_tbl::QHeaderView::section {
+    background-color:#2c2f40;  /* Dark navy blue for header */
+    color: white;  /* White text */
+    font-size: 14px;  /* Optional: Adjust font size */
+    font-weight: bold;  /* Optional: Make text bold */
+    padding: 5px;  /* Optional: Adjust padding */
+    border: 1px solid #d3d3d3;  /* Border color for header */
+}
+</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="dateFilter_cbx">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>141</y>
+        <width>521</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#dateFilter_cbx {
+    border: 2px solid #1D69E2;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 20px;
+    font-family: 'Roboto', sans-serif;
+    background-color: white;
+    color: black;
+}
+
+#dateFilter_cbx:hover {
+    border: 2px solid transparent;
+}
+
+#dateFilter_cbx:focus {
+    border: 2px solid transparent;
+    background-color: white;
+}
+
+#dateFilter_cbx::drop-down {
+    border-left: 1px solid transparent;
+    background-color: white;
+}
+
+#dateFilter_cbx QAbstractItemView {
+    background-color: white;
+    selection-background-color: #1D69E2;
+    selection-color: white;
+}
+
+#dateFilter_cbx QAbstractItemView::item {
+    padding: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+    color: black;
+}</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_3">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>201</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel {
+    font-family: &quot;Inter&quot;i;
+    font-size: 30px; /* Adjust based on your UI scale */
+    font-weight: bold;
+    color: white;
+    letter-spacing: 1px; /* Adjust for spacing */
+    text-transform: uppercase; /* Makes text all caps */
+}</string>
+      </property>
+      <property name="text">
+       <string>export pdf</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_8">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>120</y>
+        <width>261</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel {
+    font-family: &quot;Inter&quot;i;
+    font-size: 15px; /* Adjust based on your UI scale */
+    font-weight: bold;
+    color: white;
+    letter-spacing: 1px; /* Adjust for spacing */
+    text-transform: uppercase; /* Makes text all caps */
+}</string>
+      </property>
+      <property name="text">
+       <string>available dates for export:</string>
       </property>
      </widget>
     </widget>

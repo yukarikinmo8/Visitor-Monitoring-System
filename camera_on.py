@@ -71,12 +71,8 @@ class CameraFeedWindow(QMainWindow):
         self.ui.stop_btn.setEnabled(False)
 
         # Hide navigation labels
-        self.ui.dash_lbl.setVisible(False)
-        self.ui.logo_lbl.setVisible(False)
-        self.ui.setts_lbl.setVisible(False)
-        self.ui.logs_lbl.setVisible(False)
-        self.ui.lvf_lbl.setVisible(False)
-
+        self.ui.logo_lbl.setVisible(False)        
+        self.ui.search_txt.textChanged.connect(self.onTextChanged)
         # Set default stacked widget page
         self.ui.stackedWidget.setCurrentIndex(0)
 
@@ -93,9 +89,22 @@ class CameraFeedWindow(QMainWindow):
     def _initialize_database_and_export(self):       
         pdf = exportPDF()
         date_today = date.today()   
-
+     
+        self.msm.updateDashboardStats(
+            date_labels=[
+                self.ui.dateLabel1, self.ui.dateLabel2,
+                self.ui.dateLabel3, self.ui.dateLabel4
+            ],
+            count_labels=[
+                self.ui.totalEntry1, self.ui.totalEntry2,
+                self.ui.totalEntry3, self.ui.totalEntry4
+            ]
+        )
         self.ui.logs_tbl.setAlternatingRowColors(True)
+        self.ui.export_tbl.setAlternatingRowColors(True)
+        self.ui.logsPrev_tbl.setAlternatingRowColors(True)
         self.msm.fillLogsTable(self.ui.logs_tbl)
+        self.msm.fillLogsTable(self.ui.logsPrev_tbl) #for testing
         self.msm.fillComboBox(self.ui.dateFilter_cbx)
         self.onDateChanged(self.ui.dateFilter_cbx.currentText())  
         self.ui.dateFilter_cbx.currentTextChanged.connect(self.onDateChanged)    
@@ -314,14 +323,18 @@ class CameraFeedWindow(QMainWindow):
             self.animation.setEndValue(401)  # Expand or Collapse
             self.animation.start()
 
-            self.animation.finished.connect(lambda: self.ui.nav_bar.setFixedWidth(401))
+            self.animation.finished.connect(lambda: self.ui.nav_bar.setFixedWidth(300))
 
-            self.ui.menu_btn.setGeometry(340, 20, 50, 50)
-            self.ui.dash_lbl.setVisible(True)
+            self.ui.menu_btn.setGeometry(250, 0, 50, 50)
+            self.ui.dash_btn.setFixedWidth(300)
+            self.ui.dash_btn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+            self.ui.cam_btn.setFixedWidth(300)
+            self.ui.cam_btn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+            self.ui.logs_btn.setFixedWidth(300)
+            self.ui.logs_btn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+            self.ui.settings_btn.setFixedWidth(300)
+            self.ui.settings_btn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
             self.ui.logo_lbl.setVisible(True)
-            self.ui.setts_lbl.setVisible(True)
-            self.ui.logs_lbl.setVisible(True)
-            self.ui.lvf_lbl.setVisible(True)
 
         else: 
 
@@ -339,12 +352,17 @@ class CameraFeedWindow(QMainWindow):
             self.animation.finished.connect(lambda: self.update_ui()) 
         
     def update_ui(self):
-        self.ui.menu_btn.setGeometry(30, 20, 50, 50)
-        self.ui.dash_lbl.setVisible(False)
+        self.ui.menu_btn.setGeometry(0, 0, 111, 51)
+        self.ui.dash_btn.setFixedWidth(111)
+        self.ui.cam_btn.setFixedWidth(111)
+        self.ui.logs_btn.setFixedWidth(111)
+        self.ui.settings_btn.setFixedWidth(111)
+        self.ui.cam_btn.setToolButtonStyle(Qt.ToolButtonIconOnly)
+        self.ui.logs_btn.setToolButtonStyle(Qt.ToolButtonIconOnly)
+        self.ui.settings_btn.setToolButtonStyle(Qt.ToolButtonIconOnly)
+        self.ui.dash_btn.setToolButtonStyle(Qt.ToolButtonIconOnly)
+        self.ui.logo_lbl.setVisible(True)
         self.ui.logo_lbl.setVisible(False)
-        self.ui.setts_lbl.setVisible(False)
-        self.ui.logs_lbl.setVisible(False)
-        self.ui.lvf_lbl.setVisible(False)
     
     def clearUiMem(self):
         if hasattr(self, "animation"):
@@ -364,7 +382,7 @@ class CameraFeedWindow(QMainWindow):
             # Optionally, refresh filtered table too
             selected_date = self.ui.dateFilter_cbx.currentText()
             self.onDateChanged(selected_date)
-
+        
     def get_uuid_for_person(self, person_id):
         """"Generate or retrieve a UUID for a given person ID."""
         if person_id not in self.person_uuid_map:
@@ -372,10 +390,20 @@ class CameraFeedWindow(QMainWindow):
         return self.person_uuid_map[person_id]
     
     def open_menu(self, position: QPoint):
-        index = self.ui.logs_tbl.indexAt(position)
-        if not index.isValid():
-            return  # Clicked outside any cell
-        
+        index = self.ui.logs_tbl.indexAt(position)        
+        if index.isValid():
+            # Get the row of the clicked cell
+            row = index.row()
+
+            # Map the index of column 3 in the same row from proxy to source
+            proxy_index = self.ui.logs_tbl.model().index(row, 3)
+            source_index = self.ui.logs_tbl.model().mapToSource(proxy_index)
+
+            # Retrieve the file path stored in Qt.UserRole
+            file_path = self.ui.logs_tbl.model().sourceModel().itemFromIndex(source_index).data(Qt.UserRole)
+
+            print(f"File path for clicked row: {file_path}")
+
         # Create the menu
         menu = QMenu()
         
@@ -384,16 +412,19 @@ class CameraFeedWindow(QMainWindow):
         # Connect actions
         imageSearch_action.triggered.connect(lambda: self.show_popup())
         
-        
         # Add actions to the menu
         menu.addAction(imageSearch_action)        
         
         # Show the menu
         menu.exec(self.ui.logs_tbl.viewport().mapToGlobal(position))
-        return index
-
         
-    
+        return file_path
+
+    def onTextChanged(self, text):       
+        self.ui.logs_tbl.model().setFilterCaseSensitivity(Qt.CaseInsensitive)
+        self.ui.logs_tbl.model().setFilterKeyColumn(2)  # Column index to filter (e.g., 1 = "Date")
+        self.ui.logs_tbl.model().setFilterFixedString(text)    
+        
     def show_popup(self):
         # Create an instance of the PopupWindow and show it
         self.popup = PopupWindow()
