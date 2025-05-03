@@ -1,6 +1,8 @@
 from deepface import DeepFace
 from retinaface import RetinaFace
 import pandas as pd
+import os
+import datetime
 
 # STATIC THRESHOLD (per Sher1)
 THRESHOLD = 0.57
@@ -82,3 +84,12 @@ def run_verification(img_path: str, db_path: str = "./SavedFaces") -> dict:
         "verified": None,
         "raw_result": None
     }
+
+
+if __name__ == "__main__":
+    # Example usage
+    img_path = "D:/Github Repo/Visitor-Monitoring-System/SavedFaces/2025-05-03/cholo.jpg"
+    project_dir = os.path.dirname(os.path.abspath(__file__))
+    db_path = os.path.join(project_dir, 'SavedFaces', datetime.datetime.now().strftime('%Y-%m-%d'))
+    result = run_verification(img_path, db_path)
+    print(result)
