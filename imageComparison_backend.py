@@ -10,22 +10,6 @@ def detect_face(image_path):
     return bool(detections)
 
 def run_verification(img_path: str, db_path: str = "./SavedFaces") -> dict:
-    """
-    Perform face detection and verification using DeepFace + RetinaFace.
-    
-    Args:
-        img_path (str): Path to the image to verify.
-        db_path (str): Path to the image database directory.
-    
-    Returns:
-        dict: {
-            'match_found': bool,
-            'matched_image': str or None,
-            'distance': float or None,
-            'verified': bool or None,
-            'raw_result': dict
-        }
-    """
     if not detect_face(img_path):
         print("No face detected in the original image.")
         return {
