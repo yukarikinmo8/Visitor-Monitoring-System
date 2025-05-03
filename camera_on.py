@@ -449,11 +449,12 @@ class CameraFeedWindow(QMainWindow):
         self.coord_point = (filterMulti1(self.x), filterMulti1(self.y))
 
     def restoreDefaults(self):
-        resDef()
-        self.x, self.y = loadConfig()
-        self.ui.x_txtbox.setText(f"{self.x}")
-        self.ui.y_txtbox.setText(f"{self.y}")
-        self.coord_point = (filterMulti1(self.x), filterMulti1(self.y))
+        # Reset application settings to default values
+        resDef()  # Resets configuration to default
+        self.x, self.y = loadConfig()  
+        self.ui.x_txtbox.setText(f"{self.x}") 
+        self.ui.y_txtbox.setText(f"{self.y}")  
+        self.coord_point = (filterMulti1(self.x), filterMulti1(self.y))  
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
