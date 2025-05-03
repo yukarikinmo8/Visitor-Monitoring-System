@@ -388,10 +388,11 @@ class CameraFeedWindow(QMainWindow):
             self.onDateChanged(selected_date)
         
     def get_uuid_for_person(self, person_id):
-        """"Generate or retrieve a UUID for a given person ID."""
-        if person_id not in self.person_uuid_map:
-            self.person_uuid_map[person_id] = str(uuid.uuid4())
-        return self.person_uuid_map[person_id]
+        """Generate or retrieve a UUID for a given person ID combined with the current date and time."""
+        unique_key = f"{person_id}_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}"
+        if unique_key not in self.person_uuid_map:
+            self.person_uuid_map[unique_key] = str(uuid.uuid4())
+        return self.person_uuid_map[unique_key]
     
     def open_menu(self, position: QPoint):
         index = self.ui.logs_tbl.indexAt(position)        
