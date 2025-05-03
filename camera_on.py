@@ -26,11 +26,20 @@ from main_ui import Ui_MainWindow  # Import the generated UI file
 from ui_image_comparison import Ui_Form
 from configurations import loadConfig, save_config, filterMulti1, resDef
 from datetime import date
+from imageComparison import ImageComparisonApp 
+
 
 class PopupWindow(QWidget, Ui_Form):
-    def __init__(self):
+    def __init__(self, file_path=None):
         super().__init__()
-        self.setupUi(self) 
+        self.setupUi(self)
+        
+        # Initialize ImageComparisonApp functionality
+        self.comparison_app = ImageComparisonApp()
+        
+        # If a file path was provided, run comparison immediately
+        if file_path:
+            self.comparison_app.compare_images(file_path)
 
 class CameraFeedWindow(QMainWindow):
     def __init__(self):
@@ -398,6 +407,8 @@ class CameraFeedWindow(QMainWindow):
     
     def open_menu(self, position: QPoint):
         index = self.ui.logs_tbl.indexAt(position)        
+        self.selected_file_path = None
+
         if index.isValid():
             # Get the row of the clicked cell
             row = index.row()
@@ -407,25 +418,22 @@ class CameraFeedWindow(QMainWindow):
             source_index = self.ui.logs_tbl.model().mapToSource(proxy_index)
 
             # Retrieve the file path stored in Qt.UserRole
-            file_path = self.ui.logs_tbl.model().sourceModel().itemFromIndex(source_index).data(Qt.UserRole)
+            self.selected_file_path = self.ui.logs_tbl.model().sourceModel().itemFromIndex(source_index).data(Qt.UserRole)
+            print(f"File path for clicked row: {self.selected_file_path}")
 
-            print(f"File path for clicked row: {file_path}")
-
-        # Create the menu
-        menu = QMenu()
-        
-        imageSearch_action = QAction("Search for Similar Image", self)
-                
-        # Connect actions
-        imageSearch_action.triggered.connect(lambda: self.show_popup())
-        
-        # Add actions to the menu
-        menu.addAction(imageSearch_action)        
-        
-        # Show the menu
-        menu.exec(self.ui.logs_tbl.viewport().mapToGlobal(position))
-        
-        return file_path
+            # Create the menu
+            menu = QMenu()
+    
+            imageSearch_action = QAction("Search for Similar Image", self)
+            
+            # Connect actions
+            imageSearch_action.triggered.connect(self.show_popup)
+    
+            # Add actions to the menu
+            menu.addAction(imageSearch_action)        
+    
+            # Show the menu
+            menu.exec(self.ui.logs_tbl.viewport().mapToGlobal(position))
 
     def onTextChanged(self, text):       
         self.ui.logs_tbl.model().setFilterCaseSensitivity(Qt.CaseInsensitive)
@@ -434,11 +442,15 @@ class CameraFeedWindow(QMainWindow):
         
     def show_popup(self):
         # Asynchronously show the popup in the main thread
-        QTimer.singleShot(0, self._show_popup_impl)
+        QTimer.singleShot(0, lambda: self._show_popup_impl())
 
     def _show_popup_impl(self):
-        self.popup = PopupWindow()
-        self.popup.show()  # Display the popup widget (non-modal)
+        if hasattr(self, 'selected_file_path') and self.selected_file_path:
+            self.popup = ImageComparisonApp(self.selected_file_path)
+            self.popup.show()  # Display the popup widget (non-modal)
+        else:
+            self.popup = PopupWindow()
+            self.popup.show()  # Display the popup widget (non-modal)
     
     def saveConfigs(self):
 

@@ -1,21 +1,23 @@
 from deepface import DeepFace
 from retinaface import RetinaFace
 import pandas as pd
+import os
 
 # STATIC THRESHOLD (per Sher1)
-THRESHOLD = 0.57
+THRESHOLD = 0.56
 
 def detect_face(image_path):
     detections = RetinaFace.detect_faces(image_path)
     return bool(detections)
 
-def run_verification(img_path: str, db_path: str = "./SavedFaces") -> dict:
+def run_verification(img_path: str, db_path: str = "./SavedFaces", exclude_path: str = None) -> dict:
     """
     Perform face detection and verification using DeepFace + RetinaFace.
     
     Args:
         img_path (str): Path to the image to verify.
         db_path (str): Path to the image database directory.
+        exclude_path (str): Path to exclude from comparison (to avoid self-matching).
     
     Returns:
         dict: {
@@ -36,7 +38,14 @@ def run_verification(img_path: str, db_path: str = "./SavedFaces") -> dict:
             "raw_result": None
         }
 
-    print("Face detected in the original image.")
+    print(f"Face detected in the original image: {img_path}")
+    print(f"Exclude path: {exclude_path}")
+
+    # Normalize paths for comparison
+    norm_img_path = os.path.normpath(img_path)
+    norm_exclude_path = os.path.normpath(exclude_path) if exclude_path else None
+    
+    print(f"Normalized paths - Image: {norm_img_path}, Exclude: {norm_exclude_path}")
 
     # Search for potential matches
     dfs = DeepFace.find(
@@ -46,8 +55,7 @@ def run_verification(img_path: str, db_path: str = "./SavedFaces") -> dict:
         detector_backend="retinaface",
         align=True
     )
-    print(dfs)
-
+    
     if len(dfs) == 0 or dfs[0].empty:
         print("No matching image found in the database.")
         return {
@@ -58,9 +66,23 @@ def run_verification(img_path: str, db_path: str = "./SavedFaces") -> dict:
             "raw_result": None
         }
 
+    print(f"Found {len(dfs[0])} potential matches")
+    
     # Iterate through closest matches
     for index, row in dfs[0].iterrows():
         matched_img_path = row["identity"]
+        norm_matched_path = os.path.normpath(matched_img_path)
+        
+        # Skip if this is the image we're comparing against (to avoid self-matching)
+        if norm_exclude_path and norm_matched_path == norm_exclude_path:
+            print(f"Skipping self-match: {matched_img_path}")
+            continue
+            
+        # Also check by filename as a fallback
+        if exclude_path and os.path.basename(matched_img_path) == os.path.basename(exclude_path):
+            print(f"Skipping self-match by filename: {matched_img_path}")
+            continue
+            
         if detect_face(matched_img_path):
             print(f"Face detected in matched image: {matched_img_path}")
             result = DeepFace.verify(
