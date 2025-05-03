@@ -57,8 +57,8 @@ def run_verification(img_path: str, db_path: str = "./SavedFaces", exclude_path:
 
     # Set DeepFace to use GPU if available
     if GPU_AVAILABLE:
-        print("GPU detected. Using GPU for DeepFace operations.")
-        DeepFace.build_model("ArcFace").cuda()
+        print("GPU detected. DeepFace will use GPU if available.")
+        DeepFace.build_model("ArcFace")  # Pre-load model (optional)
     else:
         print("GPU not detected. Using CPU for DeepFace operations.")
 
