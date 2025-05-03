@@ -64,8 +64,6 @@ class CameraFeedWindow(QMainWindow):
         self._initialize_database_and_export()
 
         self.person_uuid_map = {}
-        self.ui.logs_tbl.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.ui.logs_tbl.customContextMenuRequested.connect(self.open_menu)
 
     def _initialize_ui(self):
         """Set up UI elements and connect signals."""
@@ -90,6 +88,8 @@ class CameraFeedWindow(QMainWindow):
         self.ui.export_btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(4))
         self.ui.saveConfig_btn.clicked.connect(lambda: self.saveConfigs())
         self.ui.def_btn.clicked.connect(lambda: self.restoreDefaults())
+        self.ui.logs_tbl.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.ui.logs_tbl.customContextMenuRequested.connect(self.open_menu)
     def _initialize_database_and_export(self):       
         pdf = exportPDF()
         date_today = date.today()   
