@@ -27,10 +27,15 @@ from ui_image_comparison import Ui_Form
 from configurations import loadConfig, save_config, filterMulti1, resDef
 from datetime import date
 
+filepath = "hehehehe"
+
 class PopupWindow(QWidget, Ui_Form):
     def __init__(self):
         super().__init__()
-        self.setupUi(self) 
+        self.ui = Ui_Form()
+        self.ui.setupUi(self)
+        global filepath
+        self.ui.date_lbl1.setText(f"Date: {filepath}")
 
 class CameraFeedWindow(QMainWindow):
     def __init__(self):
@@ -401,14 +406,13 @@ class CameraFeedWindow(QMainWindow):
         if index.isValid():
             # Get the row of the clicked cell
             row = index.row()
-
+            
             # Map the index of column 3 in the same row from proxy to source
             proxy_index = self.ui.logs_tbl.model().index(row, 3)
             source_index = self.ui.logs_tbl.model().mapToSource(proxy_index)
 
             # Retrieve the file path stored in Qt.UserRole
             file_path = self.ui.logs_tbl.model().sourceModel().itemFromIndex(source_index).data(Qt.UserRole)
-
             print(f"File path for clicked row: {file_path}")
 
         # Create the menu
@@ -425,7 +429,8 @@ class CameraFeedWindow(QMainWindow):
         # Show the menu
         menu.exec(self.ui.logs_tbl.viewport().mapToGlobal(position))
         
-        return file_path
+        global filepath
+        filepath = file_path
 
     def onTextChanged(self, text):       
         self.ui.logs_tbl.model().setFilterCaseSensitivity(Qt.CaseInsensitive)
@@ -454,6 +459,7 @@ class CameraFeedWindow(QMainWindow):
         self.ui.x_txtbox.setText(f"{self.x}")
         self.ui.y_txtbox.setText(f"{self.y}")
         self.coord_point = (filterMulti1(self.x), filterMulti1(self.y))
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
