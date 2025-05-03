@@ -9,6 +9,7 @@ import threading
 from queue import Queue
 import shutil
 import uuid
+import json
 
 from PySide6.QtCore import QTimer, QPoint
 from PySide6.QtGui import QImage, QPixmap, QAction
@@ -23,7 +24,7 @@ from set_entry import Get_Coordinates
 from export_pdf import exportPDF
 from main_ui import Ui_MainWindow  # Import the generated UI file
 from ui_image_comparison import Ui_Form
-
+from configurations import loadConfig, save_config, filterMulti1, resDef
 from datetime import date
 
 class PopupWindow(QWidget, Ui_Form):
@@ -41,9 +42,10 @@ class CameraFeedWindow(QMainWindow):
         # Initialize video writer and settings
         self.video_writer = None
         self.save_video = True
+        self.x, self.y = loadConfig()
 
         # Default coordinates and file path
-        self.coord_point = (0.5, 0.04)
+        self.coord_point = (filterMulti1(self.x), filterMulti1(self.y))
         self.area1 = [(261, 434), (337, 428), (522, 516), (450, 537)]
         self.area2 = [(154, 450), (246, 438), (406, 541), (292, 548)]
         self.file_path = 'Sample Test File\\test_video.mp4'
@@ -69,7 +71,8 @@ class CameraFeedWindow(QMainWindow):
         """Set up UI elements and connect signals."""
         # Disable stop button initially
         self.ui.stop_btn.setEnabled(False)
-
+        self.ui.x_txtbox.setText(f"{self.x}")
+        self.ui.y_txtbox.setText(f"{self.y}")
         # Hide navigation labels
         self.ui.logo_lbl.setVisible(False)        
         self.ui.search_txt.textChanged.connect(self.onTextChanged)
@@ -85,7 +88,8 @@ class CameraFeedWindow(QMainWindow):
         self.ui.logs_btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(2))
         self.ui.settings_btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(3))
         self.ui.export_btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(4))
-
+        self.ui.saveConfig_btn.clicked.connect(lambda: self.saveConfigs())
+        self.ui.def_btn.clicked.connect(lambda: self.restoreDefaults())
     def _initialize_database_and_export(self):       
         pdf = exportPDF()
         date_today = date.today()   
@@ -429,8 +433,21 @@ class CameraFeedWindow(QMainWindow):
         # Create an instance of the PopupWindow and show it
         self.popup = PopupWindow()
         self.popup.show()  # Display the popup widget (non-modal)
-
     
+    def saveConfigs(self):
+
+        x_value = int(self.ui.x_txtbox.text())  # Parse x as an integer
+        y_value = int(self.ui.y_txtbox.text())  # Parse y as an integer
+        save_config(x_value, y_value)
+        self.x, self.y = loadConfig()
+        self.coord_point = (filterMulti1(self.x), filterMulti1(self.y))
+
+    def restoreDefaults(self):
+        resDef()
+        self.x, self.y = loadConfig()
+        self.ui.x_txtbox.setText(f"{self.x}")
+        self.ui.y_txtbox.setText(f"{self.y}")
+        self.coord_point = (filterMulti1(self.x), filterMulti1(self.y))
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

@@ -709,7 +709,7 @@ class Ui_MainWindow(object):
         self.Settings.setObjectName(u"Settings")
         self.label_7 = QLabel(self.Settings)
         self.label_7.setObjectName(u"label_7")
-        self.label_7.setGeometry(QRect(610, 450, 201, 101))
+        self.label_7.setGeometry(QRect(10, 30, 201, 31))
         self.label_7.setStyleSheet(u"QLabel {\n"
 "    font-family: \"Inter\"i;\n"
 "    font-size: 30px; /* Adjust based on your UI scale */\n"
@@ -717,6 +717,129 @@ class Ui_MainWindow(object):
 "    color: white;\n"
 "    letter-spacing: 1px; /* Adjust for spacing */\n"
 "    text-transform: uppercase; /* Makes text all caps */\n"
+"}")
+        self.configFrame1 = QFrame(self.Settings)
+        self.configFrame1.setObjectName(u"configFrame1")
+        self.configFrame1.setGeometry(QRect(50, 170, 301, 281))
+        self.configFrame1.setStyleSheet(u"#configFrame1 {\n"
+"  border-radius: 15px;\n"
+"    background: qlineargradient(\n"
+"        x1: 0, y1: 0,\n"
+"        x2: 0, y2: 1,\n"
+"        stop: 0 #3A8DFF,\n"
+"        stop: 1 #1D69E2\n"
+"    );\n"
+"    border: 2px solid #2a85ff;\n"
+"}\n"
+"\n"
+"#configFrame1::hover {\n"
+"    background: qlineargradient(\n"
+"        x1: 0, y1: 0,\n"
+"        x2: 0, y2: 1,\n"
+"        stop: 0 #5BAEFF,\n"
+"        stop: 1 #3284E6\n"
+"    );\n"
+"}")
+        self.configFrame1.setFrameShape(QFrame.StyledPanel)
+        self.configFrame1.setFrameShadow(QFrame.Raised)
+        self.configLabel1 = QLabel(self.configFrame1)
+        self.configLabel1.setObjectName(u"configLabel1")
+        self.configLabel1.setGeometry(QRect(20, 20, 261, 41))
+        self.configLabel1.setStyleSheet(u"#configLabel1 {\n"
+"    color: white;\n"
+"    background: transparent;  /* Let the frame's gradient show through */\n"
+"    font-weight: bold;\n"
+"    font-size: 20px;\n"
+"    padding: 4px 8px;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"#configLabel1:hover {\n"
+"    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */\n"
+"}")
+        self.x_lbl = QLabel(self.configFrame1)
+        self.x_lbl.setObjectName(u"x_lbl")
+        self.x_lbl.setGeometry(QRect(10, 90, 121, 31))
+        self.x_lbl.setStyleSheet(u"#x_lbl{\n"
+"    color: white;\n"
+"    background: transparent;  /* Let the frame's gradient show through */\n"
+"    font-weight: bold;\n"
+"    font-size: 15px;\n"
+"    padding: 4px 8px;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"#x_lbl:hover {\n"
+"    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */\n"
+"}")
+        self.y_lbl = QLabel(self.configFrame1)
+        self.y_lbl.setObjectName(u"y_lbl")
+        self.y_lbl.setGeometry(QRect(10, 140, 121, 31))
+        self.y_lbl.setStyleSheet(u"#y_lbl{\n"
+"    color: white;\n"
+"    background: transparent;  /* Let the frame's gradient show through */\n"
+"    font-weight: bold;\n"
+"    font-size: 15px;\n"
+"    padding: 4px 8px;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"#y_lbl:hover {\n"
+"    color: #E0F0FF;  /* Slightly lighter on hover for subtle interactivity */\n"
+"}")
+        self.x_txtbox = QLineEdit(self.configFrame1)
+        self.x_txtbox.setObjectName(u"x_txtbox")
+        self.x_txtbox.setGeometry(QRect(130, 90, 141, 31))
+        self.x_txtbox.setStyleSheet(u"#x_txtbox {\n"
+"    border: 2px solid #5897FB;\n"
+"    padding: 5px;\n"
+"    background-color: #f5f5f5;\n"
+"    color: #333;\n"
+"	font-size: 17px;\n"
+"}")
+        self.x_txtbox.setAlignment(Qt.AlignCenter)
+        self.y_txtbox = QLineEdit(self.configFrame1)
+        self.y_txtbox.setObjectName(u"y_txtbox")
+        self.y_txtbox.setGeometry(QRect(130, 140, 141, 31))
+        self.y_txtbox.setStyleSheet(u"#y_txtbox {\n"
+"    border: 2px solid #5897FB;\n"
+"    padding: 5px;\n"
+"    background-color: #f5f5f5;\n"
+"    color: #333;\n"
+"	font-size: 17px;\n"
+"}")
+        self.y_txtbox.setAlignment(Qt.AlignCenter)
+        self.saveConfig_btn = QPushButton(self.configFrame1)
+        self.saveConfig_btn.setObjectName(u"saveConfig_btn")
+        self.saveConfig_btn.setGeometry(QRect(90, 220, 121, 41))
+        self.saveConfig_btn.setStyleSheet(u"#saveConfig_btn {\n"
+"    background-color: #0F52BA; /* More vibrant blue */\n"
+"    color: white;\n"
+"    font-size: 20px;\n"
+"    border: none;\n"
+"    border-radius: 8px;\n"
+"    padding: 8px 16px;\n"
+"    font-weight: bold;\n"
+"}\n"
+"\n"
+"#saveConfig_btn:hover {\n"
+"    background-color: #357ABD; /* Deeper blue for hover */;\n"
+"}")
+        self.def_btn = QPushButton(self.Settings)
+        self.def_btn.setObjectName(u"def_btn")
+        self.def_btn.setGeometry(QRect(1110, 770, 221, 41))
+        self.def_btn.setStyleSheet(u"#def_btn {\n"
+"    background-color: #4A90E2; /* More vibrant blue */\n"
+"    color: white;\n"
+"    font-size: 15px;\n"
+"    border: none;\n"
+"    border-radius: 8px;\n"
+"    padding: 8px 16px;\n"
+"    font-weight: bold;\n"
+"}\n"
+"\n"
+"#def_btn:hover {\n"
+"    background-color: #357ABD; /* Deeper blue for hover */;\n"
 "}")
         self.stackedWidget.addWidget(self.Settings)
         self.export_page = QWidget()
@@ -868,6 +991,13 @@ class Ui_MainWindow(object):
         self.search_txt.setText("")
         self.search_txt.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"Settings", None))
+        self.configLabel1.setText(QCoreApplication.translate("MainWindow", u"Tracking Point Settings", None))
+        self.x_lbl.setText(QCoreApplication.translate("MainWindow", u"X Coordinate:", None))
+        self.y_lbl.setText(QCoreApplication.translate("MainWindow", u"Y Coordinate:", None))
+        self.x_txtbox.setText("")
+        self.y_txtbox.setText("")
+        self.saveConfig_btn.setText(QCoreApplication.translate("MainWindow", u"Save", None))
+        self.def_btn.setText(QCoreApplication.translate("MainWindow", u"Restore Defaults", None))
         self.export_btn2.setText(QCoreApplication.translate("MainWindow", u"Export", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"export pdf", None))
         self.label_8.setText(QCoreApplication.translate("MainWindow", u"available dates for export:", None))
