@@ -1,8 +1,15 @@
+import os
 from deepface import DeepFace
 from retinaface import RetinaFace
 import pandas as pd
-import os
 import concurrent.futures
+
+# Add this import
+try:
+    import torch
+    GPU_AVAILABLE = torch.cuda.is_available()
+except ImportError:
+    GPU_AVAILABLE = False
 
 # STATIC THRESHOLD (per Sher1)
 THRESHOLD = 0.56
@@ -47,6 +54,13 @@ def run_verification(img_path: str, db_path: str = "./SavedFaces", exclude_path:
     norm_exclude_path = os.path.normpath(exclude_path) if exclude_path else None
     
     print(f"Normalized paths - Image: {norm_img_path}, Exclude: {norm_exclude_path}")
+
+    # Set DeepFace to use GPU if available
+    if GPU_AVAILABLE:
+        print("GPU detected. Using GPU for DeepFace operations.")
+        DeepFace.build_model("ArcFace").cuda()
+    else:
+        print("GPU not detected. Using CPU for DeepFace operations.")
 
     # Search for potential matches
     dfs = DeepFace.find(

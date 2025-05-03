@@ -53,10 +53,9 @@ class ImageComparisonApp(QWidget):
 
         # Fetch metadata from DB using matched image path
         matched_metadata = self.fetch_metadata_by_image(matched_path)
-        print(f"Matched metadata: {matched_metadata}")
 
         # Update the UI
-        # self.ui.label_8.setText(f"ID: {matched_metadata.get('person_id', 'person_id')}")
+        self.ui.label_8.setText(f"ID: {matched_metadata.get('person_id', person_id)}")
         self.ui.label_6.setText(f"Date: {matched_metadata.get('date', date_str)}")
         self.ui.label_7.setText(f"Time: {matched_metadata.get('time', time_str)}")
 
@@ -83,7 +82,7 @@ class ImageComparisonApp(QWidget):
                     "date": row[1],
                     "time": row[2]
                 }
-            # return None
+            return None
         except Exception as e:
             print(f"Error fetching metadata: {e}")
             return None
