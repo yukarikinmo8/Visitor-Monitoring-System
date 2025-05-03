@@ -32,14 +32,22 @@ class ImageComparisonApp(QWidget):
         # Pass the current image path to the exclude_path parameter to avoid self-matching
         result = run_verification(img_path=image_path, exclude_path=image_path)
 
-        person_id = ""
         date_str = ""
         time_str = ""
+        person_id = ""
         
         if not result["match_found"]:
             self.ui.label_3.setText("No Match Found")
             self.ui.orig_img.clear()
             self.ui.similar_img.clear()
+
+            # # Insert a log entry for failed attempt
+            # self.db_manager.insertLogEntries(
+            #     id="N/A",
+            #     date=date_str,
+            #     time=time_str,
+            #     faceCrop=image_path
+            # )
             return
 
         # Load and display original image
@@ -55,7 +63,7 @@ class ImageComparisonApp(QWidget):
         matched_metadata = self.fetch_metadata_by_image(matched_path)
 
         # Update the UI
-        self.ui.label_8.setText(f"ID: {matched_metadata.get('person_id', person_id)}")
+        self.ui.label_8.setText(f"ID: {matched_metadata.get('person_id')}")
         self.ui.label_6.setText(f"Date: {matched_metadata.get('date', date_str)}")
         self.ui.label_7.setText(f"Time: {matched_metadata.get('time', time_str)}")
 
@@ -65,6 +73,13 @@ class ImageComparisonApp(QWidget):
 
         self.ui.label_3.setText("Match Found")
 
+        # # Insert a log entry for successful match
+        # self.db_manager.insertLogEntries(
+        #     id=matched_metadata.get('person_id', 'N/A'),
+        #     date=matched_metadata.get('date', date_str),
+        #     time=matched_metadata.get('time', time_str),
+        #     faceCrop=matched_path
+        # )
 
     def fetch_metadata_by_image(self, image_path):
         """
@@ -76,7 +91,6 @@ class ImageComparisonApp(QWidget):
             row = self.db_manager.cursor.fetchone()
 
             if row:
-                print(f"Fetched metadata: {row}")
                 return {
                     "person_id": row[0],
                     "date": row[1],
