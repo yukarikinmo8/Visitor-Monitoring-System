@@ -9,6 +9,7 @@ import threading
 from queue import Queue
 import shutil
 import uuid
+import json
 
 from PySide6.QtCore import QTimer, QPoint
 from PySide6.QtGui import QImage, QPixmap, QAction
@@ -22,8 +23,8 @@ from counter_mod import Algorithm_Count
 from set_entry import Get_Coordinates
 from export_pdf import exportPDF
 from main_ui import Ui_MainWindow  # Import the generated UI file
-from image_comparison import Ui_Form
-
+from ui_image_comparison import Ui_Form
+from configurations import loadConfig, save_config, filterMulti1, resDef
 from datetime import date
 
 class PopupWindow(QWidget, Ui_Form):
@@ -41,11 +42,12 @@ class CameraFeedWindow(QMainWindow):
         # Initialize video writer and settings
         self.video_writer = None
         self.save_video = True
+        self.x, self.y = loadConfig()
 
         # Default coordinates and file path
-        self.coord_point = (0.5, 0.04)
-        self.area1 = [(261, 434), (337, 428), (522, 516), (450, 537)]
-        self.area2 = [(154, 450), (246, 438), (406, 541), (292, 548)]
+        self.coord_point = (filterMulti1(self.x), filterMulti1(self.y))
+        self.area1 = []
+        self.area2 = []
         self.file_path = 'Sample Test File\\test_video.mp4'
 
         # Frame queue for processing
@@ -62,21 +64,16 @@ class CameraFeedWindow(QMainWindow):
         self._initialize_database_and_export()
 
         self.person_uuid_map = {}
-        self.ui.logs_tbl.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.ui.logs_tbl.customContextMenuRequested.connect(self.open_menu)
 
     def _initialize_ui(self):
         """Set up UI elements and connect signals."""
         # Disable stop button initially
         self.ui.stop_btn.setEnabled(False)
-
+        self.ui.x_txtbox.setText(f"{self.x}")
+        self.ui.y_txtbox.setText(f"{self.y}")
         # Hide navigation labels
-        self.ui.dash_lbl.setVisible(False)
-        self.ui.logo_lbl.setVisible(False)
-        self.ui.setts_lbl.setVisible(False)
-        self.ui.logs_lbl.setVisible(False)
-        self.ui.lvf_lbl.setVisible(False)
-
+        self.ui.logo_lbl.setVisible(False)        
+        self.ui.search_txt.textChanged.connect(self.onTextChanged)
         # Set default stacked widget page
         self.ui.stackedWidget.setCurrentIndex(0)
 
@@ -89,13 +86,30 @@ class CameraFeedWindow(QMainWindow):
         self.ui.logs_btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(2))
         self.ui.settings_btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(3))
         self.ui.export_btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(4))
-
+        self.ui.saveConfig_btn.clicked.connect(lambda: self.saveConfigs())
+        self.ui.def_btn.clicked.connect(lambda: self.restoreDefaults())
+        self.ui.logs_tbl.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.ui.logs_tbl.customContextMenuRequested.connect(self.open_menu)
+        
     def _initialize_database_and_export(self):       
         pdf = exportPDF()
         date_today = date.today()   
-
+     
+        self.msm.updateDashboardStats(
+            date_labels=[
+                self.ui.dateLabel1, self.ui.dateLabel2,
+                self.ui.dateLabel3, self.ui.dateLabel4
+            ],
+            count_labels=[
+                self.ui.totalEntry1, self.ui.totalEntry2,
+                self.ui.totalEntry3, self.ui.totalEntry4
+            ]
+        )
         self.ui.logs_tbl.setAlternatingRowColors(True)
+        self.ui.export_tbl.setAlternatingRowColors(True)
+        self.ui.logsPrev_tbl.setAlternatingRowColors(True)
         self.msm.fillLogsTable(self.ui.logs_tbl)
+        self.msm.fillLogsTable(self.ui.logsPrev_tbl) #for testing
         self.msm.fillComboBox(self.ui.dateFilter_cbx)
         self.onDateChanged(self.ui.dateFilter_cbx.currentText())  
         self.ui.dateFilter_cbx.currentTextChanged.connect(self.onDateChanged)    
@@ -154,6 +168,7 @@ class CameraFeedWindow(QMainWindow):
                 self.video_writer = cv2.VideoWriter(self.temp_video_path, fourcc, 24.0, size)
 
         else:
+            QMessageBox.warning(self, "Warning", "Coordinates not set.")
             print("Coordinates not set.")
         return
 
@@ -314,14 +329,18 @@ class CameraFeedWindow(QMainWindow):
             self.animation.setEndValue(401)  # Expand or Collapse
             self.animation.start()
 
-            self.animation.finished.connect(lambda: self.ui.nav_bar.setFixedWidth(401))
+            self.animation.finished.connect(lambda: self.ui.nav_bar.setFixedWidth(300))
 
-            self.ui.menu_btn.setGeometry(340, 20, 50, 50)
-            self.ui.dash_lbl.setVisible(True)
+            self.ui.menu_btn.setGeometry(250, 0, 50, 50)
+            self.ui.dash_btn.setFixedWidth(300)
+            self.ui.dash_btn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+            self.ui.cam_btn.setFixedWidth(300)
+            self.ui.cam_btn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+            self.ui.logs_btn.setFixedWidth(300)
+            self.ui.logs_btn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+            self.ui.settings_btn.setFixedWidth(300)
+            self.ui.settings_btn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
             self.ui.logo_lbl.setVisible(True)
-            self.ui.setts_lbl.setVisible(True)
-            self.ui.logs_lbl.setVisible(True)
-            self.ui.lvf_lbl.setVisible(True)
 
         else: 
 
@@ -339,12 +358,17 @@ class CameraFeedWindow(QMainWindow):
             self.animation.finished.connect(lambda: self.update_ui()) 
         
     def update_ui(self):
-        self.ui.menu_btn.setGeometry(30, 20, 50, 50)
-        self.ui.dash_lbl.setVisible(False)
+        self.ui.menu_btn.setGeometry(0, 0, 111, 51)
+        self.ui.dash_btn.setFixedWidth(111)
+        self.ui.cam_btn.setFixedWidth(111)
+        self.ui.logs_btn.setFixedWidth(111)
+        self.ui.settings_btn.setFixedWidth(111)
+        self.ui.cam_btn.setToolButtonStyle(Qt.ToolButtonIconOnly)
+        self.ui.logs_btn.setToolButtonStyle(Qt.ToolButtonIconOnly)
+        self.ui.settings_btn.setToolButtonStyle(Qt.ToolButtonIconOnly)
+        self.ui.dash_btn.setToolButtonStyle(Qt.ToolButtonIconOnly)
+        self.ui.logo_lbl.setVisible(True)
         self.ui.logo_lbl.setVisible(False)
-        self.ui.setts_lbl.setVisible(False)
-        self.ui.logs_lbl.setVisible(False)
-        self.ui.lvf_lbl.setVisible(False)
     
     def clearUiMem(self):
         if hasattr(self, "animation"):
@@ -364,18 +388,29 @@ class CameraFeedWindow(QMainWindow):
             # Optionally, refresh filtered table too
             selected_date = self.ui.dateFilter_cbx.currentText()
             self.onDateChanged(selected_date)
-
+        
     def get_uuid_for_person(self, person_id):
-        """"Generate or retrieve a UUID for a given person ID."""
-        if person_id not in self.person_uuid_map:
-            self.person_uuid_map[person_id] = str(uuid.uuid4())
-        return self.person_uuid_map[person_id]
+        """Generate or retrieve a UUID for a given person ID combined with the current date and time."""
+        unique_key = f"{person_id}_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}"
+        if unique_key not in self.person_uuid_map:
+            self.person_uuid_map[unique_key] = str(uuid.uuid4())
+        return self.person_uuid_map[unique_key]
     
     def open_menu(self, position: QPoint):
-        index = self.ui.logs_tbl.indexAt(position)
-        if not index.isValid():
-            return  # Clicked outside any cell
-        
+        index = self.ui.logs_tbl.indexAt(position)        
+        if index.isValid():
+            # Get the row of the clicked cell
+            row = index.row()
+
+            # Map the index of column 3 in the same row from proxy to source
+            proxy_index = self.ui.logs_tbl.model().index(row, 3)
+            source_index = self.ui.logs_tbl.model().mapToSource(proxy_index)
+
+            # Retrieve the file path stored in Qt.UserRole
+            file_path = self.ui.logs_tbl.model().sourceModel().itemFromIndex(source_index).data(Qt.UserRole)
+
+            print(f"File path for clicked row: {file_path}")
+
         # Create the menu
         menu = QMenu()
         
@@ -384,22 +419,41 @@ class CameraFeedWindow(QMainWindow):
         # Connect actions
         imageSearch_action.triggered.connect(lambda: self.show_popup())
         
-        
         # Add actions to the menu
         menu.addAction(imageSearch_action)        
         
         # Show the menu
         menu.exec(self.ui.logs_tbl.viewport().mapToGlobal(position))
-        return index
-
         
-    
+        return file_path
+
+    def onTextChanged(self, text):       
+        self.ui.logs_tbl.model().setFilterCaseSensitivity(Qt.CaseInsensitive)
+        self.ui.logs_tbl.model().setFilterKeyColumn(2)  # Column index to filter (e.g., 1 = "Date")
+        self.ui.logs_tbl.model().setFilterFixedString(text)    
+        
     def show_popup(self):
-        # Create an instance of the PopupWindow and show it
+        # Asynchronously show the popup in the main thread
+        QTimer.singleShot(0, self._show_popup_impl)
+
+    def _show_popup_impl(self):
         self.popup = PopupWindow()
         self.popup.show()  # Display the popup widget (non-modal)
-
     
+    def saveConfigs(self):
+
+        x_value = int(self.ui.x_txtbox.text())  # Parse x as an integer
+        y_value = int(self.ui.y_txtbox.text())  # Parse y as an integer
+        save_config(x_value, y_value)
+        self.x, self.y = loadConfig()
+        self.coord_point = (filterMulti1(self.x), filterMulti1(self.y))
+
+    def restoreDefaults(self):
+        resDef()
+        self.x, self.y = loadConfig()
+        self.ui.x_txtbox.setText(f"{self.x}")
+        self.ui.y_txtbox.setText(f"{self.y}")
+        self.coord_point = (filterMulti1(self.x), filterMulti1(self.y))
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
