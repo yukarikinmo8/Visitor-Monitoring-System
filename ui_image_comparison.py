@@ -56,10 +56,10 @@ class Ui_Form(object):
 "    letter-spacing: 1px; /* Adjust for spacing */\n"
 "    text-transform: uppercase; /* Makes text all caps */\n"
 "}")
-        self.label_6 = QLabel(self.frame)
-        self.label_6.setObjectName(u"label_6")
-        self.label_6.setGeometry(QRect(20, 340, 351, 31))
-        self.label_6.setStyleSheet(u"QLabel {\n"
+        self.date_lbl1 = QLabel(self.frame)
+        self.date_lbl1.setObjectName(u"date_lbl1")
+        self.date_lbl1.setGeometry(QRect(20, 340, 351, 31))
+        self.date_lbl1.setStyleSheet(u"QLabel {\n"
 "    font-family: \"Inter\"i;\n"
 "    font-size: 15px; /* Adjust based on your UI scale */\n"
 "    font-weight: bold;\n"
@@ -67,10 +67,10 @@ class Ui_Form(object):
 "    letter-spacing: 1px; /* Adjust for spacing */\n"
 "    text-transform: uppercase; /* Makes text all caps */\n"
 "}")
-        self.label_7 = QLabel(self.frame)
-        self.label_7.setObjectName(u"label_7")
-        self.label_7.setGeometry(QRect(20, 370, 351, 31))
-        self.label_7.setStyleSheet(u"QLabel {\n"
+        self.time_lbl1 = QLabel(self.frame)
+        self.time_lbl1.setObjectName(u"time_lbl1")
+        self.time_lbl1.setGeometry(QRect(20, 370, 351, 31))
+        self.time_lbl1.setStyleSheet(u"QLabel {\n"
 "    font-family: \"Inter\"i;\n"
 "    font-size: 15px; /* Adjust based on your UI scale */\n"
 "    font-weight: bold;\n"
@@ -78,10 +78,10 @@ class Ui_Form(object):
 "    letter-spacing: 1px; /* Adjust for spacing */\n"
 "    text-transform: uppercase; /* Makes text all caps */\n"
 "}")
-        self.label_8 = QLabel(self.frame)
-        self.label_8.setObjectName(u"label_8")
-        self.label_8.setGeometry(QRect(20, 310, 351, 31))
-        self.label_8.setStyleSheet(u"QLabel {\n"
+        self.id_lbl1 = QLabel(self.frame)
+        self.id_lbl1.setObjectName(u"id_lbl1")
+        self.id_lbl1.setGeometry(QRect(20, 310, 351, 31))
+        self.id_lbl1.setStyleSheet(u"QLabel {\n"
 "    font-family: \"Inter\"i;\n"
 "    font-size: 15px; /* Adjust based on your UI scale */\n"
 "    font-weight: bold;\n"
@@ -110,10 +110,10 @@ class Ui_Form(object):
 "    letter-spacing: 1px; /* Adjust for spacing */\n"
 "    text-transform: uppercase; /* Makes text all caps */\n"
 "}")
-        self.label_9 = QLabel(self.frame_2)
-        self.label_9.setObjectName(u"label_9")
-        self.label_9.setGeometry(QRect(20, 310, 351, 31))
-        self.label_9.setStyleSheet(u"QLabel {\n"
+        self.id_lbl2 = QLabel(self.frame_2)
+        self.id_lbl2.setObjectName(u"id_lbl2")
+        self.id_lbl2.setGeometry(QRect(20, 310, 351, 31))
+        self.id_lbl2.setStyleSheet(u"QLabel {\n"
 "    font-family: \"Inter\"i;\n"
 "    font-size: 15px; /* Adjust based on your UI scale */\n"
 "    font-weight: bold;\n"
@@ -121,10 +121,10 @@ class Ui_Form(object):
 "    letter-spacing: 1px; /* Adjust for spacing */\n"
 "    text-transform: uppercase; /* Makes text all caps */\n"
 "}")
-        self.label_10 = QLabel(self.frame_2)
-        self.label_10.setObjectName(u"label_10")
-        self.label_10.setGeometry(QRect(20, 370, 351, 31))
-        self.label_10.setStyleSheet(u"QLabel {\n"
+        self.time_lbl2 = QLabel(self.frame_2)
+        self.time_lbl2.setObjectName(u"time_lbl2")
+        self.time_lbl2.setGeometry(QRect(20, 370, 351, 31))
+        self.time_lbl2.setStyleSheet(u"QLabel {\n"
 "    font-family: \"Inter\"i;\n"
 "    font-size: 15px; /* Adjust based on your UI scale */\n"
 "    font-weight: bold;\n"
@@ -132,10 +132,10 @@ class Ui_Form(object):
 "    letter-spacing: 1px; /* Adjust for spacing */\n"
 "    text-transform: uppercase; /* Makes text all caps */\n"
 "}")
-        self.label_11 = QLabel(self.frame_2)
-        self.label_11.setObjectName(u"label_11")
-        self.label_11.setGeometry(QRect(20, 340, 351, 31))
-        self.label_11.setStyleSheet(u"QLabel {\n"
+        self.date_lbl2 = QLabel(self.frame_2)
+        self.date_lbl2.setObjectName(u"date_lbl2")
+        self.date_lbl2.setGeometry(QRect(20, 340, 351, 31))
+        self.date_lbl2.setStyleSheet(u"QLabel {\n"
 "    font-family: \"Inter\"i;\n"
 "    font-size: 15px; /* Adjust based on your UI scale */\n"
 "    font-weight: bold;\n"
@@ -157,13 +157,13 @@ class Ui_Form(object):
         self.label_3.setText(QCoreApplication.translate("Form", u"image comparison", None))
         self.orig_img.setText("")
         self.label_4.setText(QCoreApplication.translate("Form", u"reference image:", None))
-        self.label_6.setText(QCoreApplication.translate("Form", u"Date:", None))
-        self.label_7.setText(QCoreApplication.translate("Form", u"Time:", None))
-        self.label_8.setText(QCoreApplication.translate("Form", u"ID:", None))
+        self.date_lbl1.setText(QCoreApplication.translate("Form", u"Date:", None))
+        self.time_lbl1.setText(QCoreApplication.translate("Form", u"Time:", None))
+        self.id_lbl1.setText(QCoreApplication.translate("Form", u"ID:", None))
         self.similar_img.setText("")
         self.label_5.setText(QCoreApplication.translate("Form", u"matched image:", None))
-        self.label_9.setText(QCoreApplication.translate("Form", u"ID:", None))
-        self.label_10.setText(QCoreApplication.translate("Form", u"Time:", None))
-        self.label_11.setText(QCoreApplication.translate("Form", u"Date:", None))
+        self.id_lbl2.setText(QCoreApplication.translate("Form", u"ID:", None))
+        self.time_lbl2.setText(QCoreApplication.translate("Form", u"Time:", None))
+        self.date_lbl2.setText(QCoreApplication.translate("Form", u"Date:", None))
     # retranslateUi
 
