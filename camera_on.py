@@ -46,8 +46,8 @@ class CameraFeedWindow(QMainWindow):
 
         # Default coordinates and file path
         self.coord_point = (filterMulti1(self.x), filterMulti1(self.y))
-        self.area1 = [(261, 434), (337, 428), (522, 516), (450, 537)]
-        self.area2 = [(154, 450), (246, 438), (406, 541), (292, 548)]
+        self.area1 = []
+        self.area2 = []
         self.file_path = 'Sample Test File\\test_video.mp4'
 
         # Frame queue for processing
@@ -167,6 +167,7 @@ class CameraFeedWindow(QMainWindow):
                 self.video_writer = cv2.VideoWriter(self.temp_video_path, fourcc, 24.0, size)
 
         else:
+            QMessageBox.warning(self, "Warning", "Coordinates not set.")
             print("Coordinates not set.")
         return
 
@@ -431,7 +432,10 @@ class CameraFeedWindow(QMainWindow):
         self.ui.logs_tbl.model().setFilterFixedString(text)    
         
     def show_popup(self):
-        # Create an instance of the PopupWindow and show it
+        # Asynchronously show the popup in the main thread
+        QTimer.singleShot(0, self._show_popup_impl)
+
+    def _show_popup_impl(self):
         self.popup = PopupWindow()
         self.popup.show()  # Display the popup widget (non-modal)
     
