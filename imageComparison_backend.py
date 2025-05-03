@@ -2,6 +2,7 @@ from deepface import DeepFace
 from retinaface import RetinaFace
 import pandas as pd
 import os
+import concurrent.futures
 
 # STATIC THRESHOLD (per Sher1)
 THRESHOLD = 0.56
@@ -67,24 +68,19 @@ def run_verification(img_path: str, db_path: str = "./SavedFaces", exclude_path:
         }
 
     print(f"Found {len(dfs[0])} potential matches")
-    
-    # Iterate through closest matches
+
+    # Prepare candidate matches, skipping self-matches
+    candidates = []
     for index, row in dfs[0].iterrows():
         matched_img_path = row["identity"]
         norm_matched_path = os.path.normpath(matched_img_path)
-        
-        # Skip if this is the image we're comparing against (to avoid self-matching)
-        if norm_exclude_path and norm_matched_path == norm_exclude_path:
-            print(f"Skipping self-match: {matched_img_path}")
+        if (norm_exclude_path and norm_matched_path == norm_exclude_path) or \
+           (exclude_path and os.path.basename(matched_img_path) == os.path.basename(exclude_path)):
             continue
-            
-        # Also check by filename as a fallback
-        if exclude_path and os.path.basename(matched_img_path) == os.path.basename(exclude_path):
-            print(f"Skipping self-match by filename: {matched_img_path}")
-            continue
-            
+        candidates.append(matched_img_path)
+
+    def process_candidate(matched_img_path):
         if detect_face(matched_img_path):
-            print(f"Face detected in matched image: {matched_img_path}")
             result = DeepFace.verify(
                 img1_path=img_path,
                 img2_path=matched_img_path,
@@ -92,16 +88,8 @@ def run_verification(img_path: str, db_path: str = "./SavedFaces", exclude_path:
                 detector_backend="retinaface",
                 align=True
             )
-            print("Verification Result:", result)
-
             distance = result.get("distance", 1.0)
             match_found = distance <= THRESHOLD
-
-            if match_found:
-                print(f"Match: {img_path} matches with {matched_img_path}")
-            else:
-                print(f"No Match: {img_path} does not match {matched_img_path}")
-
             return {
                 "match_found": match_found,
                 "matched_image": matched_img_path,
@@ -109,8 +97,18 @@ def run_verification(img_path: str, db_path: str = "./SavedFaces", exclude_path:
                 "verified": result.get("verified"),
                 "raw_result": result
             }
-        else:
-            print(f"No face detected in {matched_img_path}, trying next match...")
+        return None
+
+    # Use ThreadPoolExecutor to process candidates in parallel
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        future_to_candidate = {executor.submit(process_candidate, c): c for c in candidates}
+        for future in concurrent.futures.as_completed(future_to_candidate):
+            result = future.result()
+            if result and result["match_found"]:
+                print(f"Match: {img_path} matches with {result['matched_image']}")
+                return result
+            elif result:
+                print(f"No Match: {img_path} does not match {result['matched_image']}")
 
     # No valid matches with detectable faces
     return {
