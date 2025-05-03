@@ -63,7 +63,7 @@ class ImageComparisonApp(QWidget):
         matched_metadata = self.fetch_metadata_by_image(matched_path)
 
         # Update the UI
-        self.ui.label_8.setText(f"ID: {matched_metadata.get('person_id')}")
+        self.ui.label_8.setText(f"ID: {matched_metadata.get('person_id', 'none')}")
         self.ui.label_6.setText(f"Date: {matched_metadata.get('date', date_str)}")
         self.ui.label_7.setText(f"Time: {matched_metadata.get('time', time_str)}")
 
