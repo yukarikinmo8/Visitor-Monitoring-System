@@ -51,10 +51,10 @@ class CameraFeedWindow(QMainWindow):
 
         # Default coordinates and file path
         self.coord_point = (filterMulti1(self.x), filterMulti1(self.y))
-        self.area1 = []
-        self.area2 = []
-        # self.area1 = [(261, 434), (337, 428), (522, 516), (450, 537)]
-        # self.area2 = [(154, 450), (246, 438), (406, 541), (292, 548)]
+        # self.area1 = []
+        # self.area2 = []
+        self.area1 = [(261, 434), (337, 428), (522, 516), (450, 537)]
+        self.area2 = [(154, 450), (246, 438), (406, 541), (292, 548)]
         self.file_path = 'Sample Test File\\test_video.mp4'
 
         # Frame queue for processing
@@ -255,17 +255,12 @@ class CameraFeedWindow(QMainWindow):
                 face_crop = zlib.compress(pickle.dumps(details['face_crops']))
                 timestamp = details['time'].replace(':', '-')
                 project_dir = os.path.dirname(os.path.abspath(__file__))
-                directory_name = os.path.join(project_dir, "SavedFaces", datetime.datetime.now().strftime('%Y-%m-%d'), f"{person_id}-face_{timestamp}.jpg")
+                directory_name = os.path.join(project_dir, "SavedFaces", datetime.datetime.now().strftime('%Y-%m-%d'), f"{person_id}.jpg")
 
-                # Call the database manager to save the data
-                self.msm.insertLogEntries(person_id, details['date'], details['time'], directory_name)
-
-
+                # Call the database manager to check if person exists and update or insert
+                updated = self.msm.upsertLogEntry(person_id, details['date'], details['time'], directory_name)
         except Exception as e:
-            # if "Duplicate entry" in str(e):
-            #     print("Entry already exists in the database. Skipping save.")
-            # else:
-            #     print(f"Error saving result to database: {e}")
+            print(f"Error saving result to database: {e}")
             return
 
     def save_crop_faces(self, result):
@@ -293,9 +288,12 @@ class CameraFeedWindow(QMainWindow):
                     time_str = details['time'].strftime('%H-%M-%S')
                 else:
                     time_str = details['time'].replace(':', '-')
-                filename = os.path.join(directory_name, f"{person_id}-face_{time_str}.jpg")
-                if not os.path.exists(filename):  # Check if the file already exists
-                    cv2.imwrite(filename, face_crop)
+                filename = os.path.join(directory_name, f"{person_id}.jpg")
+                
+                # Always write the file, whether it exists or not
+                # This will overwrite existing files and create new ones as needed
+                cv2.imwrite(filename, face_crop)
+                    
                 processed_person_ids.add(person_id)
             except Exception as e:
                 print(f"Error saving face {person_id}: {e}")
@@ -411,7 +409,7 @@ class CameraFeedWindow(QMainWindow):
         
     def get_uuid_for_person(self, person_id):
         """Generate or retrieve a UUID for a given person ID combined with the current date and time."""
-        unique_key = f"{person_id}_{datetime.datetime.now().strftime('%Y-%m-%d')}"
+        unique_key = f"{person_id}"
         if unique_key not in self.person_uuid_map:
             self.person_uuid_map[unique_key] = str(uuid.uuid4())
         return self.person_uuid_map[unique_key]
