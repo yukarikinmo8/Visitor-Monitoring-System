@@ -1,15 +1,21 @@
 from deepface import DeepFace
 from retinaface import RetinaFace
 import pandas as pd
+import os
+import datetime
+import time
 
 # STATIC THRESHOLD (per Sher1)
-THRESHOLD = 0.57
+THRESHOLD = 0.70
+image_path = "./SavedFaces/2025-05-03/cholo3.png"
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+
 
 def detect_face(image_path):
     detections = RetinaFace.detect_faces(image_path)
     return bool(detections)
 
-def run_verification(img_path: str, db_path: str = "./SavedFaces") -> dict:
+def run_verification(img_path: str, db_path: str = "./SavedFaces/2025-05-03") -> dict:
     """
     Perform face detection and verification using DeepFace + RetinaFace.
     
@@ -98,3 +104,14 @@ def run_verification(img_path: str, db_path: str = "./SavedFaces") -> dict:
         "verified": None,
         "raw_result": None
     }
+
+if __name__ == "__main__":
+    img_path = "D:/Merrell/Visitor-Monitoring-System/SavedFaces/2025-05-03/osh2.jpg"
+    # img_path = "/content/drive/MyDrive/Colab Notebooks/test/sherwin.png"
+    exclude_path = img_path
+    #saved_path = "D:/Merrell/Visitor-Monitoring-System/SavedFaces/2025-05-03"
+    saved_path = os.path.join(PROJECT_DIR, 'SavedFaces', datetime.datetime.now().strftime('%Y-%m-%d'))
+    # saved_path = '/content/drive/MyDrive/Colab Notebooks/test'
+    
+    result = run_verification(img_path, saved_path)
+    print("Verification completed.", result)
