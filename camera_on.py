@@ -53,6 +53,8 @@ class CameraFeedWindow(QMainWindow):
         self.coord_point = (filterMulti1(self.x), filterMulti1(self.y))
         self.area1 = []
         self.area2 = []
+        # self.area1 = [(261, 434), (337, 428), (522, 516), (450, 537)]
+        # self.area2 = [(154, 450), (246, 438), (406, 541), (292, 548)]
         self.file_path = 'Sample Test File\\test_video.mp4'
 
         # Frame queue for processing
@@ -260,7 +262,11 @@ class CameraFeedWindow(QMainWindow):
 
 
         except Exception as e:
-            print(f"Error saving result to database: {e}")
+            # if "Duplicate entry" in str(e):
+            #     print("Entry already exists in the database. Skipping save.")
+            # else:
+            #     print(f"Error saving result to database: {e}")
+            return
 
     def save_crop_faces(self, result):
         processed_person_ids = set()
@@ -281,12 +287,15 @@ class CameraFeedWindow(QMainWindow):
                 continue
             try:
                 face_crop = pickle.loads(zlib.decompress(details['face_crops']))
+                height, width, _ = face_crop.shape
+                face_crop = face_crop[:height // 2, :]  # Crop the face in half (left half)
                 if isinstance(details['time'], datetime.datetime):
                     time_str = details['time'].strftime('%H-%M-%S')
                 else:
                     time_str = details['time'].replace(':', '-')
                 filename = os.path.join(directory_name, f"{person_id}-face_{time_str}.jpg")
-                cv2.imwrite(filename, face_crop)
+                if not os.path.exists(filename):  # Check if the file already exists
+                    cv2.imwrite(filename, face_crop)
                 processed_person_ids.add(person_id)
             except Exception as e:
                 print(f"Error saving face {person_id}: {e}")
@@ -309,12 +318,18 @@ class CameraFeedWindow(QMainWindow):
         if temp:
             try:
                 x1 = pickle.loads(zlib.decompress(temp[0]))
+                h, w, _ = x1.shape
+                x1 = x1[:h // 2, :]  # Display the top half of the image
                 self.show_face_crops(x1, self.ui.cap_4)
                 if len(temp) > 1:
                     y1 = pickle.loads(zlib.decompress(temp[1]))
+                    h, w, _ = y1.shape
+                    y1 = y1[:h // 2, :]  # Display the top half of the image
                     self.show_face_crops(y1, self.ui.cap_6)
                 if len(temp) > 2:
                     z1 = pickle.loads(zlib.decompress(temp[2]))
+                    h, w, _ = z1.shape
+                    z1 = z1[:h // 2, :]  # Display the top half of the image
                     self.show_face_crops(z1, self.ui.cap_5)
             except Exception as e:
                 print(f"Error showing face crops: {e}")
@@ -396,7 +411,7 @@ class CameraFeedWindow(QMainWindow):
         
     def get_uuid_for_person(self, person_id):
         """Generate or retrieve a UUID for a given person ID combined with the current date and time."""
-        unique_key = f"{person_id}_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}"
+        unique_key = f"{person_id}_{datetime.datetime.now().strftime('%Y-%m-%d')}"
         if unique_key not in self.person_uuid_map:
             self.person_uuid_map[unique_key] = str(uuid.uuid4())
         return self.person_uuid_map[unique_key]
