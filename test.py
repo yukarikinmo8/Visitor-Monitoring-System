@@ -313,7 +313,7 @@ def run_verification(img_path: str, exclude_path: str = None,
     }
 
 if __name__ == "__main__":
-    img_path = "D:/Github Repo/Visitor-Monitoring-System/SavedFaces/2025-05-04/no_face.jpg"
+    img_path = "D:/Github Repo/Visitor-Monitoring-System/SavedFaces/2025-05-04/agatha.jpg"
     # img_path = "/content/drive/MyDrive/Colab Notebooks/test/sherwin.png"
     exclude_path = img_path
     saved_path = os.path.join(PROJECT_DIR, 'SavedFaces', datetime.datetime.now().strftime('%Y-%m-%d'))
