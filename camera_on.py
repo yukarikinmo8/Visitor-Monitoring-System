@@ -248,14 +248,13 @@ class CameraFeedWindow(QMainWindow):
                 face_crop = zlib.compress(pickle.dumps(details['face_crops']))
                 timestamp = details['time'].replace(':', '-')
                 project_dir = os.path.dirname(os.path.abspath(__file__))
-                directory_name = os.path.join(project_dir, "SavedFaces", datetime.datetime.now().strftime('%Y-%m-%d'), f"{person_id}-face_{timestamp}.jpg")
+                directory_name = os.path.join(project_dir, "SavedFaces", datetime.datetime.now().strftime('%Y-%m-%d'), f"{person_id}.jpg")
 
-                # Call the database manager to save the data
-                self.msm.insertLogEntries(person_id, details['date'], details['time'], directory_name)
-
-
+                # Call the database manager to check if person exists and update or insert
+                updated = self.msm.upsertLogEntry(person_id, details['date'], details['time'], directory_name)
         except Exception as e:
             print(f"Error saving result to database: {e}")
+            return
 
     def save_crop_faces(self, result):
         processed_person_ids = set()
@@ -276,12 +275,18 @@ class CameraFeedWindow(QMainWindow):
                 continue
             try:
                 face_crop = pickle.loads(zlib.decompress(details['face_crops']))
+                height, width, _ = face_crop.shape
+                face_crop = face_crop[:height // 2, :]  # Crop the face in half (left half)
                 if isinstance(details['time'], datetime.datetime):
                     time_str = details['time'].strftime('%H-%M-%S')
                 else:
                     time_str = details['time'].replace(':', '-')
-                filename = os.path.join(directory_name, f"{person_id}-face_{time_str}.jpg")
+                filename = os.path.join(directory_name, f"{person_id}.jpg")
+                
+                # Always write the file, whether it exists or not
+                # This will overwrite existing files and create new ones as needed
                 cv2.imwrite(filename, face_crop)
+                    
                 processed_person_ids.add(person_id)
             except Exception as e:
                 print(f"Error saving face {person_id}: {e}")
@@ -304,12 +309,18 @@ class CameraFeedWindow(QMainWindow):
         if temp:
             try:
                 x1 = pickle.loads(zlib.decompress(temp[0]))
+                h, w, _ = x1.shape
+                x1 = x1[:h // 2, :]  # Display the top half of the image
                 self.show_face_crops(x1, self.ui.cap_4)
                 if len(temp) > 1:
                     y1 = pickle.loads(zlib.decompress(temp[1]))
+                    h, w, _ = y1.shape
+                    y1 = y1[:h // 2, :]  # Display the top half of the image
                     self.show_face_crops(y1, self.ui.cap_6)
                 if len(temp) > 2:
                     z1 = pickle.loads(zlib.decompress(temp[2]))
+                    h, w, _ = z1.shape
+                    z1 = z1[:h // 2, :]  # Display the top half of the image
                     self.show_face_crops(z1, self.ui.cap_5)
             except Exception as e:
                 print(f"Error showing face crops: {e}")
@@ -391,7 +402,7 @@ class CameraFeedWindow(QMainWindow):
         
     def get_uuid_for_person(self, person_id):
         """Generate or retrieve a UUID for a given person ID combined with the current date and time."""
-        unique_key = f"{person_id}_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}"
+        unique_key = f"{person_id}"
         if unique_key not in self.person_uuid_map:
             self.person_uuid_map[unique_key] = str(uuid.uuid4())
         return self.person_uuid_map[unique_key]
@@ -401,14 +412,13 @@ class CameraFeedWindow(QMainWindow):
         if index.isValid():
             # Get the row of the clicked cell
             row = index.row()
-
+            
             # Map the index of column 3 in the same row from proxy to source
             proxy_index = self.ui.logs_tbl.model().index(row, 3)
             source_index = self.ui.logs_tbl.model().mapToSource(proxy_index)
 
             # Retrieve the file path stored in Qt.UserRole
             file_path = self.ui.logs_tbl.model().sourceModel().itemFromIndex(source_index).data(Qt.UserRole)
-
             print(f"File path for clicked row: {file_path}")
 
         # Create the menu
@@ -425,7 +435,8 @@ class CameraFeedWindow(QMainWindow):
         # Show the menu
         menu.exec(self.ui.logs_tbl.viewport().mapToGlobal(position))
         
-        return file_path
+        global filepath
+        filepath = file_path
 
     def onTextChanged(self, text):       
         self.ui.logs_tbl.model().setFilterCaseSensitivity(Qt.CaseInsensitive)

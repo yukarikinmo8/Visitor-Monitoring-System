@@ -156,6 +156,35 @@ class MySqlManager:
         self.cursor.execute(query, (id, date, time, faceCrop))
         self.dbConnStr.commit()
 
+    def upsertLogEntry(self, person_id, date, time, faceCrop):
+        """
+        Check if person_id exists, update if it does, insert if it doesn't.
+        """
+        # Check if person_id exists in database
+        self.cursor.execute("SELECT COUNT(*) FROM `logs.tbl` WHERE person_id = %s", (person_id,))
+        person_exists = self.cursor.fetchone()[0] > 0
+        
+        if person_exists:
+            # Update the existing record
+            query = """
+                UPDATE `logs.tbl` 
+                SET date = %s, time = %s, face_crops = %s
+                WHERE person_id = %s
+            """
+            self.cursor.execute(query, (date, time, faceCrop, person_id))
+            logging.debug(f"Updated record for person_id: {person_id}")
+        else:
+            # Insert a new record
+            query = """
+                INSERT INTO `logs.tbl` (person_id, date, time, face_crops)
+                VALUES (%s, %s, %s, %s)
+            """
+            self.cursor.execute(query, (person_id, date, time, faceCrop))
+            logging.debug(f"Inserted new record for person_id: {person_id}")
+        
+        self.dbConnStr.commit()
+        return person_exists
+
     def imageLoader(self, imagePath):
         # Check if the image path exists
        
