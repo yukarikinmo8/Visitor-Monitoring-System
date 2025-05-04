@@ -10,7 +10,7 @@ from multiprocessing import Pool, cpu_count
 from concurrent.futures import ThreadPoolExecutor
 from functools import lru_cache
 
-THRESHOLD = 0.6
+THRESHOLD = 0.7
 MODEL_NAME = "ArcFace"
 DETECTOR_BACKEND = "retinaface"
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
