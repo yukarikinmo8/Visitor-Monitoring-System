@@ -193,10 +193,10 @@ class CameraFeedWindow(QMainWindow):
 
         # Default coordinates and file path
         self.coord_point = (filterMulti1(self.x), filterMulti1(self.y))
-        # self.area1 = []
-        # self.area2 = []
-        self.area1 = [(261, 434), (337, 428), (522, 516), (450, 537)]
-        self.area2 = [(154, 450), (246, 438), (406, 541), (292, 548)]
+        self.area1 = []
+        self.area2 = []
+        # self.area1 = [(261, 434), (337, 428), (522, 516), (450, 537)]
+        # self.area2 = [(154, 450), (246, 438), (406, 541), (292, 548)]
         self.file_path = 'Sample Test File\\test_video.mp4'
 
         # Frame queue for processing
