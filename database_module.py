@@ -184,6 +184,25 @@ class MySqlManager:
         
         self.dbConnStr.commit()
         return person_exists
+    
+    def search_personID(self, person_id):
+        self.cursor.execute("SELECT * FROM `logs.tbl` WHERE person_id = %s", (person_id,))
+        data = self.cursor.fetchall()
+
+        if not data:
+            print(f"No records found for person ID: {person_id}")
+            return None
+        
+        record = data[0]
+        
+        return {
+            'person_id': record[0],
+            'date': record[1],
+            'time': record[2],
+            'face_path': record[3]
+        }
+
+        
 
     def imageLoader(self, imagePath):
         # Check if the image path exists
