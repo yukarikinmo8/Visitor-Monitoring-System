@@ -10,8 +10,6 @@ from queue import Queue
 import shutil
 import uuid
 import json
-import re
-from functools import partial
 
 from PySide6.QtCore import QTimer, QPoint
 from PySide6.QtGui import QImage, QPixmap, QAction
@@ -29,15 +27,6 @@ from ui_image_comparison import Ui_Form
 from configurations import loadConfig, save_config, filterMulti1, resDef
 from datetime import date
 from imageComparison_backend import start_timing, end_timing, create_representations_db, run_verification
-
-# FILEPATH1 = ""
-# filepath2 = ""
-# date1 = ""
-# date2 = ""
-# person_id1 = ""
-# person_id2 = ""
-# time1 = ""
-# time2 = ""
 
 
 class PopupWindow(QWidget, Ui_Form):
