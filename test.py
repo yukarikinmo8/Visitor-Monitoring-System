@@ -312,40 +312,40 @@ def run_verification(img_path: str, exclude_path: str = None,
         "raw_result": None
     }
 
-# if __name__ == "__main__":
-#     img_path = "D:/Github Repo/Visitor-Monitoring-System/SavedFaces/2025-05-04/agatha.jpg"
-#     # img_path = "/content/drive/MyDrive/Colab Notebooks/test/sherwin.png"
-#     exclude_path = img_path
-#     saved_path = os.path.join(PROJECT_DIR, 'SavedFaces', datetime.datetime.now().strftime('%Y-%m-%d'))
-#     # saved_path = os.path.join(PROJECT_DIR, 'SavedFaces')
-#     # saved_path = '/content/drive/MyDrive/Colab Notebooks/test'
+if __name__ == "__main__":
+    img_path = "D:/Github Repo/Visitor-Monitoring-System/SavedFaces/2025-05-04/agatha.jpg"
+    # img_path = "/content/drive/MyDrive/Colab Notebooks/test/sherwin.png"
+    exclude_path = img_path
+    saved_path = os.path.join(PROJECT_DIR, 'SavedFaces', datetime.datetime.now().strftime('%Y-%m-%d'))
+    # saved_path = os.path.join(PROJECT_DIR, 'SavedFaces')
+    # saved_path = '/content/drive/MyDrive/Colab Notebooks/test'
     
-#     # Create or update representations file
-#     print("Creating/updating face representations database...")
-#     start_timing("total_representation_creation")
-#     representations_file = create_representations_db(saved_path)
-#     end_timing("total_representation_creation")
+    # Create or update representations file
+    print("Creating/updating face representations database...")
+    start_timing("total_representation_creation")
+    representations_file = create_representations_db(saved_path)
+    end_timing("total_representation_creation")
     
-#     # Run verification
-#     print("\nRunning face verification...")
-#     start_timing("total_verification")
-#     result = run_verification(
-#         img_path=img_path,
-#         exclude_path=exclude_path,
-#         db_path=saved_path,
-#         representations_file=representations_file
-#     )
-#     end_timing("total_verification")
+    # Run verification
+    print("\nRunning face verification...")
+    start_timing("total_verification")
+    result = run_verification(
+        img_path=img_path,
+        exclude_path=exclude_path,
+        db_path=saved_path,
+        representations_file=representations_file
+    )
+    end_timing("total_verification")
     
-#     # Final output
-#     print("\nFinal Result:")
-#     print(f"Match Found: {result['match_found']}")
-#     if result['match_found']:
-#         print(f"Matched Image: {result['matched_image']}")
-#         print(f"Distance: {result['distance']}")
-#         print(f"Verified: {result['verified']}")
+    # Final output
+    print("\nFinal Result:")
+    print(f"Match Found: {result['match_found']}")
+    if result['match_found']:
+        print(f"Matched Image: {result['matched_image']}")
+        print(f"Distance: {result['distance']}")
+        print(f"Verified: {result['verified']}")
     
-#     print("\nTotal operation time:")
-#     print(f"- Representation creation: {timings.get('total_representation_creation', 0):.2f}s")
-#     print(f"- Verification process: {timings.get('total_verification', 0):.2f}s")
-#     print(result)
+    print("\nTotal operation time:")
+    print(f"- Representation creation: {timings.get('total_representation_creation', 0):.2f}s")
+    print(f"- Verification process: {timings.get('total_verification', 0):.2f}s")
+    print(result)

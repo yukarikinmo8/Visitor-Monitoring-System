@@ -26,11 +26,158 @@ from main_ui import Ui_MainWindow  # Import the generated UI file
 from ui_image_comparison import Ui_Form
 from configurations import loadConfig, save_config, filterMulti1, resDef
 from datetime import date
+from imageComparison_backend import start_timing, end_timing, create_representations_db, run_verification
+
 
 class PopupWindow(QWidget, Ui_Form):
     def __init__(self):
         super().__init__()
-        self.setupUi(self) 
+        self.msm = MySqlManager()
+        self.ui = Ui_Form()
+        self.ui.setupUi(self)
+
+        self.PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+        self._initialize_ui()
+        
+        # Initialize lock for thread safety
+        self.comparison_lock = threading.Lock()
+        self.comparison_thread = None
+        
+        # Start face comparison in a separate thread
+        self.start_face_comparison()
+
+    def _initialize_ui(self):
+        self.ui.id_lbl1.setText(f"ID: {PERSON_ID1}")
+        self.ui.date_lbl1.setText(f"Date: {DATE1}")
+        self.ui.time_lbl1.setText(f"Time: {TIME1}")
+        self.show_face_crops(FILEPATH1, self.ui.orig_img)
+        
+        # Initialize second image with placeholder
+        self.ui.id_lbl2.setText("ID: Processing...")
+        self.ui.date_lbl2.setText("Date: Processing...")
+        self.ui.time_lbl2.setText("Time: Processing...")
+
+    def start_face_comparison(self):
+        """Start the face comparison process in a background thread"""
+        # Cancel any existing thread
+        if self.comparison_thread and self.comparison_thread.is_alive():
+            return
+            
+        # Create and start a new thread
+        self.comparison_thread = threading.Thread(
+            target=self.face_comparison,
+            daemon=True  # This ensures the thread won't block application exit
+        )
+        self.comparison_thread.start()
+
+    def face_comparison(self):
+        """Run face comparison in background thread"""
+        try:
+            with self.comparison_lock:
+                img_path = FILEPATH1
+                exclude_path = img_path
+                saved_path = os.path.join(self.PROJECT_DIR, 'SavedFaces', DATE1)
+                
+                # Process-intensive operations now run in background
+                start_timing("total_representation_creation")
+                representations_file = create_representations_db(saved_path)
+                end_timing("total_representation_creation")
+
+                start_timing("total_verification")
+                result = run_verification(
+                    img_path=img_path,
+                    exclude_path=exclude_path,
+                    db_path=saved_path,
+                    representations_file=representations_file
+                )
+                end_timing("total_verification")
+
+                print(f"Result: {result}")
+                # Update UI in the main thread
+                if result:
+                    print(f"Matched Image: {result['matched_image']}")
+                    print(f"Distance: {result['distance']}")
+                    print(f"Verified: {result['verified']}")
+
+                    FILEPATH2 = result['matched_image']
+
+                    if FILEPATH2 is None:
+                        print("No matching image found.")
+                        # Use QTimer to safely update UI from background thread
+                        QTimer.singleShot(0, self.update_ui_no_match())
+                        return
+
+                    extract_result = self.extract_filename_and_id(FILEPATH2)
+                    data = self.msm.search_personID(extract_result['id'])
+
+                    if data:
+                        # Update UI in main thread with the results
+                        QTimer.singleShot(0, self.update_ui_with_results(FILEPATH2, data))
+                        # self.update_ui_with_results(FILEPATH2, data)
+                else:
+                    QTimer.singleShot(0, lambda: self.update_ui_no_match())
+        except Exception as e:
+            print(f"Error in face comparison: {e}")
+            QTimer.singleShot(0, lambda: self.update_ui_error(str(e)))
+
+    def update_ui_with_results(self, filepath, data):
+        """Update UI with the matching results - called in main thread"""
+        try:
+            self.ui.id_lbl2.setText(f"ID: {data['person_id']}")
+            self.ui.date_lbl2.setText(f"Date: {data['date']}")
+            self.ui.time_lbl2.setText(f"Time: {data['time']}")
+            self.show_face_crops(filepath, self.ui.similar_img)
+        except Exception as e:
+            print(f"Error updating UI with results: {e}")
+
+    def update_ui_no_match(self):
+        """Update UI when no match is found - called in main thread"""
+        # QMessageBox.warning(self, "Warning", "No similar faces found in the database.")
+        self.ui.id_lbl2.setText("ID: No similar faces found")
+        self.ui.date_lbl2.setText("Date: No similar faces found")
+        self.ui.time_lbl2.setText("Time: No similar faces found")
+        
+    def update_ui_error(self, error_msg):
+        """Update UI when an error occurs - called in main thread"""
+        # QMessageBox.critical(self, "Error", f"An error occurred during face comparison: {error_msg}")
+        self.ui.id_lbl2.setText("ID: Error occurred")
+        self.ui.date_lbl2.setText("Date: Error occurred")
+        self.ui.time_lbl2.setText("Time: Error occurred")
+
+    def extract_filename_and_id(self, filepath: str):
+        if filepath is None:
+            return {'id': None, 'filename': None}
+        parts = filepath.split('\\')  # split by backslash
+        filename_with_ext = parts[-1]  # last part is the filename
+        uuid = filename_with_ext.split('.')[0]  # remove .jpg extension
+        return {'id': uuid, 'filename': filename_with_ext}
+
+    def show_face_crops(self, face_crops, name_label):
+        # Check if face_crops is a file path (string) and load the image if needed
+        if isinstance(face_crops, str):
+            if os.path.exists(face_crops):
+                face_crops = cv2.imread(face_crops)
+            else:
+                print(f"Error: File not found: {face_crops}")
+                return
+        
+        # Now proceed with original logic using the image array
+        face_resized = cv2.resize(face_crops, (name_label.width(), name_label.height()), interpolation=cv2.INTER_LINEAR)
+        face_rgb = cv2.cvtColor(face_resized, cv2.COLOR_BGR2RGB)
+        face_height, face_width, face_channels = face_rgb.shape
+        face_bytes_per_line = face_channels * face_width
+        face_qimg = QImage(face_rgb.data, face_width, face_height, face_bytes_per_line, QImage.Format_RGB888)
+        face_pixmap = QPixmap.fromImage(face_qimg)
+        name_label.setPixmap(face_pixmap)
+        
+    def closeEvent(self, event):
+        """Handle window close event properly"""
+        # Wait for thread to finish if it's running
+        if self.comparison_thread and self.comparison_thread.is_alive():
+            self.comparison_thread.join(timeout=0.1)  # Give it a small timeout
+        super().closeEvent(event)
+
 
 class CameraFeedWindow(QMainWindow):
     def __init__(self):
@@ -48,6 +195,8 @@ class CameraFeedWindow(QMainWindow):
         self.coord_point = (filterMulti1(self.x), filterMulti1(self.y))
         self.area1 = []
         self.area2 = []
+        # self.area1 = [(261, 434), (337, 428), (522, 516), (450, 537)]
+        # self.area2 = [(154, 450), (246, 438), (406, 541), (292, 548)]
         self.file_path = 'Sample Test File\\test_video.mp4'
 
         # Frame queue for processing
@@ -292,6 +441,15 @@ class CameraFeedWindow(QMainWindow):
                 print(f"Error saving face {person_id}: {e}")
 
     def show_face_crops(self, face_crops, name_label):
+        # Check if face_crops is a file path (string) and load the image if needed
+        if isinstance(face_crops, str):
+            if os.path.exists(face_crops):
+                face_crops = cv2.imread(face_crops)
+            else:
+                print(f"Error: File not found: {face_crops}")
+                return
+        
+        # Now proceed with original logic using the image array
         face_resized = cv2.resize(face_crops, (name_label.width(), name_label.height()), interpolation=cv2.INTER_LINEAR)
         face_rgb = cv2.cvtColor(face_resized, cv2.COLOR_BGR2RGB)
         face_height, face_width, face_channels = face_rgb.shape
@@ -415,11 +573,22 @@ class CameraFeedWindow(QMainWindow):
             
             # Map the index of column 3 in the same row from proxy to source
             proxy_index = self.ui.logs_tbl.model().index(row, 3)
+            proxy_date = self.ui.logs_tbl.model().index(row, 1)
+            proxy_time = self.ui.logs_tbl.model().index(row, 2)
+            proxy_person = self.ui.logs_tbl.model().index(row, 0)
+
+
             source_index = self.ui.logs_tbl.model().mapToSource(proxy_index)
+            source_date = self.ui.logs_tbl.model().mapToSource(proxy_date)
+            source_time = self.ui.logs_tbl.model().mapToSource(proxy_time)
+            source_person = self.ui.logs_tbl.model().mapToSource(proxy_person)
 
             # Retrieve the file path stored in Qt.UserRole
-            file_path = self.ui.logs_tbl.model().sourceModel().itemFromIndex(source_index).data(Qt.UserRole)
-            print(f"File path for clicked row: {file_path}")
+            file_path_1 = self.ui.logs_tbl.model().sourceModel().itemFromIndex(source_index).data(Qt.UserRole)
+            date_1 = self.ui.logs_tbl.model().sourceModel().itemFromIndex(source_date).data(Qt.DisplayRole)
+            time_1 = self.ui.logs_tbl.model().sourceModel().itemFromIndex(source_time).data(Qt.DisplayRole)
+            person_id_1 = self.ui.logs_tbl.model().sourceModel().itemFromIndex(source_person).data(Qt.DisplayRole)
+            print(f"File path for clicked row: {file_path_1}")
 
         # Create the menu
         menu = QMenu()
@@ -435,8 +604,14 @@ class CameraFeedWindow(QMainWindow):
         # Show the menu
         menu.exec(self.ui.logs_tbl.viewport().mapToGlobal(position))
         
-        global filepath
-        filepath = file_path
+        global FILEPATH1
+        global DATE1
+        global PERSON_ID1
+        global TIME1
+        FILEPATH1 = file_path_1
+        DATE1 = date_1
+        TIME1 = time_1
+        PERSON_ID1 = person_id_1
 
     def onTextChanged(self, text):       
         self.ui.logs_tbl.model().setFilterCaseSensitivity(Qt.CaseInsensitive)
@@ -465,6 +640,7 @@ class CameraFeedWindow(QMainWindow):
         self.ui.x_txtbox.setText(f"{self.x}")
         self.ui.y_txtbox.setText(f"{self.y}")
         self.coord_point = (filterMulti1(self.x), filterMulti1(self.y))
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
