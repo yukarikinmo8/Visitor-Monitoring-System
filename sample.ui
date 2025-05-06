@@ -841,9 +841,9 @@ background-color:#5897FB;
      <widget class="QPushButton" name="stop_btn">
       <property name="geometry">
        <rect>
-        <x>580</x>
-        <y>670</y>
-        <width>51</width>
+        <x>560</x>
+        <y>650</y>
+        <width>151</width>
         <height>51</height>
        </rect>
       </property>
@@ -906,9 +906,9 @@ background-color:#5897FB;
      <widget class="QPushButton" name="start_btn">
       <property name="geometry">
        <rect>
-        <x>520</x>
-        <y>670</y>
-        <width>51</width>
+        <x>390</x>
+        <y>650</y>
+        <width>151</width>
         <height>51</height>
        </rect>
       </property>
@@ -1042,206 +1042,6 @@ background-color:#5897FB;
         <string>Face Capture</string>
        </property>
       </widget>
-     </widget>
-     <widget class="QPushButton" name="refresh_btn">
-      <property name="geometry">
-       <rect>
-        <x>640</x>
-        <y>670</y>
-        <width>51</width>
-        <height>51</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>5</width>
-        <height>5</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">#refresh_btn{
-    background-color: #232531; /* Default color */
-    color: white;
-    border-radius: 25px;
-}
-
-#refresh_btn:hover{
-	background-color:#5897FB ;
-}</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>resources/Icons/refresh.svg</normaloff>resources/Icons/refresh.svg</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>45</width>
-        <height>45</height>
-       </size>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pause_btn">
-      <property name="geometry">
-       <rect>
-        <x>450</x>
-        <y>670</y>
-        <width>51</width>
-        <height>51</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>5</width>
-        <height>5</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">#pause_btn{
-    background-color: #232531; /* Default color */
-    color: white;
-    border-radius: 25px;
-}
-
-#pause_btn:hover{
-	background-color:#5897FB ;
-}</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>resources/Icons/Pause.svg</normaloff>resources/Icons/Pause.svg</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>45</width>
-        <height>45</height>
-       </size>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="upload_btn">
-      <property name="geometry">
-       <rect>
-        <x>700</x>
-        <y>670</y>
-        <width>51</width>
-        <height>51</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>5</width>
-        <height>5</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">#upload_btn{
-    background-color: #232531; /* Default color */
-    color: white;
-    border-radius: 25px;
-}
-
-#upload_btn:hover{
-	background-color:#5897FB ;
-}</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>resources/Icons/Upload.svg</normaloff>resources/Icons/Upload.svg</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>45</width>
-        <height>45</height>
-       </size>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="prec_btn">
-      <property name="geometry">
-       <rect>
-        <x>380</x>
-        <y>670</y>
-        <width>51</width>
-        <height>51</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>5</width>
-        <height>5</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">#prec_btn{
-    background-color: #232531; /* Default color */
-    color: white;
-    border-radius: 25px;
-}
-
-#prec_btn:hover{
-	background-color:#5897FB ;
-}</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>resources/Icons/target.svg</normaloff>resources/Icons/target.svg</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>45</width>
-        <height>45</height>
-       </size>
-      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="Logs">
