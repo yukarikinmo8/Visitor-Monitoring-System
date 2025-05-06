@@ -485,7 +485,7 @@ class Ui_MainWindow(object):
         self.label.setStyleSheet(u"background-color:#EAEAEA;")
         self.stop_btn = QPushButton(self.LiveFeed)
         self.stop_btn.setObjectName(u"stop_btn")
-        self.stop_btn.setGeometry(QRect(580, 670, 51, 51))
+        self.stop_btn.setGeometry(QRect(560, 650, 151, 51))
         font2 = QFont()
         font2.setPointSize(12)
         font2.setBold(True)
@@ -517,7 +517,7 @@ class Ui_MainWindow(object):
 "}")
         self.start_btn = QPushButton(self.LiveFeed)
         self.start_btn.setObjectName(u"start_btn")
-        self.start_btn.setGeometry(QRect(520, 670, 51, 51))
+        self.start_btn.setGeometry(QRect(390, 650, 151, 51))
         self.start_btn.setMinimumSize(QSize(5, 5))
         self.start_btn.setFont(font2)
         self.start_btn.setAutoFillBackground(False)
@@ -563,82 +563,6 @@ class Ui_MainWindow(object):
 "    letter-spacing: 1px; /* Adjust for spacing */\n"
 "    text-transform: uppercase; /* Makes text all caps */\n"
 "}")
-        self.refresh_btn = QPushButton(self.LiveFeed)
-        self.refresh_btn.setObjectName(u"refresh_btn")
-        self.refresh_btn.setGeometry(QRect(640, 670, 51, 51))
-        self.refresh_btn.setMinimumSize(QSize(5, 5))
-        self.refresh_btn.setFont(font2)
-        self.refresh_btn.setAutoFillBackground(False)
-        self.refresh_btn.setStyleSheet(u"#refresh_btn{\n"
-"    background-color: #232531; /* Default color */\n"
-"    color: white;\n"
-"    border-radius: 25px;\n"
-"}\n"
-"\n"
-"#refresh_btn:hover{\n"
-"	background-color:#5897FB ;\n"
-"}")
-        icon7 = QIcon()
-        icon7.addFile(u"resources/Icons/refresh.svg", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
-        self.refresh_btn.setIcon(icon7)
-        self.refresh_btn.setIconSize(QSize(45, 45))
-        self.pause_btn = QPushButton(self.LiveFeed)
-        self.pause_btn.setObjectName(u"pause_btn")
-        self.pause_btn.setGeometry(QRect(450, 670, 51, 51))
-        self.pause_btn.setMinimumSize(QSize(5, 5))
-        self.pause_btn.setFont(font2)
-        self.pause_btn.setAutoFillBackground(False)
-        self.pause_btn.setStyleSheet(u"#pause_btn{\n"
-"    background-color: #232531; /* Default color */\n"
-"    color: white;\n"
-"    border-radius: 25px;\n"
-"}\n"
-"\n"
-"#pause_btn:hover{\n"
-"	background-color:#5897FB ;\n"
-"}")
-        icon8 = QIcon()
-        icon8.addFile(u"resources/Icons/Pause.svg", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
-        self.pause_btn.setIcon(icon8)
-        self.pause_btn.setIconSize(QSize(45, 45))
-        self.upload_btn = QPushButton(self.LiveFeed)
-        self.upload_btn.setObjectName(u"upload_btn")
-        self.upload_btn.setGeometry(QRect(700, 670, 51, 51))
-        self.upload_btn.setMinimumSize(QSize(5, 5))
-        self.upload_btn.setFont(font2)
-        self.upload_btn.setAutoFillBackground(False)
-        self.upload_btn.setStyleSheet(u"#upload_btn{\n"
-"    background-color: #232531; /* Default color */\n"
-"    color: white;\n"
-"    border-radius: 25px;\n"
-"}\n"
-"\n"
-"#upload_btn:hover{\n"
-"	background-color:#5897FB ;\n"
-"}")
-        icon9 = QIcon()
-        icon9.addFile(u"resources/Icons/Upload.svg", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
-        self.upload_btn.setIcon(icon9)
-        self.upload_btn.setIconSize(QSize(45, 45))
-        self.prec_btn = QPushButton(self.LiveFeed)
-        self.prec_btn.setObjectName(u"prec_btn")
-        self.prec_btn.setGeometry(QRect(380, 670, 51, 51))
-        self.prec_btn.setMinimumSize(QSize(5, 5))
-        self.prec_btn.setFont(font2)
-        self.prec_btn.setAutoFillBackground(False)
-        self.prec_btn.setStyleSheet(u"#prec_btn{\n"
-"    background-color: #232531; /* Default color */\n"
-"    color: white;\n"
-"    border-radius: 25px;\n"
-"}\n"
-"\n"
-"#prec_btn:hover{\n"
-"	background-color:#5897FB ;\n"
-"}")
-        icon10 = QIcon()
-        icon10.addFile(u"resources/Icons/target.svg", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
-        self.prec_btn.setIcon(icon10)
-        self.prec_btn.setIconSize(QSize(45, 45))
         self.stackedWidget.addWidget(self.LiveFeed)
         self.Logs = QWidget()
         self.Logs.setObjectName(u"Logs")
@@ -982,10 +906,6 @@ class Ui_MainWindow(object):
         self.cap_5.setText("")
         self.cap_6.setText("")
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Face Capture", None))
-        self.refresh_btn.setText("")
-        self.pause_btn.setText("")
-        self.upload_btn.setText("")
-        self.prec_btn.setText("")
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"LOGS", None))
         self.export_btn.setText(QCoreApplication.translate("MainWindow", u"Export  PDF", None))
         self.search_txt.setText("")
